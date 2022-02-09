@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "esbuild index.js --bundle --outfile=public/bundle.js --watch"
   },
   "keywords": [
     "p5.js",
@@ -15,8 +16,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "build": "^0.1.4",
     "cors": "^2.8.5",
+    "esbuild": "^0.14.21",
     "express": "^4.17.2",
+    "matter-js": "^0.18.0",
     "socket.io": "^4.4.1"
   },
   "devDependencies": {
