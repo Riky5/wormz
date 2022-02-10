@@ -1,11 +1,11 @@
 class Worm {
-  constructor(x, y, w, h) {
+  constructor(x, y, w = 90, h = 90) {
     this.body = Matter.Bodies.rectangle(x, y, w, h);
     Matter.World.add(world, this.body);
     this.x = x;
     this.y = y;
-    this.w = 90;
-    this.h = 90;
+    this.w = w;
+    this.h = h;
   }
 
   display() {
