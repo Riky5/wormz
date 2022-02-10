@@ -22,13 +22,21 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   engine = Engine.create();
   world = engine.world;
+
   bulletsWormOne = [];
   // ground = Bodies.rectangle(width/2, height-10, width, 180, {isStatic: true})
   ground = new Ground(width/2, height-10, width, 20)
+
+
+//   ground = Bodies.rectangle(0, windowHeight - 180, 10000, 80, {isStatic: true})
+
+
   Matter.World.add(world, ground)
   console.log(ground)
 
-  worm = new Worm(100, 0);
+
+  worm = new Worm(80, 0);
+  Matter.Body.setMass(worm, 25)
 
   // worm2 = loadImage('worm2.png');
 }
@@ -56,10 +64,15 @@ function mouseClicked() {
 }
 
 function draw() {
-  background(backgroundImg);
+  background('pink');
   Matter.Engine.update(engine);
   fill(0, 179, 0);
+
   ground.show();
+
+//   rect(ground.position.x, ground.position.y,  windowWidth, 180)
+  // ground.display()
+
 
   worm.show();
   bulletsWormOne.forEach(element => element.show())
@@ -67,23 +80,31 @@ function draw() {
   // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
 }
 
+const moveLimit = 5;
+let moveCount = 0;
+
 function keyPressed() {
-  if (keyCode == RIGHT_ARROW) {
-    Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.5, y:0 })
-    console.log("worm position")
-    console.log(worm.body.position)
-  }
-  else if (keyCode == DOWN_ARROW) {
-    worm.body.y += 10;
-  }
-  else if (keyCode == LEFT_ARROW) {
-    worm.x -= 10;
-  }
-  else if (keyCode == UP_ARROW) {
-    worm.y -= 30;
-  }
-  else if (key == ' ') {
-    worm.setSpeed(0, 0);
-  }
-  return false;
-}
+
+//   if (keyCode == RIGHT_ARROW) {
+//     Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.5, y:0 })
+//     console.log("worm position")
+//     console.log(worm.body.position)
+//   }
+//   else if (keyCode == DOWN_ARROW) {
+//     worm.body.y += 10;
+//   }
+//   else if (keyCode == LEFT_ARROW) {
+//     worm.x -= 10;
+//   }
+//   else if (keyCode == UP_ARROW) {
+//     worm.y -= 30;
+//   }
+//   else if (key == ' ') {
+//     worm.setSpeed(0, 0);
+//   }
+//   return false;
+// }
+
+  worm.keyPressed();
+};
+
