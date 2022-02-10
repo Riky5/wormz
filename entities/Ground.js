@@ -1,24 +1,21 @@
 import Matter from 'matter-js';
-import p5 from 'p5';
 
 export default class Ground {
-  constructor(x,y,w,h) {
+  constructor(x,y,w,h,sk) {
     this.body = Matter.Bodies.rectangle(x,y,w,h);
     Matter.World.add(world, this.body);
     this.body.isStatic = true;
     this.body.label = "Ground";
+    this.sk = sk
   }
 
   show() {
     const pos = this.body.position;
     const angle = this.body.angle;
-    push()
-    translate(pos.x,pos.y)
-    fill(255)
-    rect(0,0, this.w, this.h);
-    pop()
+    this.sk.push()
+    this.sk.translate(pos.x,pos.y)
+    this.sk.fill(120)
+    this.sk.rect(0,0, this.w, this.h);
+    this.sk.pop()
   }
 }
-
-const sketchInstance = new p5();
-console.log(sketchInstance);

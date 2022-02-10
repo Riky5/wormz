@@ -9,7 +9,7 @@ const sketch = (sk) => {
     sk.createCanvas(800, 400);
     engine = Matter.Engine.create();
     world = engine.world;
-    ground = new Ground(sk.width/2, sk.height-10, sk.width, 20, world);
+    ground = new Ground(sk.width/2, sk.height-10, sk.width, 20, sk);
     console.log(ground)
   }
 
