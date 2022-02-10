@@ -19,11 +19,12 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
 
-  ground = Bodies.rectangle(0, windowHeight - 180, windowWidth, 180, {isStatic: true})
+  ground = Bodies.rectangle(0, windowHeight - 180, 10000, 80, {isStatic: true})
 
   Matter.World.add(world, ground)
 
   worm = new Worm(80, 0);
+  Matter.Body.setMass(worm, 25)
 
   // worm2 = loadImage('worm2.png');
 }
@@ -33,28 +34,38 @@ function draw() {
   Matter.Engine.update(engine);
   fill(0, 179, 0);
   rect(ground.position.x, ground.position.y,  windowWidth, 180)
+  // ground.display()
 
   worm.display();
   // image(wormImage0, 50, windowHeight - 200);
   // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
 }
+const moveLimit = 5;
+let moveCount = 0;
 
 function keyPressed() {
-  if (keyCode == RIGHT_ARROW) {
-    console.log(world)
-    Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.5, y:0 })
+
+  if (moveCount >= moveLimit) {
+    return;
   }
-  else if (keyCode == DOWN_ARROW) {
-    worm.body.y += 10;
-  }
-  else if (keyCode == LEFT_ARROW) {
-    worm.x -= 10;
-  }
-  else if (keyCode == UP_ARROW) {
-    worm.y -= 30;
-  }
-  else if (key == ' ') {
-    worm.setSpeed(0, 0);
+   
+  switch(keyCode) {
+
+    case LEFT_ARROW: 
+      Matter.Body.applyForce(worm.body, worm.body.position, { x: -0.1, y:0 })
+      console.log('Moved left')
+      moveCount += 1;
+      break;
+    case RIGHT_ARROW: 
+      Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.1, y:0 })
+      console.log('Moved right')
+      moveCount += 1;
+      break;
+    case UP_ARROW:
+      Matter.Body.applyForce(worm.body, worm.body.position, { x: 0, y:-0.2 })
+      console.log('Moved up')
+      moveCount += 1;
+      break;
   }
   return false;
 }
