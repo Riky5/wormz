@@ -8,15 +8,17 @@ class Worm {
     this.y = y;
   }
 
-  display() {
+  show() {
     const pos = this.body.position;
     const angle = this.body.angle;
+    push();
     translate(pos.x, pos.y);
     rotate(angle);
     fill(255);
     // fixed double image
-    // rectMode(CENTER); 
+    rectMode(CENTER); 
     // imageMode(CENTER);
-    image(wormImage0, this.x, this.y, this.w, this.h)
+    rect(0, 0, this.w, this.h)
+    pop();
   }
 }

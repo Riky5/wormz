@@ -9,6 +9,7 @@ let backgroundImg;
 let wormImage0;
 let bulletsWormOne;
 let bulletsWormTwo;
+let p1;
 
 function preload()
 {
@@ -22,8 +23,8 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
   bulletsWormOne = [];
-  ground = Bodies.rectangle(width/2, height-10, width, 180, {isStatic: true})
-
+  // ground = Bodies.rectangle(width/2, height-10, width, 180, {isStatic: true})
+  ground = new Ground(width/2, height-10, width, 20)
   Matter.World.add(world, ground)
   console.log(ground)
 
@@ -32,22 +33,35 @@ function setup() {
   // worm2 = loadImage('worm2.png');
 }
 
+document.addEventListener("mousemove", function(e) {
+  p1 = {
+    x: e.pageX,
+    y: e.pageY
+  };
+  angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+})
+let p2 = {
+  x: 0,
+  y: 400
+};
+
 function mouseClicked() {
-  console.log("worm x" + worm.body.position.x);
-  console.log("worm y" + worm.body.position.y);
-  let bullet = new Bullet(worm.body.position.x, worm.body.position.y - 100, 50);
-  console.log("bullet position")
-  console.log(bullet.body.position)
+
+  p2 = {x: worm.body.position.x, y: worm.body.position.y }
+   angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+
+  bullet = new Bullet(worm.body.position.x, worm.body.position.y, 20)
   bulletsWormOne.push(bullet);
+  Matter.Body.setVelocity(bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
 }
 
 function draw() {
   background(backgroundImg);
   Matter.Engine.update(engine);
   fill(0, 179, 0);
-  rect(ground.position.x, ground.position.y,  windowWidth, 180)
+  ground.show();
 
-  worm.display();
+  worm.show();
   bulletsWormOne.forEach(element => element.show())
   // image(wormImage0, 50, windowHeight - 200);
   // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
