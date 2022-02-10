@@ -9,9 +9,6 @@ let backgroundImg;
 let wormImage0;
 let bulletsWormOne;
 let bulletsWormTwo;
-let bullet;
-
-let turn = 1;
 
 function preload()
 {
@@ -24,14 +21,17 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   engine = Engine.create();
   world = engine.world;
-
   ground = new Ground();
+  worm = new Worm(80, 160);
+  console.log(worm)
+  bulletsWormOne = [];
 
-  worm = new Worm(80, windowHeight - 160);
-
-  bullet = new Bullet(worm.body.position.x - 25, worm.body.position.y, 50)
   // worm2 = loadImage('worm2.png');
-  
+}
+
+function mouseClicked() {
+  let bullet = new Bullet(25, 50, 50);
+  bulletsWormOne.push(bullet);
 }
 
 function draw() {
@@ -40,7 +40,7 @@ function draw() {
   fill(0, 179, 0);
   ground.display();
   worm.display();
-  bullet.show();
+  bulletsWormOne.forEach(element => element.show())
   // image(wormImage0, 50, windowHeight - 200);
   // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
 }
