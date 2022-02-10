@@ -30,7 +30,7 @@ function setup() {
 }
 
 function draw() {
-  background(backgroundImg);
+  background('pink');
   Matter.Engine.update(engine);
   fill(0, 179, 0);
   rect(ground.position.x, ground.position.y,  windowWidth, 180)

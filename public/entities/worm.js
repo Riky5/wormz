@@ -6,6 +6,7 @@ class Worm {
     this.y = y;
     this.w = w;
     this.h = h;
+    this.hp = 100;
   }
 
   display() {
@@ -14,10 +15,13 @@ class Worm {
     translate(pos.x, pos.y);
     rotate(angle);
     fill(255);
-    // fixed double image
-    // rectMode(CENTER); 
-    // imageMode(CENTER);
-    image(wormImage0, this.x, this.y, this.w, this.h)
+    rect(this.x, this.y, this.w, this.h);
+    // HP above the element 
+    fill(50)
+    text(this.hp, ((this.x) + (this.x / 2)) , this.y - 20);
+
+
+    
   }
 
   moveLimit = 5;
