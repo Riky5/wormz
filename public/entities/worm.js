@@ -19,6 +19,7 @@ class Worm {
     rectMode(CENTER); 
     // imageMode(CENTER);
     rect(0, 0, this.w, this.h)
+    // image(wormImage0, this.x, this.y, this.w, this.h)
     pop();
   }
 }
