@@ -3,9 +3,15 @@ const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
 let world, engine;
 let ground;
 let worm;
+let worm2;
 
 let backgroundImg;
 let wormImage0;
+let bulletsWormOne;
+let bulletsWormTwo;
+let bullet;
+
+let turn = 1;
 
 function preload()
 {
@@ -22,7 +28,10 @@ function setup() {
   ground = new Ground();
 
   worm = new Worm(80, windowHeight - 160);
+
+  bullet = new Bullet(worm.body.position.x - 25, worm.body.position.y, 50)
   // worm2 = loadImage('worm2.png');
+  
 }
 
 function draw() {
@@ -30,8 +39,8 @@ function draw() {
   Matter.Engine.update(engine);
   fill(0, 179, 0);
   ground.display();
-
   worm.display();
+  bullet.show();
   // image(wormImage0, 50, windowHeight - 200);
   // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
 }
