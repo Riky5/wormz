@@ -40,32 +40,10 @@ function draw() {
   // image(wormImage0, 50, windowHeight - 200);
   // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
 }
+
 const moveLimit = 5;
 let moveCount = 0;
 
 function keyPressed() {
-
-  if (moveCount >= moveLimit) {
-    return;
-  }
-   
-  switch(keyCode) {
-
-    case LEFT_ARROW: 
-      Matter.Body.applyForce(worm.body, worm.body.position, { x: -0.1, y:0 })
-      console.log('Moved left')
-      moveCount += 1;
-      break;
-    case RIGHT_ARROW: 
-      Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.1, y:0 })
-      console.log('Moved right')
-      moveCount += 1;
-      break;
-    case UP_ARROW:
-      Matter.Body.applyForce(worm.body, worm.body.position, { x: 0, y:-0.2 })
-      console.log('Moved up')
-      moveCount += 1;
-      break;
-  }
-  return false;
-}
+  worm.keyPressed();
+};

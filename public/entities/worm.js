@@ -19,4 +19,31 @@ class Worm {
     // imageMode(CENTER);
     image(wormImage0, this.x, this.y, this.w, this.h)
   }
+
+  moveLimit = 5;
+  moveCount = 0;
+
+  keyPressed() {
+
+    if (moveCount >= moveLimit) {
+      return;
+    }
+     
+    switch(keyCode) {
+  
+      case LEFT_ARROW: 
+        Matter.Body.applyForce(worm.body, worm.body.position, { x: -0.1, y:0 })
+        moveCount += 1;
+        break;
+      case RIGHT_ARROW: 
+        Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.1, y:0 })
+        moveCount += 1;
+        break;
+      case UP_ARROW:
+        Matter.Body.applyForce(worm.body, worm.body.position, { x: 0, y:-0.2 })
+        moveCount += 1;
+        break;
+    }
+    return false;
+  }
 }
