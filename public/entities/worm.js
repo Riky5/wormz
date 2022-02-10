@@ -1,7 +1,6 @@
 class Worm {
   constructor(x, y, w = 90, h = 90) {
-    this.body = Matter.Bodies.rectangle(x, y, w, h, {render: { 
-    text: { content: "FN", color: "black", size: 15 } }} );
+    this.body = Matter.Bodies.rectangle(x, y, w, h);
     Matter.World.add(world, this.body);
     this.x = x;
     this.y = y;
