@@ -6,5 +6,6 @@ Lets nail it this time
 
 ```
 npm install
-node server.js
+npm run build
+npm start
 ```
