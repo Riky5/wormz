@@ -22,12 +22,12 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
   bulletsWormOne = [];
-  ground = Bodies.rectangle(0, windowHeight - 180, windowWidth, 180, {isStatic: true})
+  ground = Bodies.rectangle(0, windowHeight - 100, windowWidth, 180, {isStatic: true})
 
   Matter.World.add(world, ground)
   console.log(ground)
 
-  worm = new Worm(100, 100);
+  worm = new Worm(100, 0);
 
   // worm2 = loadImage('worm2.png');
 }
@@ -35,8 +35,9 @@ function setup() {
 function mouseClicked() {
   console.log(worm.body.position.x + 10);
   console.log(worm.body.position.y - 100);
-  let bullet = new Bullet(worm.body.position.x + 100, worm.body.position.y - 1000, 50);
-  console.log(bullet)
+  let bullet = new Bullet(worm.body.position.x, worm.body.position.y, 50);
+  console.log("bullet position")
+  console.log(bullet.body.position)
   bulletsWormOne.push(bullet);
 }
 
@@ -54,8 +55,9 @@ function draw() {
 
 function keyPressed() {
   if (keyCode == RIGHT_ARROW) {
-    console.log(world)
-    Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.5, y:0 })
+    Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.1, y:0 })
+    console.log("worm position")
+    console.log(worm.body.position)
   }
   else if (keyCode == DOWN_ARROW) {
     worm.body.y += 10;
