@@ -19,9 +19,12 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
 
-  ground = new Ground();
+  ground = Bodies.rectangle(0, windowHeight - 180, windowWidth, 180, {isStatic: true})
 
-  worm = new Worm(80, windowHeight - 160);
+  Matter.World.add(world, ground)
+
+  worm = new Worm(80, 0);
+
   // worm2 = loadImage('worm2.png');
 }
 
@@ -29,29 +32,29 @@ function draw() {
   background(backgroundImg);
   Matter.Engine.update(engine);
   fill(0, 179, 0);
-  ground.display();
+  rect(ground.position.x, ground.position.y,  windowWidth, 180)
 
   worm.display();
   // image(wormImage0, 50, windowHeight - 200);
   // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
 }
 
-// function keyPressed() {
-//   if (keyCode == RIGHT_ARROW) {
-//     Matter.Body.applyForce(worm.body, 600, 1.0)
-//     console.log('moving')
-//   }
-//   else if (keyCode == DOWN_ARROW) {
-//     worm.body.y += 10;
-//   }
-//   else if (keyCode == LEFT_ARROW) {
-//     worm.x -= 10;
-//   }
-//   else if (keyCode == UP_ARROW) {
-//     worm.y -= 30;
-//   }
-//   else if (key == ' ') {
-//     worm.setSpeed(0, 0);
-//   }
-//   return false;
-// }
+function keyPressed() {
+  if (keyCode == RIGHT_ARROW) {
+    console.log(world)
+    Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.5, y:0 })
+  }
+  else if (keyCode == DOWN_ARROW) {
+    worm.body.y += 10;
+  }
+  else if (keyCode == LEFT_ARROW) {
+    worm.x -= 10;
+  }
+  else if (keyCode == UP_ARROW) {
+    worm.y -= 30;
+  }
+  else if (key == ' ') {
+    worm.setSpeed(0, 0);
+  }
+  return false;
+}
