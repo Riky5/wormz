@@ -25,14 +25,18 @@ function setup() {
   ground = Bodies.rectangle(0, windowHeight - 180, windowWidth, 180, {isStatic: true})
 
   Matter.World.add(world, ground)
+  console.log(ground)
 
-  worm = new Worm(80, 0);
+  worm = new Worm(100, 100);
 
   // worm2 = loadImage('worm2.png');
 }
 
 function mouseClicked() {
-  let bullet = new Bullet(25, 50, 50);
+  console.log(worm.body.position.x + 10);
+  console.log(worm.body.position.y - 100);
+  let bullet = new Bullet(worm.body.position.x + 100, worm.body.position.y - 1000, 50);
+  console.log(bullet)
   bulletsWormOne.push(bullet);
 }
 
