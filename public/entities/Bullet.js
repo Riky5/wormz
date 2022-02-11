@@ -5,7 +5,7 @@ class Bullet {
     this.r = r
   }
   
-  show() {
+  show = () => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 5
@@ -17,7 +17,7 @@ class Bullet {
     pop()
   }
 
-  static destroy(bullet) {
+  static destroy = (bullet) => {
     Matter.World.remove(world, bullet);
     bullets.pop();
   }

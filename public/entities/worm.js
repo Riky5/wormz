@@ -10,7 +10,7 @@ class Worm {
     this.hp = 100;
   }
 
-  show() {
+  show = () => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
@@ -48,7 +48,7 @@ class Worm {
   moveLimit = 5;
   moveCount = 0;
 
-  keyPressed(wormChoice) {
+  keyPressed = (wormChoice) => {
     if (moveCount >= moveLimit) {
       return;
     }
@@ -74,7 +74,7 @@ class Worm {
   }
 
 
-  reduceHP() {
+  reduceHP = () => {
     if (this.hp > 0) {
       this.hp -= 5;
     }
