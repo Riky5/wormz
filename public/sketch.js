@@ -10,6 +10,7 @@ let wormImg0;
 let wormImg1;
 let bulletsWormOne;
 let p1;
+let player1Turn;
 
 function preload()
 {
@@ -28,11 +29,9 @@ function setup() {
   // ground = Bodies.rectangle(width/2, height-10, width, 180, {isStatic: true})
   ground = new Ground(width/2, height-20, width, 180)
 
-  console.log(ground)
 
   worm = new Worm(150, windowHeight - 30, "wormOne");
   worm2 = new Worm(850, windowHeight - 30, "wormTwo", wormImg1);
-  console.log(worm)
 
   function isInCollision(pair, label) {
     return pair.bodyA.label === label || pair.bodyB.label === label
@@ -60,6 +59,12 @@ function setup() {
     }
   })
 
+  // ground = Bodies.rectangle(0, windowHeight - 180, 10000, 80, {isStatic: true})
+  Matter.World.add(world, ground)
+  // console.log(ground)
+
+  player1Turn = true;
+
 }
 
 document.addEventListener("mousemove", function(e) {
@@ -76,12 +81,22 @@ let p2 = {
 
 function mouseClicked() {
 
-  p2 = {x: worm.body.position.x, y: worm.body.position.y }
-   angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+  if(player1Turn === true) {
+    p2 = {x: worm.body.position.x, y: worm.body.position.y }
+    angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 15)
+  }
+  else {
+    p2 = {x: worm2.body.position.x, y: worm2.body.position.y }
+    angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    bullet = new Bullet(worm2.body.position.x + 50, worm2.body.position.y - 40, 15)
+  }
 
-  bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 20)
   bulletsWormOne.push(bullet);
   Matter.Body.setVelocity(bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
+  
+  player1Turn = !player1Turn;
+  moveCount = 0;
 }
 
 function draw() {
@@ -100,26 +115,11 @@ const moveLimit = 5;
 let moveCount = 0;
 
 function keyPressed() {
-//   if (keyCode == RIGHT_ARROW) {
-//     Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.5, y:0 })
-//     console.log("worm position")
-//     console.log(worm.body.position)
-//   }
-//   else if (keyCode == DOWN_ARROW) {
-//     worm.body.y += 10;
-//   }
-//   else if (keyCode == LEFT_ARROW) {
-//     worm.x -= 10;
-//   }
-//   else if (keyCode == UP_ARROW) {
-//     worm.y -= 30;
-//   }
-//   else if (key == ' ') {
-//     worm.setSpeed(0, 0);
-//   }
-//   return false;
-// }
-  worm.keyPressed();
-  worm2.keyPressed2();
+  if(player1Turn === true) {
+    worm.keyPressed(worm);
+  } 
+  else {
+    worm2.keyPressed(worm2);
+  }
 };
 

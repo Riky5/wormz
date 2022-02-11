@@ -48,7 +48,7 @@ class Worm {
   moveLimit = 5;
   moveCount = 0;
 
-  keyPressed() {
+  keyPressed(wormChoice) {
     if (moveCount >= moveLimit) {
       return;
     }
@@ -56,22 +56,23 @@ class Worm {
     switch(keyCode) {
   
       case LEFT_ARROW: 
-        Matter.Body.applyForce(worm.body, worm.body.position, { x: -0.1, y:0 })
+        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: -0.1, y:0 })
         moveCount += 1;
         break;
       case RIGHT_ARROW: 
-        Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.1, y:0 })
+        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: 0.1, y:0 })
         this.body.mass = 10
         moveCount += 1;
         break;
       case UP_ARROW:
-        Matter.Body.applyForce(worm.body, worm.body.position, { x: 0, y:-0.2 })
+        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: 0, y:-0.2 })
         this.body.mass = 10
         moveCount += 1;
         break;
     }
     return false;
   }
+
 
   reduceHP() {
     if (this.hp > 0) {
