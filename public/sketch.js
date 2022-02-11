@@ -8,6 +8,7 @@ let backgroundImg;
 let wormImg0;
 let wormImg1;
 let bullets;
+let mode;
 let mousePos;
 let moveLimit;
 let moveCount;
@@ -23,32 +24,39 @@ setup = () => {
   createCanvas(windowWidth, windowHeight - 50);
   initializeWorld();
   Matter.Events.on(engine, "collisionStart", (event) => collision(event))
+  textSize(40);
+  mode = 'start';
 }
 
 draw = () => {
-  background(backgroundImg);
-  Matter.Engine.update(engine);
-  ground.show();
-  worm.show();
-  worm2.show();
-  bullets.forEach(element => element.show());
+  // method is in screenController.js
+  setScreen();
 }
 
 mouseClicked = () => {
   // method is in controller.js
-  Controller.fireBullet();
+  if(mode === 'game') {
+    Controller.fireBullet(); 
+  }
 }
 
 keyPressed = () => {
-  let input = keyCode
-
-  if(Controller.player1Turn === true) {
-    // method is in controller.js
-    MoveController.moveWorm(worm, input);
-  } 
-  else {
-    // method is in controller.js
-    MoveController.moveWorm(worm2, input);
+  if (mode != 'game') {
+    // method is in screenController.js
+    screenControllerKeyPressed()
   }
-}
-  
+  else {
+
+    let input = keyCode
+
+    if(Controller.player1Turn === true) {
+      // method is in controller.js
+      MoveController.moveWorm(worm, input);
+    } 
+    else {
+      // method is in controller.js
+      MoveController.moveWorm(worm2, input);
+    }
+  }
+};
+

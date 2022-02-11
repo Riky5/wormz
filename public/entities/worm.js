@@ -42,6 +42,7 @@ class Worm {
 
     rect(pos.x, pos.y - 70, 40, 20);
     fill(0)
+    textSize(15)
     text(this.hp, pos.x + 10, pos.y - 55);
   }
 
