@@ -16,4 +16,5 @@ class Bullet {
     circle(0,0, this.r);
     pop()
   }
+
 }

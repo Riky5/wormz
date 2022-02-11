@@ -43,6 +43,7 @@ function setup() {
     for (const pair of event.pairs) {
       console.log(pair.bodyA.label)
       console.log(pair.bodyB.label)
+      setTimeout(() => console.log("hi"), 1000)
       if(isInCollision(pair, "bullet")) {
         if(pair.bodyA.label === "bullet") {
           Matter.World.remove(world, pair.bodyA)
@@ -79,7 +80,7 @@ function mouseClicked() {
   p2 = {x: worm.body.position.x, y: worm.body.position.y }
    angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
 
-  bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 20, 20)
+  bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 20)
   bulletsWormOne.push(bullet);
   Matter.Body.setVelocity(bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
 }
