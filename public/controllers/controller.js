@@ -27,16 +27,12 @@ class Controller{
 }
 
 document.addEventListener("mousemove", function(e) {
-  p1 = {
-    x: e.pageX,
-    y: e.pageY
-  };
+  p1 = { x: e.pageX, y: e.pageY };
   angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
 })
-let p2 = {
-  x: 0,
-  y: 400
-};
+
+// setting default for p2
+let p2 = { x: 0, y: 0};
 
 initializeWorld = () => {
   moveLimit = 5;
