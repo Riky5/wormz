@@ -11,7 +11,7 @@ class Bullet {
     this.body.mass = 5
     push()
     translate(pos.x,pos.y)
-    fill(255)
+    fill(255, 0, 0)
     rectMode(CENTER)
     circle(0,0, this.r);
     pop()
