@@ -43,7 +43,6 @@ function setup() {
     for (const pair of event.pairs) {
       console.log(pair.bodyA.label)
       console.log(pair.bodyB.label)
-      setTimeout(() => console.log("hi"), 1000)
       if(isInCollision(pair, "bullet")) {
         if(pair.bodyA.label === "bullet") {
           Matter.World.remove(world, pair.bodyA)
