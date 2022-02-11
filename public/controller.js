@@ -12,6 +12,18 @@ let p2 = {
   y: 400
 };
 
+initializeWorld = () => {
+  const moveLimit = 5;
+  let moveCount = 0;
+  engine = Engine.create();
+  world = engine.world;
+  bullets = [];
+  ground = new Ground(width/2, height-20, width, 180)
+  worm = new Worm((windowWidth/10)*2, windowHeight - 30, "wormOne");
+  worm2 = new Worm((windowWidth/10)*8, windowHeight - 30, "wormTwo", wormImg1);
+  player1Turn = true
+}
+
 fireBullet = () => {
   if (player1Turn === true) {
     p2 = {x: worm.body.position.x, y: worm.body.position.y }
@@ -62,16 +74,6 @@ collision = (event) => {
   }
 }
 
-initializeWorld = () => {
-  const moveLimit = 5;
-  let moveCount = 0;
-  engine = Engine.create();
-  world = engine.world;
-  bullets = [];
-  ground = new Ground(width/2, height-20, width, 180)
-  worm = new Worm(150, windowHeight - 30, "wormOne");
-  worm2 = new Worm(850, windowHeight - 30, "wormTwo", wormImg1);
-  player1Turn = true;
-}
+
 
 
