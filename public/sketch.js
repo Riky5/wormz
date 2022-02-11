@@ -10,6 +10,7 @@ let wormImg0;
 let wormImg1;
 let bulletsWormOne;
 let p1;
+let player1Turn;
 
 function preload()
 {
@@ -30,13 +31,14 @@ function setup() {
 
   // ground = Bodies.rectangle(0, windowHeight - 180, 10000, 80, {isStatic: true})
   Matter.World.add(world, ground)
-  console.log(ground)
+  // console.log(ground)
 
   worm = new Worm(150, 0);
   worm2 = new Worm(850, 0, 70, 70, wormImg1);
-  console.log(worm)
+  // console.log(worm)
   // Matter.Body.setMass(worm, 25)
   // worm2 = loadImage('worm2.png');
+  player1Turn = true;
 }
 
 document.addEventListener("mousemove", function(e) {
@@ -59,6 +61,8 @@ function mouseClicked() {
   bullet = new Bullet(worm.body.position.x, worm.body.position.y, 15)
   bulletsWormOne.push(bullet);
   Matter.Body.setVelocity(bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
+  player1Turn = !player1Turn;
+  moveCount = 0;
 }
 
 function draw() {
@@ -77,26 +81,11 @@ const moveLimit = 5;
 let moveCount = 0;
 
 function keyPressed() {
-//   if (keyCode == RIGHT_ARROW) {
-//     Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.5, y:0 })
-//     console.log("worm position")
-//     console.log(worm.body.position)
-//   }
-//   else if (keyCode == DOWN_ARROW) {
-//     worm.body.y += 10;
-//   }
-//   else if (keyCode == LEFT_ARROW) {
-//     worm.x -= 10;
-//   }
-//   else if (keyCode == UP_ARROW) {
-//     worm.y -= 30;
-//   }
-//   else if (key == ' ') {
-//     worm.setSpeed(0, 0);
-//   }
-//   return false;
-// }
-  worm.keyPressed();
-  worm2.keyPressed2();
+  if(player1Turn === true) {
+    worm.keyPressed(worm);
+  } 
+  else {
+    worm2.keyPressed(worm2);
+  }
 };
 

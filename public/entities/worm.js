@@ -40,7 +40,7 @@ class Worm {
   moveLimit = 5;
   moveCount = 0;
 
-  keyPressed() {
+  keyPressed(wormChoice) {
     if (moveCount >= moveLimit) {
       return;
     }
@@ -48,37 +48,18 @@ class Worm {
     switch(keyCode) {
   
       case LEFT_ARROW: 
-        Matter.Body.applyForce(worm.body, worm.body.position, { x: -0.1, y:0 })
+        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: -0.1, y:0 })
         moveCount += 1;
         break;
       case RIGHT_ARROW: 
-        Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.1, y:0 })
+        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: 0.1, y:0 })
         this.body.mass = 10
         moveCount += 1;
         break;
       case UP_ARROW:
-        Matter.Body.applyForce(worm.body, worm.body.position, { x: 0, y:-0.2 })
+        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: 0, y:-0.2 })
         this.body.mass = 10
         moveCount += 1;
-        break;
-    }
-    return false;
-  }
-
-  // for second worm - temporary? - might be deleted later - when worms take turns
-  keyPressed2() { 
-    switch(keyCode) {
-  
-      case 83: 
-        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: -0.1, y:0 })
-        break;
-      case 68: 
-        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: 0.1, y:0 })
-        this.body.mass = 10
-        break;
-      case 69:
-        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: 0, y:-0.2 })
-        this.body.mass = 10
         break;
     }
     return false;
