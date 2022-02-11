@@ -13,12 +13,11 @@ let p2 = {
 };
 
 function fireBullet() {
-  if(player1Turn === true) {
+  if (player1Turn === true) {
     p2 = {x: worm.body.position.x, y: worm.body.position.y }
     angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
     bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 15)
-  }
-  else {
+  } else {
     p2 = {x: worm2.body.position.x, y: worm2.body.position.y }
     angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
     bullet = new Bullet(worm2.body.position.x - 20, worm2.body.position.y - 40, 15)
@@ -41,6 +40,27 @@ function moveWorm() {
   else {
     worm2.keyPressed(worm2);
   }
+}
+
+function isInCollision(pair, label) {
+  return pair.bodyA.label === label || pair.bodyB.label === label
+}
+
+function collision(event) {
+    for (const pair of event.pairs) {
+      if(isInCollision(pair, "bullet")) {
+        if(pair.bodyA.label === "bullet") {
+          Bullet.destroy(pair.bodyA);
+        } else {
+          Bullet.destroy(pair.bodyB);
+        }
+        if (isInCollision(pair, "wormTwo")) {
+          worm2.reduceHP();
+        } else if (isInCollision(pair, "wormOne")) {
+          worm.reduceHP();
+        }
+      }
+    }
 }
 
 

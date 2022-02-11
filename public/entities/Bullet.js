@@ -17,4 +17,9 @@ class Bullet {
     pop()
   }
 
+  static destroy(bullet) {
+    Matter.World.remove(world, bullet);
+    bullets.pop();
+  }
+
 }

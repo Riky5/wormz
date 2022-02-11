@@ -35,24 +35,7 @@ function setup() {
   }
 
   // Maybe be moved to the bullet class
-  Matter.Events.on(engine, "collisionStart", (event) => {
-    for (const pair of event.pairs) {
-      if(isInCollision(pair, "bullet")) {
-        if(pair.bodyA.label === "bullet") {
-          Matter.World.remove(world, pair.bodyA)
-          bullets.pop();
-        } else {
-          Matter.World.remove(world, pair.bodyB)
-          bullets.pop();
-        }
-        if (isInCollision(pair, "wormTwo")) {
-          worm2.reduceHP();
-        } else if (isInCollision(pair, "wormOne")) {
-          worm.reduceHP();
-        }
-      }
-    }
-  })
+  Matter.Events.on(engine, "collisionStart", (event) => collision(event))
   player1Turn = true;
 }
 
