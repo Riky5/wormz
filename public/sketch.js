@@ -8,7 +8,7 @@ let backgroundImg;
 let wormImg0;
 let wormImg1;
 let bullets;
-let p1;
+let mousePos;
 let moveLimit;
 let moveCount;
 

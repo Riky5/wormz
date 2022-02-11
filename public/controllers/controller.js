@@ -8,13 +8,13 @@ class Controller{
 
   static fireBullet(){
     if(Controller.player1Turn === true) {
-      p2 = {x: worm.body.position.x, y: worm.body.position.y }
-      angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+      wormPos = {x: worm.body.position.x, y: worm.body.position.y }
+      angleDeg = Math.atan2(mousePos.y - mousePos.y, wormPos.x - mousePos.x);
       this.bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 15)
     }
     else {
-      p2 = {x: worm2.body.position.x, y: worm2.body.position.y }
-      angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+      wormPos = {x: worm2.body.position.x, y: worm2.body.position.y }
+      angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
       this.bullet = new Bullet(worm2.body.position.x - 50, worm2.body.position.y - 40, 15)
     }
     
@@ -27,12 +27,12 @@ class Controller{
 }
 
 document.addEventListener("mousemove", function(e) {
-  p1 = { x: e.pageX, y: e.pageY };
-  angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+  mousePos = { x: e.pageX, y: e.pageY };
+  angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
 })
 
-// setting default for p2
-let p2 = { x: 0, y: 0};
+// setting default for wormPos
+let wormPos = { x: 0, y: 0};
 
 initializeWorld = () => {
   moveLimit = 5;
