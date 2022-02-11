@@ -30,7 +30,7 @@ function setup() {
   terrain.createTerrain()
 
   worm = new Worm(150, 0, "wormOne");
-  worm2 = new Worm(850, 0, "wormTwo", wormImg1);
+  worm2 = new Worm(950, 0, "wormTwo", wormImg1);
 
   function isInCollision(pair, label) {
     return pair.bodyA.label === label || pair.bodyB.label === label
@@ -39,6 +39,15 @@ function setup() {
   // Maybe be moved to the bullet class
   Matter.Events.on(engine, "collisionStart", (event) => {
     for (const pair of event.pairs) {
+      if(isInCollision(pair, "water")){
+        if (isInCollision(pair, "wormTwo")) {
+          Matter.Body.translate(worm2.body, {x: 0,y:-10})
+          worm2.reduceHP();
+        } else if (isInCollision(pair, "wormOne")) {
+          Matter.Body.translate(worm.body, {x: 0,y:-10})
+          worm.reduceHP();
+        }
+      }
       if(isInCollision(pair, "bullet")) {
         if(pair.bodyA.label === "bullet") {
           Matter.World.remove(world, pair.bodyA)
