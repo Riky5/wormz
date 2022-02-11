@@ -77,7 +77,7 @@ function mouseClicked() {
 
 function keyPressed() {
   if (mode != 1) {
-    screenKeyPressed()
+    screenControllerKeyPressed()
   }
   else {
     moveWorm();
