@@ -50,19 +50,27 @@ isInCollision = (pair, label) => {
   return pair.bodyA.label === label || pair.bodyB.label === label
 }
 
+findAndDestroyBullet = (pair) => {
+  if(pair.bodyA.label === "bullet") {
+    Bullet.destroy(pair.bodyA);
+  } else {
+    Bullet.destroy(pair.bodyB);
+  }
+}
+
+findAndDamageWorm = (pair) => {
+  if (isInCollision(pair, "wormTwo")) {
+    worm2.reduceHP();
+  } else if (isInCollision(pair, "wormOne")) {
+    worm.reduceHP();
+  }
+}
+
 collision = (event) => {
   for (const pair of event.pairs) {
     if(isInCollision(pair, "bullet")) {
-      if(pair.bodyA.label === "bullet") {
-        Bullet.destroy(pair.bodyA);
-      } else {
-        Bullet.destroy(pair.bodyB);
-      }
-      if (isInCollision(pair, "wormTwo")) {
-        worm2.reduceHP();
-      } else if (isInCollision(pair, "wormOne")) {
-        worm.reduceHP();
-      }
+      findAndDestroyBullet(pair);
+      findAndDamageWorm(pair);
     }
   }
 }
