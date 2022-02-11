@@ -1,6 +1,6 @@
 class Worm {
-  constructor(x, y, w = 90, h = 90) {
-    this.body = Matter.Bodies.rectangle(x, y, w, h);
+  constructor(x, y, options, w = 90, h = 90) {
+    this.body = Matter.Bodies.rectangle(x, y, w, h, {label: options});
     Matter.World.add(world, this.body);
     this.w = w;
     this.h = h;
@@ -58,5 +58,9 @@ class Worm {
         break;
     }
     return false;
+  }
+
+  reduceHP() {
+    this.hp -= 5;
   }
 }

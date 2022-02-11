@@ -28,15 +28,34 @@ function setup() {
   ground = new Ground(width/2, height-10, width, 20)
 
 
+
+
 //   ground = Bodies.rectangle(0, windowHeight - 180, 10000, 80, {isStatic: true})
 
 
-  Matter.World.add(world, ground)
-  console.log(ground)
+  // Matter.World.add(world, ground)
+  // console.log(ground)
 
-
-  worm = new Worm(80, 0);
+  worm = new Worm((windowWidth/10) * 2, windowHeight - 15, "wormOne");
+  worm2 = new Worm((windowWidth/10) * 8, windowHeight - 15, "wormTwo");
   Matter.Body.setMass(worm, 25)
+
+  Matter.Events.on(engine, "collisionStart", (event) => {
+    for (const pair of event.pairs) {
+      console.log(pair.bodyA.label)
+      console.log(pair.bodyB.label)
+      if ((pair.bodyA.label === "wormTwo" || pair.bodyB.label === "wormTwo") && (pair.bodyA.label === "bullet" || pair.bodyB.label === "bullet")) {
+        if(pair.bodyA.label === "bullet") {
+          Matter.World.remove(world, pair.bodyA)
+        } else {
+          Matter.World.remove(world, pair.bodyB)
+        }
+        bulletsWormOne.pop();
+        worm2.reduceHP();
+        console.log(worm2.hp);
+      }
+    }
+  })
 
   // worm2 = loadImage('worm2.png');
 }
@@ -58,13 +77,13 @@ function mouseClicked() {
   p2 = {x: worm.body.position.x, y: worm.body.position.y }
    angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
 
-  bullet = new Bullet(worm.body.position.x, worm.body.position.y, 20)
+  bullet = new Bullet(worm.body.position.x + 45, worm.body.position.y, 20)
   bulletsWormOne.push(bullet);
   Matter.Body.setVelocity(bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
 }
 
 function draw() {
-  background('pink');
+  background(backgroundImg);
   Matter.Engine.update(engine);
   fill(0, 179, 0);
 
@@ -75,6 +94,7 @@ function draw() {
 
 
   worm.show();
+  worm2.show();
   bulletsWormOne.forEach(element => element.show())
   // image(wormImage0, 50, windowHeight - 200);
   // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
