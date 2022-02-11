@@ -1,6 +1,6 @@
 class Bullet {
   constructor(x,y,r) {
-    this.body = Matter.Bodies.circle(x,y,r)
+    this.body = Matter.Bodies.circle(x,y,r,{label:"bullet"})
     Matter.World.add(world, this.body)
     this.r = r
   }
@@ -16,4 +16,5 @@ class Bullet {
     circle(0,0, this.r);
     pop()
   }
+
 }

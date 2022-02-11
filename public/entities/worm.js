@@ -1,6 +1,6 @@
 class Worm {
-  constructor(x, y, w = 70, h = 70, img = wormImg0) {
-    this.body = Matter.Bodies.rectangle(x, y, w, h);
+  constructor(x, y, options, img = wormImg0, w = 70, h = 70) {
+    this.body = Matter.Bodies.rectangle(x, y, w, h, {label: options});
     Matter.World.add(world, this.body);
     this.w = w;
     this.h = h;
@@ -31,10 +31,18 @@ class Worm {
     pop();
 
     // rect(this.x, this.y, this.w, this.h);
-    // HP above the element 
-    fill(50)
-    text(this.hp, ((this.x) + (this.x / 2)) , this.y - 20);
+    // HP above the element
+    if (this.hp > 70) {
+      fill(0, 255, 0)
+    } else if (this.hp <= 30) {
+      fill(255, 0, 0)
+    } else if (this.hp <= 70) {
+      fill(255, 191, 0)
+    }
 
+    rect(pos.x, pos.y - 70, 40, 20);
+    fill(0)
+    text(this.hp, pos.x + 10, pos.y - 55);
   }
 
   moveLimit = 5;
@@ -60,6 +68,31 @@ class Worm {
         Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: 0, y:-0.2 })
         this.body.mass = 10
         moveCount += 1;
+        break;
+    }
+    return false;
+  }
+
+
+  reduceHP() {
+    if (this.hp > 0) {
+      this.hp -= 5;
+    }
+  }
+  // for second worm - temporary? - might be deleted later - when worms take turns
+  keyPressed2() { 
+    switch(keyCode) {
+  
+      case 83: 
+        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: -0.1, y:0 })
+        break;
+      case 68: 
+        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: 0.1, y:0 })
+        this.body.mass = 10
+        break;
+      case 69:
+        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: 0, y:-0.2 })
+        this.body.mass = 10
         break;
     }
     return false;

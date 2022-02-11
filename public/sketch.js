@@ -29,16 +29,42 @@ function setup() {
   // ground = Bodies.rectangle(width/2, height-10, width, 180, {isStatic: true})
   ground = new Ground(width/2, height-20, width, 180)
 
+
+  worm = new Worm(150, windowHeight - 30, "wormOne");
+  worm2 = new Worm(850, windowHeight - 30, "wormTwo", wormImg1);
+
+  function isInCollision(pair, label) {
+    return pair.bodyA.label === label || pair.bodyB.label === label
+  }
+
+  // Maybe be moved to the bullet class
+  Matter.Events.on(engine, "collisionStart", (event) => {
+    for (const pair of event.pairs) {
+      console.log(pair.bodyA.label)
+      console.log(pair.bodyB.label)
+      if(isInCollision(pair, "bullet")) {
+        if(pair.bodyA.label === "bullet") {
+          Matter.World.remove(world, pair.bodyA)
+          bulletsWormOne.pop();
+        } else {
+          Matter.World.remove(world, pair.bodyB)
+          bulletsWormOne.pop();
+        }
+        if (isInCollision(pair, "wormTwo")) {
+          worm2.reduceHP();
+        } else if (isInCollision(pair, "wormOne")) {
+          worm.reduceHP();
+        }
+      }
+    }
+  })
+
   // ground = Bodies.rectangle(0, windowHeight - 180, 10000, 80, {isStatic: true})
   Matter.World.add(world, ground)
   // console.log(ground)
 
-  worm = new Worm(150, 0);
-  worm2 = new Worm(850, 0, 70, 70, wormImg1);
-  // console.log(worm)
-  // Matter.Body.setMass(worm, 25)
-  // worm2 = loadImage('worm2.png');
   player1Turn = true;
+
 }
 
 document.addEventListener("mousemove", function(e) {
@@ -58,12 +84,12 @@ function mouseClicked() {
   if(player1Turn === true) {
     p2 = {x: worm.body.position.x, y: worm.body.position.y }
     angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-    bullet = new Bullet(worm.body.position.x, worm.body.position.y, 15)
+    bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 15)
   }
   else {
     p2 = {x: worm2.body.position.x, y: worm2.body.position.y }
     angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-    bullet = new Bullet(worm2.body.position.x, worm2.body.position.y, 15)
+    bullet = new Bullet(worm2.body.position.x + 50, worm2.body.position.y - 40, 15)
   }
 
   bulletsWormOne.push(bullet);
