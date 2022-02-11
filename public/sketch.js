@@ -4,12 +4,13 @@ let world, engine;
 let ground;
 let worm;
 let worm2;
-
 let backgroundImg;
 let wormImg0;
 let wormImg1;
 let bullets;
 let p1;
+let moveLimit;
+let moveCount;
 
 
 preload = () =>
@@ -20,7 +21,7 @@ preload = () =>
 }
 
 setup = () => {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight - 50);
   initializeWorld();
   Matter.Events.on(engine, "collisionStart", (event) => collision(event))
 }

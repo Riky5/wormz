@@ -13,14 +13,14 @@ let p2 = {
 };
 
 initializeWorld = () => {
-  const moveLimit = 5;
-  let moveCount = 0;
+  moveLimit = 5;
+  moveCount = 0;
   engine = Engine.create();
   world = engine.world;
   bullets = [];
   ground = new Ground(width/2, height-20, width, 180)
-  worm = new Worm((windowWidth/10)*2, windowHeight - 30, "wormOne");
-  worm2 = new Worm((windowWidth/10)*8, windowHeight - 30, "wormTwo", wormImg1);
+  worm = new Worm((windowWidth/10)*2, windowHeight - 100, "wormOne");
+  worm2 = new Worm((windowWidth/10)*8, windowHeight - 100, "wormTwo", wormImg1);
   player1Turn = true
 }
 
