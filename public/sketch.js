@@ -55,10 +55,17 @@ let p2 = {
 
 function mouseClicked() {
 
-  p2 = {x: worm.body.position.x, y: worm.body.position.y }
-   angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+  if(player1Turn === true) {
+    p2 = {x: worm.body.position.x, y: worm.body.position.y }
+    angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    bullet = new Bullet(worm.body.position.x, worm.body.position.y, 15)
+  }
+  else {
+    p2 = {x: worm2.body.position.x, y: worm2.body.position.y }
+    angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    bullet = new Bullet(worm2.body.position.x, worm2.body.position.y, 15)
+  }
 
-  bullet = new Bullet(worm.body.position.x, worm.body.position.y, 15)
   bulletsWormOne.push(bullet);
   Matter.Body.setVelocity(bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
   player1Turn = !player1Turn;
