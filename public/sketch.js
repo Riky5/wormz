@@ -68,6 +68,7 @@ function mouseClicked() {
 
   bulletsWormOne.push(bullet);
   Matter.Body.setVelocity(bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
+  
   player1Turn = !player1Turn;
   moveCount = 0;
 }
