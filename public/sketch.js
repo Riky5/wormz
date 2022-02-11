@@ -6,16 +6,17 @@ let worm;
 let worm2;
 
 let backgroundImg;
-let wormImage0;
+let wormImg0;
+let wormImg1;
 let bulletsWormOne;
-let bulletsWormTwo;
 let p1;
 
 function preload()
 {
   // load background image
-  backgroundImg = loadImage("background-image.png");
-  wormImage0 = loadImage('worm0.png');
+  backgroundImg = loadImage("images/background-image.png");
+  wormImg0 = loadImage("images/worm0.png");
+  wormImg1 = loadImage("images/worm1.png");
 }
 
 function setup() {
@@ -25,20 +26,15 @@ function setup() {
 
   bulletsWormOne = [];
   // ground = Bodies.rectangle(width/2, height-10, width, 180, {isStatic: true})
-  ground = new Ground(width/2, height-10, width, 20)
+  ground = new Ground(width/2, height-20, width, 180)
 
+  // ground = Bodies.rectangle(0, windowHeight - 180, 10000, 80, {isStatic: true})
+  Matter.World.add(world, ground)
+  console.log(ground)
 
-
-
-//   ground = Bodies.rectangle(0, windowHeight - 180, 10000, 80, {isStatic: true})
-
-
-  // Matter.World.add(world, ground)
-  // console.log(ground)
-
-  worm = new Worm((windowWidth/10) * 2, windowHeight - 15, "wormOne");
-  worm2 = new Worm((windowWidth/10) * 8, windowHeight - 15, "wormTwo");
-  Matter.Body.setMass(worm, 25)
+  worm = new Worm(150, 0, "wormOne");
+  worm2 = new Worm(850, 0, "wormTwo", wormImg1);
+  console.log(worm)
 
   Matter.Events.on(engine, "collisionStart", (event) => {
     for (const pair of event.pairs) {
@@ -56,7 +52,7 @@ function setup() {
       }
     }
   })
-
+  // Matter.Body.setMass(worm, 25)
   // worm2 = loadImage('worm2.png');
 }
 
@@ -85,26 +81,19 @@ function mouseClicked() {
 function draw() {
   background(backgroundImg);
   Matter.Engine.update(engine);
-  fill(0, 179, 0);
-
+  // fill(0, 179, 0);
   ground.show();
-
-//   rect(ground.position.x, ground.position.y,  windowWidth, 180)
-  // ground.display()
-
 
   worm.show();
   worm2.show();
-  bulletsWormOne.forEach(element => element.show())
-  // image(wormImage0, 50, windowHeight - 200);
-  // image(worm2, windowWidth - 200, windowHeight - 200,90,90)
+
+  bulletsWormOne.forEach(element => element.show());
 }
 
 const moveLimit = 5;
 let moveCount = 0;
 
 function keyPressed() {
-
 //   if (keyCode == RIGHT_ARROW) {
 //     Matter.Body.applyForce(worm.body, worm.body.position, { x: 0.5, y:0 })
 //     console.log("worm position")
@@ -124,7 +113,7 @@ function keyPressed() {
 //   }
 //   return false;
 // }
-
   worm.keyPressed();
+  worm2.keyPressed2();
 };
 
