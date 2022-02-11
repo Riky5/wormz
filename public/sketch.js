@@ -41,16 +41,21 @@ function setup() {
   // Maybe be moved to the bullet class
   Matter.Events.on(engine, "collisionStart", (event) => {
     for (const pair of event.pairs) {
-
-      if (isInCollision(pair, "wormTwo") && isInCollision(pair, "bullet")) {
+      console.log(pair.bodyA.label)
+      console.log(pair.bodyB.label)
+      if(isInCollision(pair, "bullet")) {
         if(pair.bodyA.label === "bullet") {
           Matter.World.remove(world, pair.bodyA)
+          bulletsWormOne.pop();
         } else {
           Matter.World.remove(world, pair.bodyB)
+          bulletsWormOne.pop();
         }
-        bulletsWormOne.pop();
-        worm2.reduceHP();
-        console.log(worm2.hp);
+        if (isInCollision(pair, "wormTwo")) {
+          worm2.reduceHP();
+        } else if (isInCollision(pair, "wormOne")) {
+          worm.reduceHP();
+        }
       }
     }
   })
@@ -74,7 +79,7 @@ function mouseClicked() {
   p2 = {x: worm.body.position.x, y: worm.body.position.y }
    angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
 
-  bullet = new Bullet(worm.body.position.x + 35, worm.body.position.y, 20)
+  bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 20, 20)
   bulletsWormOne.push(bullet);
   Matter.Body.setVelocity(bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
 }
