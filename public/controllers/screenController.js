@@ -31,30 +31,30 @@ class ScreenController{
 }
 
 function setScreen() {
-  if(mode === 0) {
+  if(mode === 'start') {
     ScreenController.startScreen();
   }
-  else if(mode === 1) {
+  else if(mode === 'game') {
     ScreenController.gameScreen();
   }
-  else if (mode === 2){
+  else if (mode === 'gameOver'){
     ScreenController.gameOverScreen();
   }
-  else if (mode === 3) {
+  else if (mode === 'instructions') {
     ScreenController.instructionsScreen();
   }
 }
 
 function screenControllerKeyPressed() {
-  if(mode === 0) {
+  if(mode === 'start') {
     if(keyCode ===ENTER) {
-      mode = 1;
+      mode = 'game';
     } 
     else if(keyCode === BACKSPACE) {
-      mode = 3;
+      mode = 'instructions';
     }
   }
-  else if(mode === 2 || mode === 3) {
+  else if(mode === 'gameOver' || mode === 'instructions') {
     if(keyCode === ENTER) {
       setup();
     }

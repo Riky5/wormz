@@ -25,7 +25,7 @@ setup = () => {
   initializeWorld();
   Matter.Events.on(engine, "collisionStart", (event) => collision(event))
   textSize(40);
-  mode = 0;
+  mode = 'start';
 }
 
 draw = () => {
@@ -35,13 +35,13 @@ draw = () => {
 
 mouseClicked = () => {
   // method is in controller.js
-  if(mode === 1) {
+  if(mode === 'game') {
     Controller.fireBullet(); 
   }
 }
 
 keyPressed = () => {
-  if (mode != 1) {
+  if (mode != 'game') {
     // method is in screenController.js
     screenControllerKeyPressed()
   }
