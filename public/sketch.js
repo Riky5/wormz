@@ -12,7 +12,6 @@ let p1;
 let moveLimit;
 let moveCount;
 
-
 preload = () =>
 {
   backgroundImg = loadImage("images/background-image.png");
