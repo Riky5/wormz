@@ -10,6 +10,7 @@ let wormImg0;
 let wormImg1;
 let bullets;
 let p1;
+let mode;
 
 
 function preload()
@@ -54,25 +55,42 @@ function setup() {
     }
   })
   player1Turn = true;
+  textSize(40);
+  mode = 0;
 }
 
 function draw() {
-  background(backgroundImg);
-  Matter.Engine.update(engine);
-  ground.show();
-
-  worm.show();
-  worm2.show();
-
-  bullets.forEach(element => element.show());
+  if(mode === 0) {
+   text("PRESS ENTER TO START GAME", windowWidth / 2 - 300, windowHeight / 2)
+  }
+  else {
+    background(backgroundImg);
+    Matter.Engine.update(engine);
+    ground.show();
+  
+    worm.show();
+    worm2.show();
+  
+    bullets.forEach(element => element.show());
+  }
 }
 
 function mouseClicked() {
   // method is in controller.js
-  fireBullet();
+  if(mode === 1) {
+    fireBullet(); 
+  }
 }
 
 function keyPressed() {
   // method is in controller.js
-  moveWorm();
+  if(mode === 0) {
+    if(keyCode ===ENTER) {
+      mode = 1;
+    }
+  }
+  else {
+    moveWorm();
+  }
+ 
 };
