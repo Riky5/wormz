@@ -12,20 +12,20 @@ let bullets;
 let p1;
 
 
-function preload()
+preload = () =>
 {
   backgroundImg = loadImage("images/background-image.png");
   wormImg0 = loadImage("images/worm0.png");
   wormImg1 = loadImage("images/worm1.png");
 }
 
-function setup() {
+setup = () => {
   createCanvas(windowWidth, windowHeight);
   initializeWorld();
   Matter.Events.on(engine, "collisionStart", (event) => collision(event))
 }
 
-function draw() {
+draw = () => {
   background(backgroundImg);
   Matter.Engine.update(engine);
   ground.show();
@@ -34,12 +34,12 @@ function draw() {
   bullets.forEach(element => element.show());
 }
 
-function mouseClicked() {
+mouseClicked = () => {
   // method is in controller.js
   fireBullet();
 }
 
-function keyPressed() {
+keyPressed = () => {
   // method is in controller.js
   moveWorm();
 };

@@ -12,7 +12,7 @@ let p2 = {
   y: 400
 };
 
-function fireBullet() {
+fireBullet = () => {
   if (player1Turn === true) {
     p2 = {x: worm.body.position.x, y: worm.body.position.y }
     angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x);
@@ -32,7 +32,7 @@ function fireBullet() {
 
 
 
-function moveWorm() {
+moveWorm = () => {
   if(player1Turn === true) {
     worm.keyPressed(worm);
   } 
@@ -41,11 +41,11 @@ function moveWorm() {
   }
 }
 
-function isInCollision(pair, label) {
+isInCollision = (pair, label) => {
   return pair.bodyA.label === label || pair.bodyB.label === label
 }
 
-function collision(event) {
+collision = (event) => {
   for (const pair of event.pairs) {
     if(isInCollision(pair, "bullet")) {
       if(pair.bodyA.label === "bullet") {
@@ -62,7 +62,7 @@ function collision(event) {
   }
 }
 
-function initializeWorld() {
+initializeWorld = () => {
   const moveLimit = 5;
   let moveCount = 0;
   engine = Engine.create();
