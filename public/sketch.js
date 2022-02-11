@@ -10,6 +10,7 @@ let wormImg0;
 let wormImg1;
 let bullets;
 let p1;
+let generated_terrain = [];
 
 
 function preload()
@@ -26,9 +27,17 @@ function setup() {
 
   bullets = [];
   ground = new Ground(width/2, height-20, width, 180)
+  let current_height = height * Math.random()
+  for(var i = 0; i < ((windowWidth * 3) / 50); i++) 
+  {current_height = current_height + (100 * (Math.random() - 0.5));
+    if (current_height < 200) {current_height = height * Math.random()}
+    else
+    {ground_piece = new Obstacle(i * 50, current_height, 50, 200 + (100 * Math.random()));
+  generated_terrain.push(ground_piece);}
+  }
 
-  worm = new Worm(150, windowHeight - 30, "wormOne");
-  worm2 = new Worm(850, windowHeight - 30, "wormTwo", wormImg1);
+  worm = new Worm(150, 0, "wormOne");
+  worm2 = new Worm(850, 0, "wormTwo", wormImg1);
 
   function isInCollision(pair, label) {
     return pair.bodyA.label === label || pair.bodyB.label === label
@@ -62,9 +71,13 @@ function draw() {
   ground.show();
 
   worm.show();
+  if ((worm.body.angle != 0  && player1Turn != true )|| ((worm.body.angle > 1.5 || worm.body.angle < -1.5 ) && worm.body.velocity.x < 0.1 && worm.body.velocity.y < 0.1)) {worm.body.angle = 0}
+  if (worm.body.angularVelocity > 1) {Matter.Body.setAngularVelocity(worm.body,0); Matter.Body.setVelocity(worm.body,{x:0, y:0})}
   worm2.show();
-
+  if ((worm2.body.angle != 0 && player1Turn == true )|| ((worm2.body.angle > 1.5 || worm2.body.angle < -1.5 ) && worm.body.velocity.x < 0.1 && worm.body.velocity.y < 0.1)) {worm2.body.angle = 0}
+  if (worm2.body.angularVelocity > 1) {Matter.Body.setAngularVelocity(worm2.body,0); Matter.Body.setVelocity(worm2.body,{x:0, y:0})}
   bullets.forEach(element => element.show());
+  generated_terrain.forEach(element => element.show());
 }
 
 function mouseClicked() {
