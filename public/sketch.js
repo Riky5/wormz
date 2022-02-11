@@ -68,8 +68,6 @@ function draw() {
 
 function mouseClicked() {
   // method is in controller.js
-  // mode sets start screen, game and game over
-  // we can move this to controller if needed
   if(mode === 1) {
     fireBullet(); 
   }
@@ -77,6 +75,7 @@ function mouseClicked() {
 
 function keyPressed() {
   if (mode != 1) {
+    // method is in screenController.js
     screenControllerKeyPressed()
   }
   else {
