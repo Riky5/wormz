@@ -11,7 +11,7 @@ class Worm {
     this.hp = 100;
   }
 
-  show() {
+  show = () => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
@@ -75,7 +75,7 @@ class Worm {
   }
 
 
-  reduceHP() {
+  reduceHP = () => {
     if (this.hp > 0) {
       this.hp -= 5;
     }
