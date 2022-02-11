@@ -32,9 +32,10 @@ class Worm {
 
     // rect(this.x, this.y, this.w, this.h);
     // HP above the element 
-    fill(50)
-    text(this.hp, ((this.x) + (this.x / 2)) , this.y - 20);
-
+    fill(255)
+    rect(pos.x, pos.y - 70, 40, 20);
+    fill(0)
+    text(this.hp, pos.x + 10, pos.y - 55);
   }
 
   moveLimit = 5;
