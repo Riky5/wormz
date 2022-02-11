@@ -33,7 +33,7 @@ class Worm {
     // rect(this.x, this.y, this.w, this.h);
     // HP above the element
     if (this.hp > 70) {
-      fill(255)
+      fill(0, 255, 0)
     } else if (this.hp <= 30) {
       fill(255, 0, 0)
     } else if (this.hp <= 70) {
