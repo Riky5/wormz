@@ -23,7 +23,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   engine = Engine.create();
   world = engine.world;
-
+  
   bullets = [];
   ground = new Ground(width/2, height-20, width, 180)
 
@@ -53,7 +53,7 @@ function setup() {
       }
     }
   })
-  player1Turn = true;
+  // player1Turn = true;
 }
 
 function draw() {
@@ -69,10 +69,10 @@ function draw() {
 
 function mouseClicked() {
   // method is in controller.js
-  fireBullet();
+  Controller.fireBullet();
 }
 
 function keyPressed() {
   // method is in controller.js
-  moveWorm();
+  Controller.moveWorm();
 };
