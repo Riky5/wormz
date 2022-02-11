@@ -61,10 +61,14 @@ findAndDestroyBullet = (pair) => {
 findAndDamageWorm = (pair) => {
   if (isInCollision(pair, "wormTwo")) {
     worm2.reduceHP();
-    isWormDead();
+    if (isWormDead()) {
+      switchToMode('gameOver')
+    };
   } else if (isInCollision(pair, "wormOne")) {
     worm.reduceHP();
-    isWormDead();
+    if (isWormDead()) {
+      switchToMode('gameOver')
+    };
   }
 }
 
@@ -78,11 +82,5 @@ collision = (event) => {
 }
 
 function isWormDead() {
-  if(worm.hp === 0 || worm2.hp === 0) {
-    mode = 'gameOver';
-  }
+  return (worm.hp === 0 || worm2.hp === 0);
 }
-
-
-
-

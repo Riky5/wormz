@@ -48,10 +48,10 @@ function setScreen() {
 function screenControllerKeyPressed() {
   if(mode === 'start') {
     if(keyCode ===ENTER) {
-      mode = 'game';
+      switchToMode('game');
     } 
     else if(keyCode === BACKSPACE) {
-      mode = 'instructions';
+      switchToMode('instructions');
     }
   }
   else if(mode === 'gameOver' || mode === 'instructions') {
@@ -59,4 +59,7 @@ function screenControllerKeyPressed() {
       setup();
     }
   }
+}
+function switchToMode(modeChoice) {
+  mode = modeChoice
 }
