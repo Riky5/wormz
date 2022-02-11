@@ -1,4 +1,5 @@
 class Worm {
+
   constructor(x, y, options, img = wormImg0, w = 70, h = 70) {
     this.body = Matter.Bodies.rectangle(x, y, w, h, {label: options});
     Matter.World.add(world, this.body);
@@ -10,7 +11,7 @@ class Worm {
     this.hp = 100;
   }
 
-  show() {
+  show = () => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
