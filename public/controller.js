@@ -30,8 +30,7 @@ function fireBullet() {
   moveCount = 0;
 }
 
-const moveLimit = 5;
-let moveCount = 0;
+
 
 function moveWorm() {
   if(player1Turn === true) {
@@ -47,20 +46,32 @@ function isInCollision(pair, label) {
 }
 
 function collision(event) {
-    for (const pair of event.pairs) {
-      if(isInCollision(pair, "bullet")) {
-        if(pair.bodyA.label === "bullet") {
-          Bullet.destroy(pair.bodyA);
-        } else {
-          Bullet.destroy(pair.bodyB);
-        }
-        if (isInCollision(pair, "wormTwo")) {
-          worm2.reduceHP();
-        } else if (isInCollision(pair, "wormOne")) {
-          worm.reduceHP();
-        }
+  for (const pair of event.pairs) {
+    if(isInCollision(pair, "bullet")) {
+      if(pair.bodyA.label === "bullet") {
+        Bullet.destroy(pair.bodyA);
+      } else {
+        Bullet.destroy(pair.bodyB);
+      }
+      if (isInCollision(pair, "wormTwo")) {
+        worm2.reduceHP();
+      } else if (isInCollision(pair, "wormOne")) {
+        worm.reduceHP();
       }
     }
+  }
+}
+
+function initializeWorld() {
+  const moveLimit = 5;
+  let moveCount = 0;
+  engine = Engine.create();
+  world = engine.world;
+  bullets = [];
+  ground = new Ground(width/2, height-20, width, 180)
+  worm = new Worm(150, windowHeight - 30, "wormOne");
+  worm2 = new Worm(850, windowHeight - 30, "wormTwo", wormImg1);
+  player1Turn = true;
 }
 
 

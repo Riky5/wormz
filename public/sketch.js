@@ -21,32 +21,16 @@ function preload()
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  engine = Engine.create();
-  world = engine.world;
-
-  bullets = [];
-  ground = new Ground(width/2, height-20, width, 180)
-
-  worm = new Worm(150, windowHeight - 30, "wormOne");
-  worm2 = new Worm(850, windowHeight - 30, "wormTwo", wormImg1);
-
-  function isInCollision(pair, label) {
-    return pair.bodyA.label === label || pair.bodyB.label === label
-  }
-
-  // Maybe be moved to the bullet class
+  initializeWorld();
   Matter.Events.on(engine, "collisionStart", (event) => collision(event))
-  player1Turn = true;
 }
 
 function draw() {
   background(backgroundImg);
   Matter.Engine.update(engine);
   ground.show();
-
   worm.show();
   worm2.show();
-
   bullets.forEach(element => element.show());
 }
 
