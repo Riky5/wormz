@@ -5,7 +5,7 @@ class Bullet {
     this.r = r
   }
   
-  show() {
+  show = () => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 5
@@ -15,6 +15,11 @@ class Bullet {
     rectMode(CENTER)
     circle(0,0, this.r);
     pop()
+  }
+
+  static destroy = (bullet) => {
+    Matter.World.remove(world, bullet);
+    bullets.pop();
   }
 
 }
