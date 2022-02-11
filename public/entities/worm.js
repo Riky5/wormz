@@ -31,8 +31,15 @@ class Worm {
     pop();
 
     // rect(this.x, this.y, this.w, this.h);
-    // HP above the element 
-    fill(255)
+    // HP above the element
+    if (this.hp > 70) {
+      fill(255)
+    } else if (this.hp <= 30) {
+      fill(255, 0, 0)
+    } else if (this.hp <= 70) {
+      fill(255, 191, 0)
+    }
+
     rect(pos.x, pos.y - 70, 40, 20);
     fill(0)
     text(this.hp, pos.x + 10, pos.y - 55);
@@ -67,7 +74,9 @@ class Worm {
   }
 
   reduceHP() {
-    this.hp -= 5;
+    if (this.hp > 0) {
+      this.hp -= 5;
+    }
   }
   // for second worm - temporary? - might be deleted later - when worms take turns
   keyPressed2() { 
