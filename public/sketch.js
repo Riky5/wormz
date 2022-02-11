@@ -48,8 +48,10 @@ function setup() {
         }
         if (isInCollision(pair, "wormTwo")) {
           worm2.reduceHP();
+          isWormDead();
         } else if (isInCollision(pair, "wormOne")) {
           worm.reduceHP();
+          isWormDead();
         }
       }
     }
@@ -60,37 +62,24 @@ function setup() {
 }
 
 function draw() {
-  if(mode === 0) {
-   text("PRESS ENTER TO START GAME", windowWidth / 2 - 300, windowHeight / 2)
-  }
-  else {
-    background(backgroundImg);
-    Matter.Engine.update(engine);
-    ground.show();
-  
-    worm.show();
-    worm2.show();
-  
-    bullets.forEach(element => element.show());
-  }
+  // method is in screenController.js
+  setScreen();
 }
 
 function mouseClicked() {
   // method is in controller.js
+  // mode sets start screen, game and game over
+  // we can move this to controller if needed
   if(mode === 1) {
     fireBullet(); 
   }
 }
 
 function keyPressed() {
-  // method is in controller.js
-  if(mode === 0) {
-    if(keyCode ===ENTER) {
-      mode = 1;
-    }
+  if (mode != 1) {
+    screenKeyPressed()
   }
   else {
     moveWorm();
   }
- 
 };

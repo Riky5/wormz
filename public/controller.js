@@ -43,4 +43,10 @@ function moveWorm() {
   }
 }
 
+function isWormDead() {
+  if(worm.hp === 0 || worm2.hp === 0) {
+    mode = 2;
+  }
+}
+
 
