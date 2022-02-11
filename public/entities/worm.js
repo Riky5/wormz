@@ -23,7 +23,6 @@ class Worm {
     // rectMode(CENTER); 
     // rect(0, 0, this.w, this.h)
 
-
     // WORM IMAGE - uncomment here
     imageMode(CENTER);
     image(this.worm, 0, 0, this.w, this.h);
@@ -45,56 +44,14 @@ class Worm {
     text(this.hp, pos.x + 10, pos.y - 55);
   }
 
-  moveLimit = 5;
-  moveCount = 0;
-
-  keyPressed(wormChoice) {
-    if (moveCount >= moveLimit) {
-      return;
-    }
-     
-    switch(keyCode) {
-  
-      case LEFT_ARROW: 
-        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: -0.1, y:0 })
-        moveCount += 1;
-        break;
-      case RIGHT_ARROW: 
-        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: 0.1, y:0 })
-        this.body.mass = 10
-        moveCount += 1;
-        break;
-      case UP_ARROW:
-        Matter.Body.applyForce(wormChoice.body, wormChoice.body.position, { x: 0, y:-0.2 })
-        this.body.mass = 10
-        moveCount += 1;
-        break;
-    }
-    return false;
+  move(force, mass) {
+    Matter.Body.applyForce(this.body, this.body.position, force)
+    this.body.mass = mass
   }
-
 
   reduceHP() {
     if (this.hp > 0) {
       this.hp -= 5;
     }
-  }
-  // for second worm - temporary? - might be deleted later - when worms take turns
-  keyPressed2() { 
-    switch(keyCode) {
-  
-      case 83: 
-        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: -0.1, y:0 })
-        break;
-      case 68: 
-        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: 0.1, y:0 })
-        this.body.mass = 10
-        break;
-      case 69:
-        Matter.Body.applyForce(worm2.body, worm2.body.position, { x: 0, y:-0.2 })
-        this.body.mass = 10
-        break;
-    }
-    return false;
   }
 }

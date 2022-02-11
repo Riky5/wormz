@@ -4,13 +4,11 @@ let world, engine;
 let ground;
 let worm;
 let worm2;
-
 let backgroundImg;
 let wormImg0;
 let wormImg1;
 let bullets;
 let p1;
-
 
 function preload()
 {
@@ -73,6 +71,14 @@ function mouseClicked() {
 }
 
 function keyPressed() {
-  // method is in controller.js
-  moveWorm();
+  let input = keyCode
+
+  if(player1Turn === true) {
+    // method is in controller.js
+    moveWorm(worm, input);
+  } 
+  else {
+    // method is in controller.js
+    moveWorm(worm2, input);
+  }
 };
