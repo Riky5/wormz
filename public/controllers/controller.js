@@ -116,6 +116,7 @@ function timerForTurn() {
     MoveController.resetCount();
   } 
   else if(Controller.timeLeftOnTurn() <= 5) {
+    // Sets the number shown on the timer to red
     fill(220,0,0)
   }
   return Controller.timeLeftOnTurn().toFixed();
