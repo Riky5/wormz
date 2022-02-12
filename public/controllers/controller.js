@@ -31,8 +31,8 @@ class Controller{
   }
 
   static timeLeftOnTurn() {
-    if (frameCount % 75 === 0) {
-      this.timer += 0.5
+    if (frameCount % 60 === 0) {
+      this.timer += (1/3)
     }
     return this.timeLimit - this.timer;
   }
@@ -104,6 +104,9 @@ function timerForTurn() {
     Controller.changeTurn()
     Controller.resetTimer();
     MoveController.resetCount();
+  } 
+  else if(Controller.timeLeftOnTurn() <= 5) {
+    fill(220,0,0)
   }
-  return Controller.timeLeftOnTurn();
+  return Controller.timeLeftOnTurn().toFixed();
 }
