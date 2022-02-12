@@ -1,3 +1,5 @@
+const Matter = require("matter-js")
+
 class ScreenController{
 
   static startScreen(p) {
@@ -6,39 +8,39 @@ class ScreenController{
     p.text("PRESS BACKSPACE FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2 )
   }
 
-  static gameScreen(p, img) {
+  static gameScreen(p, game, img) {
     p.background(img);
-    // Matter.Engine.update(engine);
-    // ground.show(p);
+    Matter.Engine.update(game.engine);
+    game.ground.show(p);
     // worm.show(p);
     // worm2.show(p);
   
     // bullets.forEach(element => element.show());
   }
 
-  static gameOverScreen() {
-    background('blue')
+  static gameOverScreen(p) {
+    p.background('blue')
     text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", windowWidth / 2 - 300, windowHeight / 2)
   }
 
-  static instructionsScreen() {
-    background('red')
-    textSize(30)
-    text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, windowHeight / 2 - 300 / 2)
-    text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, windowHeight / 2)
+  static instructionsScreen(p) {
+    p.background('red')
+    p.textSize(30)
+    p.text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, p.windowHeight / 2 - 300 / 2)
+    p.text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, p.windowHeight / 2)
   }
 
-  static setScreen(p, mode, img) {
-    if(mode === 'start') {
+  static setScreen(p, game, img) {
+    if(game.mode === 'start') {
       ScreenController.startScreen(p);
     }
-    else if(mode === 'game') {
-      ScreenController.gameScreen(p, img);
+    else if(game.mode === 'game') {
+      ScreenController.gameScreen(p, game, img);
     }
-    else if (mode === 'gameOver'){
+    else if (game.mode === 'gameOver'){
       ScreenController.gameOverScreen(p);
     }
-    else if (mode === 'instructions') {
+    else if (game.mode === 'instructions') {
       ScreenController.instructionsScreen(p);
     }
   }

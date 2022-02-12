@@ -1,4 +1,4 @@
-const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
+const Matter = require('matter-js')
 const p5 = require('p5');
 const Game = require('./controllers/game');
 const ScreenController = require('./controllers/screenController')
@@ -10,27 +10,33 @@ class Sketch {
   }
   
   sketchWorld() {
-    const game = new this.gameClass();
+    
     let backgroundImg;
+    let wormImg0;
+    let wormImg1;
+    let gameClass = this.gameClass;
+    let game;
+
+    console.log(Matter)
 
     const sketch = new p5 (function(p) {
 
       p.preload = () =>
       {
         backgroundImg = p.loadImage("images/background-image.png");
-        // this.wormImg0 = p.loadImage("images/worm0.png");
-        // this.wormImg1 = p.loadImage("images/worm1.png");
+        wormImg0 = p.loadImage("images/worm0.png");
+        wormImg1 = p.loadImage("images/worm1.png");
       }
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        // initializeWorld()
+        game = new gameClass(p, [wormImg0, wormImg1]);
         // Matter.Events.on(engine, "collisionStart", (event) => collision(event))
         p.textSize(40);
       }
 
       p.draw = () => {
-        ScreenController.setScreen(p, game.mode, backgroundImg);
+        ScreenController.setScreen(p, game, backgroundImg);
       }
 
       p.mouseClicked = () => {
@@ -43,7 +49,6 @@ class Sketch {
       p.keyPressed = () => {
         if(p.keyCode ===p.ENTER) {
           game.mode = 'game';
-          console.log(game.mode);
         } 
       }
     }, "sketch")
