@@ -25,10 +25,12 @@ class ScreenController{
   }
 
   static instructionsScreen() {
-    background('#ccf2ff')
+    background('#f9ebf9')
     textSize(32)
-    text("Use LEFT ◀️ and RIGHT ▶️ to move\nUse UP 🔼 to jump\nAim and CLICK to shoot target 💥\n",  windowWidth / 2 - 260, windowHeight / 2 - 120, 580, 380)
-    text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 260, windowHeight / 2 + 110, 580, 120 )
+    text("How to play:", windowWidth / 2 - 260, windowHeight / 3 - 160)
+    textLeading(48)
+    text("Use LEFT ◀️ and RIGHT ▶️ to move worm.\nUse UP 🔼 to jump.\nAim and CLICK to shoot target 💥.\n",  windowWidth / 2 - 260, windowHeight / 2 - 200, 580, 380)
+    text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 260, windowHeight / 2 + 80, 580, 120 )
   }
 }
 
