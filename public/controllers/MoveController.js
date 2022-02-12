@@ -35,4 +35,7 @@ class MoveController {
   static increaseCount = () => {
     this.moveCount += 1;
   };
+  static resetCount = () => {
+    this.moveCount = 0;
+  }
 };

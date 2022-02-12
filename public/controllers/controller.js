@@ -22,29 +22,24 @@ class Controller{
     Matter.Body.setVelocity(this.bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
     
     Controller.player1Turn = !Controller.player1Turn;
-    MoveController.moveCount = 0;
+    MoveController.resetCount();
     this.resetTimer();
   }
+
   static changeTurn() {
     Controller.player1Turn = !Controller.player1Turn;
   }
+
   static timeLeftOnTurn() {
     if (frameCount % 75 === 0) {
       this.timer += 0.5
     }
     return this.timeLimit - this.timer;
   }
+
   static resetTimer() {
     this.timer = 0
   }
-  // static timerForTurn() {
-  //   if (timeLeftOnTurn() <= 0) {
-  //     changeTurn()
-  //     resetTimer();
-  //     MoveController.moveCount = 0;
-  //   }
-  //   return timeLeftOnTurn();
-  // }
 }
 
 document.addEventListener("mousemove", function(e) {
@@ -108,7 +103,7 @@ function timerForTurn() {
   if (Controller.timeLeftOnTurn() <= 0) {
     Controller.changeTurn()
     Controller.resetTimer();
-    MoveController.moveCount = 0;
+    MoveController.resetCount();
   }
   return Controller.timeLeftOnTurn();
 }
