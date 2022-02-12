@@ -1,7 +1,10 @@
 
 class MoveController {
+  static moveLimit = 5;
+  static moveCount = 0;
+
   static moveWorm = (activeWorm, input) => {
-    if (Controller.moveCount >= Controller.moveLimit) {
+    if (this.moveCount >= this.moveLimit) {
       return;
     }
 
@@ -20,6 +23,6 @@ class MoveController {
   }
 
   static increaseCount = () => {
-    Controller.moveCount += 1;
+    this.moveCount += 1;
   }
 }

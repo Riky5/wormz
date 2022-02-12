@@ -1,6 +1,6 @@
 class Controller{
-  static moveLimit = 5;
-  static moveCount = 0;
+  // static moveLimit = 5;
+  // static moveCount = 0;
   static player1Turn = true
   constructor(){
     this.bullet;
@@ -22,7 +22,7 @@ class Controller{
     Matter.Body.setVelocity(this.bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
     
     Controller.player1Turn = !Controller.player1Turn;
-    Controller.moveCount = 0;
+    MoveController.moveCount = 0;
   }
 }
 
@@ -35,8 +35,8 @@ document.addEventListener("mousemove", function(e) {
 let wormPos = { x: 0, y: 0};
 
 initializeWorld = () => {
-  moveLimit = 5;
-  moveCount = 0;
+  // moveLimit = 5;
+  // moveCount = 0;
   engine = Engine.create();
   world = engine.world;
   bullets = [];
