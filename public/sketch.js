@@ -44,7 +44,7 @@ class Sketch {
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
-          // Controller.fireBullet(); 
+          Controller.fireBullet(p, game); 
         }
       }
 
@@ -57,10 +57,10 @@ class Sketch {
             // method is in controller.js
             MoveController.moveWorm(game.worm, input, p);
           } 
-          // else {
-          //   // method is in controller.js
-          //   MoveController.moveWorm(game.worm2, input, p);
-          // }
+          else {
+            // method is in controller.js
+            MoveController.moveWorm(game.worm2, input, p);
+          }
         }
       }
     }, "sketch")

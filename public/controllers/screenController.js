@@ -15,7 +15,7 @@ class ScreenController{
     game.worm.show(p);
     game.worm2.show(p);
   
-    game.bullets.forEach(element => element.show());
+    game.bullets.forEach(element => element.show(p));
   }
 
   static gameOverScreen(p) {

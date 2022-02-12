@@ -14,7 +14,7 @@ class Bullet {
     p.push()
     p.translate(pos.x,pos.y)
     p.fill(255, 0, 0)
-    p.rectMode(CENTER)
+    p.rectMode(p.CENTER)
     p.circle(0,0, this.r);
     p.pop()
   }
