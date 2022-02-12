@@ -1,5 +1,3 @@
-const Matter = require('matter-js');
-const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
 class Worm {
   constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img = wormImg0, matter: matter}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
@@ -13,24 +11,24 @@ class Worm {
     this.matter = matter
   }
 
-  show = () => {
+  show = (p) => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
-    push();
-    translate(pos.x, pos.y);
-    rotate(angle);
-    fill(255);
+    p.push();
+    p.translate(pos.x, pos.y);
+    p.rotate(angle);
+    p.fill(255);
 
     // SQUARE - uncomment here
     // rectMode(CENTER); 
     // rect(0, 0, this.w, this.h)
 
     // WORM IMAGE - uncomment here
-    imageMode(CENTER);
-    image(this.worm, 0, 0, this.w, this.h);
+    p.imageMode(p.CENTER);
+    p.image(this.worm, 0, 0, this.w, this.h);
 
-    pop();
+    p.pop();
 
     // rect(this.x, this.y, this.w, this.h);
     // HP above the element
@@ -42,10 +40,10 @@ class Worm {
       fill(255, 191, 0)
     }
 
-    rect(pos.x, pos.y - 70, 40, 20);
-    fill(0)
-    textSize(15)
-    text(this.hp, pos.x + 10, pos.y - 55);
+    p.rect(pos.x, pos.y - 70, 40, 20);
+    p.fill(0)
+    p.textSize(15)
+    p.text(this.hp, pos.x + 10, pos.y - 55);
   }
 
   move(force, mass) {

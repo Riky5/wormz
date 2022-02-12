@@ -5,14 +5,15 @@ const ScreenController = require('./controllers/screenController')
 
 class Sketch {
 
-  constructor(gameInstance = new Game()) {
-    this.gameInstance = gameInstance;
+  constructor(gameClass = Game) {
+    this.gameClass = gameClass;
   }
   
   sketchWorld() {
+    const game = new this.gameClass();
+    let backgroundImg;
+
     const sketch = new p5 (function(p) {
-      let backgroundImg;
-      let mode = this.gameInstance.mode;
 
       p.preload = () =>
       {
@@ -29,19 +30,20 @@ class Sketch {
       }
 
       p.draw = () => {
-        p.background(backgroundImg);
+        ScreenController.setScreen(p, game.mode, backgroundImg);
       }
 
       p.mouseClicked = () => {
         
-        if(mode === 'game') {
+        if(game.mode === 'game') {
           // Controller.fireBullet(); 
         }
       }
 
       p.keyPressed = () => {
-        if(keyCode ===ENTER) {
-          mode = 'game';
+        if(p.keyCode ===p.ENTER) {
+          game.mode = 'game';
+          console.log(game.mode);
         } 
       }
     }, "sketch")

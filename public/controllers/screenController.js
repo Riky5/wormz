@@ -6,8 +6,8 @@ class ScreenController{
     p.text("PRESS BACKSPACE FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2 )
   }
 
-  static gameScreen(p) {
-    p.background(p.backgroundImg);
+  static gameScreen(p, img) {
+    p.background(img);
     // Matter.Engine.update(engine);
     // ground.show(p);
     // worm.show(p);
@@ -28,27 +28,12 @@ class ScreenController{
     text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, windowHeight / 2)
   }
 
-  static setScreen(p, mode) {
+  static setScreen(p, mode, img) {
     if(mode === 'start') {
       ScreenController.startScreen(p);
     }
     else if(mode === 'game') {
-      ScreenController.gameScreen(p);
-    }
-    else if (mode === 'gameOver'){
-      ScreenController.gameOverScreen(p);
-    }
-    else if (mode === 'instructions') {
-      ScreenController.instructionsScreen(p);
-    }
-  }
-
-  static setScreen(p) {
-    if(mode === 'start') {
-      ScreenController.startScreen(p);
-    }
-    else if(mode === 'game') {
-      ScreenController.gameScreen(p);
+      ScreenController.gameScreen(p, img);
     }
     else if (mode === 'gameOver'){
       ScreenController.gameOverScreen(p);

@@ -9,7 +9,6 @@ class Game {
     this.moveLimit = 5;
     this.moveCount = 0;
     this.engine = Matter.Engine.create();
-    console.log(this.engine)
     // this.world = this.engine.world;
     this.bullets = [];
     // this.ground = new Ground(width/2, height-20, width, 180)
