@@ -1,6 +1,7 @@
 class Controller{
   static player1Turn = true;
   static timeLimit = 8;
+  static timer = 0;
   constructor(){
     this.bullet;
   }
@@ -22,11 +23,28 @@ class Controller{
     
     Controller.player1Turn = !Controller.player1Turn;
     MoveController.moveCount = 0;
-    timer = 0;
+    this.resetTimer();
   }
   static changeTurn() {
     Controller.player1Turn = !Controller.player1Turn;
   }
+  static timeLeftOnTurn() {
+    if (frameCount % 75 === 0) {
+      this.timer += 0.5
+    }
+    return this.timeLimit - this.timer;
+  }
+  static resetTimer() {
+    this.timer = 0
+  }
+  // static timerForTurn() {
+  //   if (timeLeftOnTurn() <= 0) {
+  //     changeTurn()
+  //     resetTimer();
+  //     MoveController.moveCount = 0;
+  //   }
+  //   return timeLeftOnTurn();
+  // }
 }
 
 document.addEventListener("mousemove", function(e) {
@@ -86,19 +104,11 @@ function isWormDead() {
   return (worm.hp === 0 || worm2.hp === 0);
 }
 
-let timer = 0;
-function timeLeftOnTurn() {
-  if (frameCount % 75 === 0) {
-    timer += 0.5
-  }
-  return Controller.timeLimit - timer;
-}
-
 function timerForTurn() {
-  if (timeLeftOnTurn() <= 0) {
+  if (Controller.timeLeftOnTurn() <= 0) {
     Controller.changeTurn()
-    timer = 0;
+    Controller.resetTimer();
     MoveController.moveCount = 0;
   }
-  return timeLeftOnTurn();
+  return Controller.timeLeftOnTurn();
 }
