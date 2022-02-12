@@ -1,6 +1,4 @@
 class Controller{
-  // static moveLimit = 5;
-  // static moveCount = 0;
   static player1Turn = true
   constructor(){
     this.bullet;

@@ -44,7 +44,6 @@ class Worm {
     fill(0)
     textSize(15)
     text(this.hp, pos.x + 10, pos.y - 55);
-    // text(`Moves Left: ${MoveController.moveLimit - MoveController.moveCount}`, pos.x + 10, pos.y -100)
   }
 
   move(force, mass) {
