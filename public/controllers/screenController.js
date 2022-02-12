@@ -48,7 +48,6 @@ class ScreenController{
   static screenControllerKeyPressed(p, game) {
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
-        console.log("hello")
         game.mode = 'game';
       } 
       else if(keyCode === p.BACKSPACE) {
