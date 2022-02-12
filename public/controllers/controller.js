@@ -1,5 +1,6 @@
 class Controller{
-  static player1Turn = true
+  static player1Turn = true;
+  static timeLimit = 8;
   constructor(){
     this.bullet;
   }
@@ -79,4 +80,26 @@ collision = (event) => {
 
 function isWormDead() {
   return (worm.hp === 0 || worm2.hp === 0);
+}
+
+let timer = 0;
+function timeLeftOnTurn() {
+  if (frameCount % 75 === 0) {
+    timer += 0.5
+  }
+  return Controller.timeLimit - timer;
+}
+function changeTurn() {
+  Controller.player1Turn = !player1Turn;
+}
+
+function timerForTurn() {
+  if (timeLeftOnTurn() <= 0) {
+    Controller.player1Turn = !Controller.player1Turn;
+    timer = 0
+    return timeLeftOnTurn();
+  }
+  else{
+    return timeLeftOnTurn();
+  }
 }
