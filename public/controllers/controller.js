@@ -24,6 +24,9 @@ class Controller{
     MoveController.moveCount = 0;
     timer = 0;
   }
+  static changeTurn() {
+    Controller.player1Turn = !Controller.player1Turn;
+  }
 }
 
 document.addEventListener("mousemove", function(e) {
@@ -90,18 +93,12 @@ function timeLeftOnTurn() {
   }
   return Controller.timeLimit - timer;
 }
-function changeTurn() {
-  Controller.player1Turn = !player1Turn;
-}
 
 function timerForTurn() {
   if (timeLeftOnTurn() <= 0) {
-    Controller.player1Turn = !Controller.player1Turn;
+    Controller.changeTurn()
     timer = 0;
     MoveController.moveCount = 0;
-    return timeLeftOnTurn();
   }
-  else{
-    return timeLeftOnTurn();
-  }
+  return timeLeftOnTurn();
 }

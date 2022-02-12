@@ -19,7 +19,6 @@ class ScreenController{
     textSize(20);
     text(`Moves Left: ${MoveController.moveLimit - MoveController.moveCount}`, windowWidth /2 + 200, windowHeight / 2 - 300);
     text("Time Left: ", windowWidth /2 + 200, windowHeight / 2 - 280);
-    // let timeLeft = 30 - int(millis() / 1000)
     text(timerForTurn(), windowWidth /2 + 200, windowHeight / 2 - 250);
   };
 
