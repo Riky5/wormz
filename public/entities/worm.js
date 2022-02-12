@@ -1,5 +1,5 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img = wormImg0, matter: matter}) {
+  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
@@ -21,8 +21,8 @@ class Worm {
     p.fill(255);
 
     // SQUARE - uncomment here
-    // rectMode(CENTER); 
-    // rect(0, 0, this.w, this.h)
+    // p.rectMode(CENTER); 
+    // p.rect(0, 0, this.w, this.h)
 
     // WORM IMAGE - uncomment here
     p.imageMode(p.CENTER);
@@ -30,7 +30,7 @@ class Worm {
 
     p.pop();
 
-    // rect(this.x, this.y, this.w, this.h);
+    // p.rect(this.x, this.y, this.w, this.h);
     // HP above the element
     if (this.hp > 70) {
       p.fill(0, 255, 0)

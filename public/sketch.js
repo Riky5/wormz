@@ -4,6 +4,8 @@ const Game = require('./controllers/game');
 const ScreenController = require('./controllers/screenController')
 const MoveController = require('./controllers/MoveController')
 const Controller = require('./controllers/controller')
+const Worm = require('./entities/worm');
+const Ground = require('./entities/ground');
 
 class Sketch {
   
@@ -31,7 +33,7 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass(p, [wormImg0, wormImg1]);
+        game = new gameClass(p, [wormImg0, wormImg1], Matter, Ground, Worm);
         Matter.Events.on(game.engine, "collisionStart", (event) => Controller.collision(event, game))
         p.textSize(40);
       }

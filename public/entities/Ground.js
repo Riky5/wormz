@@ -1,8 +1,8 @@
 const Matter = require('matter-js');
 class Ground {
-  constructor(x,y,w,h,world) {
-    this.body = Matter.Bodies.rectangle(x,y,w,h,{label: "ground"});
-    Matter.World.add(world, this.body)
+  constructor({x: x,y: y, w: w,h: h, world: world, matter: matter}) {
+    this.body = matter.Bodies.rectangle(x,y,w,h,{label: "ground"});
+    matter.World.add(world, this.body)
     this.w = w;
     this.h = h;
     this.body.isStatic = true;

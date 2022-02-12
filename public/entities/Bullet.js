@@ -1,4 +1,4 @@
-const Matter = require('matter-js');s
+const Matter = require('matter-js');
 class Bullet {
   constructor({x: x, y: y, r: r, game: game}) {
     this.body = Matter.Bodies.circle(x,y,r,{label:"bullet"});
