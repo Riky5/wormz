@@ -25,12 +25,10 @@ class ScreenController{
   }
 
   static instructionsScreen() {
-    background('#00ace6')
+    background('#ccf2ff')
     textSize(32)
-    text("Use LEFT and RIGHT to move", windowWidth / 2 - 195, windowHeight / 2 - 80)
-    text("Use UP to jump", windowWidth / 2 - 195, windowHeight / 2 - 40)
-    text("CLICK to shoot", windowWidth / 2 - 195, windowHeight / 2)
-    text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 300, windowHeight / 2 + 110 )
+    text("Use LEFT ◀️ and RIGHT ▶️ to move\nUse UP 🔼 to jump\nAim and CLICK to shoot target 💥\n",  windowWidth / 2 - 260, windowHeight / 2 - 120, 580, 380)
+    text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 260, windowHeight / 2 + 110, 580, 120 )
   }
 }
 
