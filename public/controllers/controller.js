@@ -22,6 +22,7 @@ class Controller{
     
     Controller.player1Turn = !Controller.player1Turn;
     MoveController.moveCount = 0;
+    timer = 0;
   }
 }
 
@@ -96,7 +97,8 @@ function changeTurn() {
 function timerForTurn() {
   if (timeLeftOnTurn() <= 0) {
     Controller.player1Turn = !Controller.player1Turn;
-    timer = 0
+    timer = 0;
+    MoveController.moveCount = 0;
     return timeLeftOnTurn();
   }
   else{
