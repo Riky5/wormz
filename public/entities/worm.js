@@ -1,14 +1,14 @@
-class Worm {
+const HP = 100
 
-  constructor(x, y, options, img = wormImg0, w = 70, h = 70) {
-    this.body = Matter.Bodies.rectangle(x, y, w, h, {label: options});
-    Matter.World.add(world, this.body);
+class Worm {
+  constructor(x, y, options, img = wormImg0, matter, w = 70, h = 70) {
+    this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
     this.x = x;
     this.y = y;
     this.worm = img;
-    this.hp = 100;
+    this.hp = HP;
   }
 
   show = () => {
@@ -57,3 +57,5 @@ class Worm {
     }
   }
 }
+
+module.exports = Worm;

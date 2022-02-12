@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Web Wormz game",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "test": "jest",
     "start": "node server",

@@ -9,7 +9,7 @@ class Controller{
   static fireBullet(){
     if(Controller.player1Turn === true) {
       wormPos = {x: worm.body.position.x, y: worm.body.position.y }
-      angleDeg = Math.atan2(mousePos.y - mousePos.y, wormPos.x - mousePos.x);
+      angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
       this.bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 15)
     }
     else {
@@ -41,8 +41,9 @@ initializeWorld = () => {
   world = engine.world;
   bullets = [];
   ground = new Ground(width/2, height-20, width, 180)
-  worm = new Worm((windowWidth/10)*2, windowHeight - 100, "wormOne");
-  worm2 = new Worm((windowWidth/10)*8, windowHeight - 100, "wormTwo", wormImg1);
+  worm = new Worm((windowWidth/10)*2, windowHeight - 100, "wormOne", Matter);
+  worm2 = new Worm((windowWidth/10)*8, windowHeight - 100, "wormTwo", wormImg1, Matter);
+  Matter.World.add(world, [worm.body,worm2.body]);
   player1Turn = true
 }
 
