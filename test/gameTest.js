@@ -4,7 +4,7 @@ const Matter = require('matter-js');
 const expect = require('chai').expect;
 const Game = require('../public/controllers/game');
 const Worm = require('../public/entities/worm')
-const Ground = require('../public/entities/ground')
+const Ground = require('../public/entities/Ground')
 
 describe('Game', () => {
   let game;
