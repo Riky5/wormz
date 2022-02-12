@@ -13,14 +13,12 @@ class Sketch {
   }
   
   sketchWorld() {
-    console.log(MoveController)
+    // These variables need to stay here due to strange scope of this function
     let backgroundImg;
     let wormImg0;
     let wormImg1;
     let gameClass = this.gameClass;
     let game;
-
-    console.log(Matter)
 
     const sketch = new p5 (function(p) {
 
@@ -49,8 +47,8 @@ class Sketch {
       }
 
       p.keyPressed = () => {
-        if(p.keyCode ===p.ENTER) {
-          game.mode = 'game';
+        if (game.mode != 'game') {
+          ScreenController.screenControllerKeyPressed(p, game)
         }  else {
           let input = p.keyCode
           if(Controller.player1Turn === true) {
@@ -67,75 +65,4 @@ class Sketch {
   } 
 }
 
-
-
-// class Sketch {
-//   static sketchWorld() {
-//     console.log("running....")
-//     const sketch = new p5 (function(p) {    
-//       console.log("running")
-//       p.preload = () =>
-//       {
-//         console.log("preload")
-//       }
-//    })
-//   }
-// }
-
 module.exports = Sketch;
-
-
-
-// p.preload = () =>
-//       {
-//         backgroundImg = p.loadImage("images/background-image.png");
-//         wormImg0 = p.loadImage("images/worm0.png");
-//         wormImg1 = p.loadImage("images/worm1.png");
-//       }
-
-//       p.setup = () => {
-//         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-//       }
-
-
-
-// setup = () => {
-//   createCanvas(windowWidth, windowHeight - 50);
-  // initializeWorld();
-  // Matter.Events.on(engine, "collisionStart", (event) => collision(event))
-  // textSize(40);
-  // mode = 'start';
-// }
-
-// draw = () => {
-//   // method is in screenController.js
-//   setScreen();
-// }
-
-// mouseClicked = () => {
-//   // method is in controller.js
-//   if(mode === 'game') {
-//     Controller.fireBullet(); 
-//   }
-// }
-
-// keyPressed = () => {
-//   if (mode != 'game') {
-//     // method is in screenController.js
-//     screenControllerKeyPressed()
-//   }
-//   else {
-
-//     let input = keyCode
-
-//     if(Controller.player1Turn === true) {
-//       // method is in controller.js
-//       MoveController.moveWorm(worm, input);
-//     } 
-//     else {
-//       // method is in controller.js
-//       MoveController.moveWorm(worm2, input);
-//     }
-//   }
-// };
-

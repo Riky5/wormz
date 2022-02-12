@@ -45,18 +45,18 @@ class ScreenController{
     }
   }
   
-  static screenControllerKeyPressed(p, mode) {
-    if(mode === 'start') {
-      if(keyCode ===ENTER) {
-        mode = 'game';
+  static screenControllerKeyPressed(p, game) {
+    if(game.mode === 'start') {
+      if(p.keyCode === p.ENTER) {
+        console.log("hello")
+        game.mode = 'game';
       } 
-      else if(keyCode === BACKSPACE) {
-        mode = 'instructions';
+      else if(keyCode === p.BACKSPACE) {
+        game.mode = 'instructions';
       }
     }
-    else if(mode === 'gameOver' || mode === 'instructions') {
-      if(keyCode === ENTER) {
-        console.log("new")
+    else if(game.mode === 'gameOver' || game.mode === 'instructions') {
+      if(p.keyCode === p.ENTER) {
         p.setup();
       }
     }
