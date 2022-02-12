@@ -17,20 +17,20 @@ class ScreenController{
     bullets.forEach(element => element.show());
     text(`Moves Left: ${MoveController.moveLimit - MoveController.moveCount}`, windowWidth /2 + 200, windowHeight / 2 - 300);
     MoveController.displayWhichPlayerTurn();  
-  }
+  };
 
   static gameOverScreen() {
-    background('blue')
-    text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", windowWidth / 2 - 300, windowHeight / 2)
-  }
+    background('blue');
+    text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", windowWidth / 2 - 300, windowHeight / 2);
+  };
 
   static instructionsScreen() {
-    background('red')
-    textSize(30)
-    text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, windowHeight / 2 - 300 / 2)
-    text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, windowHeight / 2)
-  }
-}
+    background('red');
+    textSize(30);
+    text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, windowHeight / 2 - 300 / 2);
+    text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, windowHeight / 2);
+  };
+};
 
 function setScreen() {
   if(mode === 'start') {
@@ -45,7 +45,7 @@ function setScreen() {
   else if (mode === 'instructions') {
     ScreenController.instructionsScreen();
   }
-}
+};
 
 function screenControllerKeyPressed() {
   if(mode === 'start') {
@@ -61,7 +61,7 @@ function screenControllerKeyPressed() {
       setup();
     }
   }
-}
+};
 function switchToMode(modeChoice) {
   mode = modeChoice
-}
+};

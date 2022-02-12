@@ -33,8 +33,6 @@ document.addEventListener("mousemove", function(e) {
 let wormPos = { x: 0, y: 0};
 
 initializeWorld = () => {
-  // moveLimit = 5;
-  // moveCount = 0;
   engine = Engine.create();
   world = engine.world;
   bullets = [];
