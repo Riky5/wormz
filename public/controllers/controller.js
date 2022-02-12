@@ -41,7 +41,7 @@ initializeWorld = () => {
   world = engine.world;
   bullets = [];
   ground = new Ground(width/2, height-20, width, 180)
-  worm = new Worm((windowWidth/10)*2, windowHeight - 100, "wormOne", Matter);
+  worm = new Worm((windowWidth/10)*2, windowHeight - 100, "wormOne", wormImg0, Matter);
   worm2 = new Worm((windowWidth/10)*8, windowHeight - 100, "wormTwo", wormImg1, Matter);
   Matter.World.add(world, [worm.body,worm2.body]);
   player1Turn = true

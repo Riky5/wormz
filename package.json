@@ -4,7 +4,7 @@
   "description": "Web Wormz game",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "mocha",
     "start": "node server",
     "build": "esbuild index.js --bundle --outfile=public/bundle.js --watch"
   },
@@ -16,10 +16,12 @@
   "license": "ISC",
   "dependencies": {
     "build": "^0.1.4",
+    "chai": "^4.3.6",
     "cors": "^2.8.5",
     "esbuild": "^0.14.21",
     "express": "^4.17.2",
     "matter-js": "^0.18.0",
+    "mocha": "^9.2.0",
     "p5": "^1.4.1",
     "socket.io": "^4.4.1",
     "webpack": "^5.68.0"

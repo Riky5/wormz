@@ -9,6 +9,7 @@ class Worm {
     this.y = y;
     this.worm = img;
     this.hp = HP;
+    this.matter = matter
   }
 
   show = () => {
@@ -47,8 +48,9 @@ class Worm {
   }
 
   move(force, mass) {
-    Matter.Body.applyForce(this.body, this.body.position, force)
+    this.matter.Body.applyForce(this.body, this.body.position, force)
     this.body.mass = mass
+    return this.body.position
   }
 
   reduceHP() {
