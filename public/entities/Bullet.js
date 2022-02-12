@@ -19,7 +19,7 @@ class Bullet {
     p.pop()
   }
 
-  static destroy = (bullet) => {
+  static destroy = (bullet, game) => {
     Matter.World.remove(game.world, bullet);
     game.bullets.pop();
   }

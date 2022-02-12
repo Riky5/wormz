@@ -11,21 +11,21 @@ class Controller{
   }
 
   static fireBullet(p, game){
+    let angleDeg;
     if(Controller.player1Turn === true) {
-      console.log("hello")
       let wormPos = {x: game.worm.body.position.x, y: game.worm.body.position.y }
-      let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
+      angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
       this.bullet = new Bullet(wormPos.x + 50, wormPos.y - 40, 15, game);
-      game.bullets.push(this.bullet);
-      Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
     }
     else {
       let wormPos = {x: game.worm2.body.position.x, y: game.worm2.body.position.y }
-      let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
+      angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
       this.bullet = new Bullet(wormPos.x - 50, wormPos.y - 40, 15, game);
-      game.bullets.push(this.bullet);
-      Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
     }
+
+    game.bullets.push(this.bullet);
+    Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
+
     Controller.player1Turn = !Controller.player1Turn;
     Controller.moveCount = 0;
   }
@@ -34,48 +34,48 @@ class Controller{
     return pair.bodyA.label === label || pair.bodyB.label === label
   }
   
-  static findAndDestroyBullet = (pair) => {
+  static findAndDestroyBullet = (pair, game) => {
     if(pair.bodyA.label === "bullet") {
-      Bullet.destroy(pair.bodyA);
+      Bullet.destroy(pair.bodyA, game);
     } else {
-      Bullet.destroy(pair.bodyB);
+      Bullet.destroy(pair.bodyB, game);
     }
   }
   
-  static findAndDamageWorm = (pair) => {
-    if (isInCollision(pair, "wormTwo")) {
-      worm2.reduceHP();
-      isWormDead();
-    } else if (isInCollision(pair, "wormOne")) {
-      worm.reduceHP();
-      Controller.isWormDead();
+  static findAndDamageWorm = (pair, game) => {
+    if (Controller.isInCollision(pair, "wormTwo")) {
+      game.worm2.reduceHP();
+      Controller.isWormDead(game);
+    } else if (Controller.isInCollision(pair, "wormOne")) {
+      game.worm.reduceHP();
+      Controller.isWormDead(game);
     }
   }
   
-  static collision = (event) => {
+  static collision = (event, game) => {
     for (const pair of event.pairs) {
       if(Controller.isInCollision(pair, "bullet")) {
-        Controller.findAndDestroyBullet(pair);
-        Controller.findAndDamageWorm(pair);
+        Controller.findAndDestroyBullet(pair, game);
+        Controller.findAndDamageWorm(pair, game);
       }
     }
   }
   
-  static isWormDead() {
-    if(worm.hp === 0 || worm2.hp === 0) {
-      mode = 'gameOver';
+  static isWormDead(game) {
+    if(game.worm.hp === 0 || game.worm2.hp === 0) {
+      game.mode = 'gameOver';
     }
   }
 
 }
 
-// document.addEventListener("mousemove", function(e) {
-//   mousePos = { x: e.pageX, y: e.pageY };
-//   angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
-// })
+// // document.addEventListener("mousemove", function(e) {
+// //   mousePos = { x: e.pageX, y: e.pageY };
+// //   angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
+// // })
 
-// setting default for wormPos
-let wormPos = { x: 0, y: 0};
+// // setting default for wormPos
+// let wormPos = { x: 0, y: 0};
 
 
 

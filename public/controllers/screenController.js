@@ -20,7 +20,7 @@ class ScreenController{
 
   static gameOverScreen(p) {
     p.background('blue')
-    text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", p.windowWidth / 2 - 300, p.windowHeight / 2)
+    p.text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", p.windowWidth / 2 - 300, p.windowHeight / 2)
   }
 
   static instructionsScreen(p) {
@@ -56,6 +56,7 @@ class ScreenController{
     }
     else if(mode === 'gameOver' || mode === 'instructions') {
       if(keyCode === ENTER) {
+        console.log("new")
         p.setup();
       }
     }
