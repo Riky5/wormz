@@ -15,7 +15,15 @@ class ScreenController{
     worm2.show();
   
     bullets.forEach(element => element.show());
-    text(`Moves Left: ${MoveController.moveLimit - MoveController.moveCount}`, windowWidth /2 + 200, windowHeight / 2 - 300)
+    text(`Moves Left: ${MoveController.moveLimit - MoveController.moveCount}`, windowWidth /2 + 200, windowHeight / 2 - 300);
+    textSize(30);
+    if(Controller.player1Turn) {
+      text("Player 1", windowWidth /2 + 200, windowHeight / 2 - 320);
+    }
+    else {
+      text("Player 2", windowWidth /2 + 200, windowHeight / 2 - 320);
+    };
+    
   }
 
   static gameOverScreen() {
