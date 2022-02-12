@@ -34,19 +34,6 @@ document.addEventListener("mousemove", function(e) {
 // setting default for wormPos
 let wormPos = { x: 0, y: 0};
 
-initializeWorld = () => {
-  moveLimit = 5;
-  moveCount = 0;
-  engine = Engine.create();
-  world = engine.world;
-  bullets = [];
-  ground = new Ground(width/2, height-20, width, 180)
-  worm = new Worm({x: (windowWidth/10)*2, y: windowHeight - 100, options: "wormOne", img: wormImg0, matter: Matter});
-  worm2 = new Worm({x: (windowWidth/10)*8, y: windowHeight - 100, options: "wormTwo", img: wormImg1, matter: Matter});
-  Matter.World.add(world, [worm.body,worm2.body]);
-  player1Turn = true
-}
-
 isInCollision = (pair, label) => {
   return pair.bodyA.label === label || pair.bodyB.label === label
 }

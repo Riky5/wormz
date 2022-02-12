@@ -6,15 +6,14 @@ class ScreenController{
     p.text("PRESS BACKSPACE FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2 )
   }
 
-  static gameScreen() {
-    background(backgroundImg);
-    Matter.Engine.update(engine);
-    ground.show();
+  static gameScreen(p) {
+    p.background(p.backgroundImg);
+    // Matter.Engine.update(engine);
+    // ground.show(p);
+    // worm.show(p);
+    // worm2.show(p);
   
-    worm.show();
-    worm2.show();
-  
-    bullets.forEach(element => element.show());
+    // bullets.forEach(element => element.show());
   }
 
   static gameOverScreen() {

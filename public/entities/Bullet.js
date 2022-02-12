@@ -1,3 +1,5 @@
+const Matter = require('matter-js');
+const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
 class Bullet {
   constructor(x,y,r) {
     this.body = Matter.Bodies.circle(x,y,r,{label:"bullet"})
