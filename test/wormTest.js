@@ -5,7 +5,10 @@ const Matter = require('matter-js');
 const expect = require('chai').expect;
 
 describe('Worm', () => {
-  const worm = new Worm(0,0,"wormOne",'testIMG', Matter, 90,90);
+  let worm;
+  beforeEach(() => {
+    worm = new Worm(0,0,"wormOne",'testIMG', Matter, 90,90);
+  })
 
   it('initialized with correct parameters', function(done) {
     expect(worm.x).to.eq(0);
@@ -22,6 +25,8 @@ describe('Worm', () => {
     expect(worm.hp).to.eq(100);
     worm.reduceHP();
     expect(worm.hp).to.eq(95);
+    worm.reduceHP();
+    expect(worm.hp).to.eq(90);
     done();
   });
 
@@ -39,17 +44,11 @@ describe('Worm', () => {
       expect(worm.body.force.y).to.eq(0.1)
       done();
     });
-    
+
     it('applies mass to worm', function(done) {
       worm.move({ x: 0, y: 0.1 }, 10)
       expect(worm.body.mass).to.eq(10)
       done();
     });
   });
-
-
-
 });
-
-
-
