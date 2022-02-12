@@ -29,7 +29,7 @@ describe('Game', () => {
 
   beforeEach(() => {
     // struggled to find a way to mock constructor for ground and worm
-    game = new Game(p5Mock, wormImgMock, matterMock, Ground, Worm);
+    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, ground: Ground, worm: Worm});
   })
 
   it('initialized with correct parameters', function(done) {
