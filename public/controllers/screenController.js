@@ -3,9 +3,10 @@ class ScreenController{
   static startScreen() {
     background(wormsLogoImg);
     textSize(28);
-    fill("#000000")
-    text("Press ENTER to start game", windowWidth / 2 - 174, windowHeight / 2 + 110)
-    text("Press BACKSPACE for instructions", windowWidth / 2 - 220, windowHeight / 2 + 160)
+    fill("#000000");
+    text(CENTER);
+    text("Press ENTER to start game", windowWidth / 2 - 174, windowHeight / 2 + 110);
+    text("Press BACKSPACE for instructions", windowWidth / 2 - 220, windowHeight / 2 + 160);
   }
 
   static gameScreen() {
@@ -30,10 +31,13 @@ class ScreenController{
   static instructionsScreen() {
     background('#f9ebf9')
     textSize(32)
-    text("How to play:", windowWidth / 2 - 260, windowHeight / 3 - 160)
-    textLeading(48)
-    text("Use LEFT ◀️ and RIGHT ▶️ to move worm.\nUse UP 🔼 to jump.\nAim and CLICK to shoot target 💥.\n",  windowWidth / 2 - 260, windowHeight / 2 - 200, 580, 380)
-    text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 260, windowHeight / 2 + 80, 580, 120 )
+    text("How to play:", windowWidth / 2 - 90, windowHeight / 3 - 140)
+    // textLeading(48)
+    text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", windowWidth / 2 - 310, windowHeight / 2 - 180);
+    text("Use UP 🔼 to jump.", windowWidth / 2 - 310, windowHeight / 2 - 110)
+    text("Aim and CLICK to shoot target 💥.",  windowWidth / 2 - 310, windowHeight / 2 - 40)
+    textSize(29)
+    text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 307, windowHeight / 2 + 50)
   }
 }
 
