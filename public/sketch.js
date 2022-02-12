@@ -1,5 +1,6 @@
 const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
 const p5 = require('p5');
+const ScreenController = require('./controllers/screenController')
 
 class Sketch {
   static sketchWorld() {
@@ -34,6 +35,18 @@ class Sketch {
 
       p.draw = () => {
         p.background('red')
+        ScreenController.setScreen(p, mode);
+      }
+
+      p.mouseClicked = () => {
+      // method is in controller.js
+        if(mode === 'game') {
+          // Controller.fireBullet(); 
+        }
+      }
+
+      p.keyPressed = () => {
+        console.log("key pressed")
       }
     }, "sketch")
   } 

@@ -1,9 +1,9 @@
 class ScreenController{
 
-  static startScreen() {
-    background('red')
-    text("PRESS ENTER TO START GAME", windowWidth / 2 - 300, windowHeight / 2 - 200)
-    text("PRESS BACKSPACE FOR INSTRUCTIONS", windowWidth / 2 - 300, windowHeight / 2 )
+  static startScreen(p) {
+    p.background('red')
+    p.text("PRESS ENTER TO START GAME", p.windowWidth / 2 - 300, p.windowHeight / 2 - 200)
+    p.text("PRESS BACKSPACE FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2 )
   }
 
   static gameScreen() {
@@ -28,20 +28,37 @@ class ScreenController{
     text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, windowHeight / 2 - 300 / 2)
     text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, windowHeight / 2)
   }
+
+  static setScreen(p, mode) {
+    if(mode === 'start') {
+      ScreenController.startScreen(p);
+    }
+    else if(mode === 'game') {
+      ScreenController.gameScreen(p);
+    }
+    else if (mode === 'gameOver'){
+      ScreenController.gameOverScreen(p);
+    }
+    else if (mode === 'instructions') {
+      ScreenController.instructionsScreen(p);
+    }
+  }
 }
 
-function setScreen() {
+module.exports = ScreenController;
+
+function setScreen(p) {
   if(mode === 'start') {
-    ScreenController.startScreen();
+    ScreenController.startScreen(p);
   }
   else if(mode === 'game') {
-    ScreenController.gameScreen();
+    ScreenController.gameScreen(p);
   }
   else if (mode === 'gameOver'){
-    ScreenController.gameOverScreen();
+    ScreenController.gameOverScreen(p);
   }
   else if (mode === 'instructions') {
-    ScreenController.instructionsScreen();
+    ScreenController.instructionsScreen(p);
   }
 }
 
