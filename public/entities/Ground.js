@@ -1,5 +1,4 @@
 const Matter = require('matter-js');
-const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
 class Ground {
   constructor(x,y,w,h,world) {
     this.body = Matter.Bodies.rectangle(x,y,w,h,{label: "ground"});

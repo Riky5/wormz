@@ -15,12 +15,12 @@ class Controller{
     if(Controller.player1Turn === true) {
       let wormPos = {x: game.worm.body.position.x, y: game.worm.body.position.y }
       angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-      this.bullet = new Bullet(wormPos.x + 50, wormPos.y - 40, 15, game);
+      this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game});
     }
     else {
       let wormPos = {x: game.worm2.body.position.x, y: game.worm2.body.position.y }
       angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-      this.bullet = new Bullet(wormPos.x - 50, wormPos.y - 40, 15, game);
+      this.bullet = new Bullet({x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game: game});
     }
 
     game.bullets.push(this.bullet);
@@ -66,17 +66,7 @@ class Controller{
       game.mode = 'gameOver';
     }
   }
-
 }
-
-// // document.addEventListener("mousemove", function(e) {
-// //   mousePos = { x: e.pageX, y: e.pageY };
-// //   angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
-// // })
-
-// // setting default for wormPos
-// let wormPos = { x: 0, y: 0};
-
 
 
 module.exports = Controller;
