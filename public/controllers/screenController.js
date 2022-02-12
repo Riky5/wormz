@@ -20,8 +20,11 @@ class ScreenController{
   }
 
   static gameOverScreen() {
-    background('#4dd2ff')
-    text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", windowWidth / 2 - 300, windowHeight / 2)
+    background('#f9ebf9')
+    textSize(42)
+    text("GAME OVER", windowWidth / 2 - 140, windowHeight / 2 - 60)
+    textSize(30)
+    text("Press ENTER to go back to main page", windowWidth / 2 - 260, windowHeight / 2 + 10)
   }
 
   static instructionsScreen() {

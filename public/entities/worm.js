@@ -8,7 +8,7 @@ class Worm {
     this.x = x;
     this.y = y;
     this.worm = img;
-    this.hp = 100;
+    this.hp = 10;
   }
 
   show = () => {
