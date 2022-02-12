@@ -18,8 +18,8 @@ class ScreenController{
     MoveController.displayWhichPlayerTurn(); 
     textSize(20);
     text(`Moves Left: ${MoveController.moveLimit - MoveController.moveCount}`, windowWidth /2 + 200, windowHeight / 2 - 300);
-    text("Time Left: ", windowWidth /2 + 200, windowHeight / 2 - 280);
-    text(timerForTurn(), windowWidth /2 + 200, windowHeight / 2 - 250);
+    image(clockTimer, windowWidth /2 + 190, windowHeight / 2 - 280, 50,50)
+    text(timerForTurn(), windowWidth /2 + 250, windowHeight / 2 - 250);
   };
 
   static gameOverScreen() {

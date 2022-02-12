@@ -18,6 +18,7 @@ preload = () =>
   backgroundImg = loadImage("images/background-image.png");
   wormImg0 = loadImage("images/worm0.png");
   wormImg1 = loadImage("images/worm1.png");
+  clockTimer = loadImage("images/clock_timer.png")
 }
 
 setup = () => {

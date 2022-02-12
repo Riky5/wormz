@@ -1,6 +1,6 @@
 class Controller{
   static player1Turn = true;
-  static timeLimit = 8;
+  static timeLimit = 20;
   static timer = 0;
   constructor(){
     this.bullet;
