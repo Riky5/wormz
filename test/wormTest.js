@@ -7,7 +7,7 @@ const expect = require('chai').expect;
 describe('Worm', () => {
   let worm;
   beforeEach(() => {
-    worm = new Worm(0,0,"wormOne",'testIMG', Matter, 90,90);
+    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter});
   })
 
   it('initialized with correct parameters', function(done) {

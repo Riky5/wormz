@@ -1,7 +1,7 @@
 const HP = 100
 
 class Worm {
-  constructor(x, y, options, img = wormImg0, matter, w = 70, h = 70) {
+  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img = wormImg0, matter: matter}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
