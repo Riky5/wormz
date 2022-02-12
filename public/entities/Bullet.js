@@ -1,9 +1,9 @@
 const Matter = require('matter-js');
 const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
 class Bullet {
-  constructor(x,y,r) {
+  constructor(x,y,r,game) {
     this.body = Matter.Bodies.circle(x,y,r,{label:"bullet"})
-    Matter.World.add(world, this.body)
+    Matter.World.add(game.world, this.body)
     this.r = r
   }
   
@@ -20,8 +20,8 @@ class Bullet {
   }
 
   static destroy = (bullet) => {
-    Matter.World.remove(world, bullet);
-    bullets.pop(); //will need to change
+    Matter.World.remove(game.world, bullet);
+    game.bullets.pop();
   }
 
 }

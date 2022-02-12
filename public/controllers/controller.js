@@ -6,15 +6,15 @@ class Controller{
     this.bullet;
   }
 
-  static fireBullet(){
+  static fireBullet(p){
     if(Controller.player1Turn === true) {
       wormPos = {x: worm.body.position.x, y: worm.body.position.y }
-      angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
+      angleDeg = Math.atan2(wormPos.y - p.mousePos.y, wormPos.x - p.mousePos.x);
       this.bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 15)
     }
     else {
       wormPos = {x: worm2.body.position.x, y: worm2.body.position.y }
-      angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
+      angleDeg = Math.atan2(wormPos.y - p.mousePos.y, wormPos.x - p.mousePos.x);
       this.bullet = new Bullet(worm2.body.position.x - 50, worm2.body.position.y - 40, 15)
     }
     
@@ -24,6 +24,7 @@ class Controller{
     Controller.player1Turn = !Controller.player1Turn;
     Controller.moveCount = 0;
   }
+
 }
 
 document.addEventListener("mousemove", function(e) {
@@ -70,6 +71,8 @@ function isWormDead() {
     mode = 'gameOver';
   }
 }
+
+module.exports = Controller;
 
 
 

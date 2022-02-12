@@ -33,11 +33,11 @@ class Worm {
     // rect(this.x, this.y, this.w, this.h);
     // HP above the element
     if (this.hp > 70) {
-      fill(0, 255, 0)
+      p.fill(0, 255, 0)
     } else if (this.hp <= 30) {
-      fill(255, 0, 0)
+      p.fill(255, 0, 0)
     } else if (this.hp <= 70) {
-      fill(255, 191, 0)
+      p.fill(255, 191, 0)
     }
 
     p.rect(pos.x, pos.y - 70, 40, 20);

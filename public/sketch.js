@@ -2,15 +2,18 @@ const Matter = require('matter-js')
 const p5 = require('p5');
 const Game = require('./controllers/game');
 const ScreenController = require('./controllers/screenController')
+const MoveController = require('./controllers/MoveController')
+const Controller = require('./controllers/controller')
 
 class Sketch {
+  
 
   constructor(gameClass = Game) {
     this.gameClass = gameClass;
   }
   
   sketchWorld() {
-    
+    console.log(MoveController)
     let backgroundImg;
     let wormImg0;
     let wormImg1;
@@ -40,7 +43,6 @@ class Sketch {
       }
 
       p.mouseClicked = () => {
-        
         if(game.mode === 'game') {
           // Controller.fireBullet(); 
         }
@@ -49,7 +51,17 @@ class Sketch {
       p.keyPressed = () => {
         if(p.keyCode ===p.ENTER) {
           game.mode = 'game';
-        } 
+        }  else {
+          let input = p.keyCode
+          if(Controller.player1Turn === true) {
+            // method is in controller.js
+            MoveController.moveWorm(game.worm, input, p);
+          } 
+          // else {
+          //   // method is in controller.js
+          //   MoveController.moveWorm(game.worm2, input, p);
+          // }
+        }
       }
     }, "sketch")
   } 

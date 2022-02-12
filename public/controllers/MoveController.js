@@ -1,19 +1,19 @@
-
+const Controller = require("./controller")
 class MoveController {
-  static moveWorm = (activeWorm, input) => {
+  static moveWorm = (activeWorm, input, p) => {
     if (Controller.moveCount >= Controller.moveLimit) {
       return;
     }
 
-    if (input === LEFT_ARROW) {
+    if (input === p.LEFT_ARROW) {
       activeWorm.move({ x: -0.1, y:0 }, 10)
       MoveController.increaseCount();
 
-    } else if (input === RIGHT_ARROW) {
+    } else if (input === p.RIGHT_ARROW) {
       activeWorm.move({ x: 0.1, y:0 }, 10)
       MoveController.increaseCount();
 
-    } else if (input === UP_ARROW) {
+    } else if (input === p.UP_ARROW) {
       activeWorm.move({ x: 0, y:-0.2 }, 10)
       MoveController.increaseCount();
     }
@@ -23,3 +23,5 @@ class MoveController {
     Controller.moveCount += 1;
   }
 }
+
+module.exports = MoveController;

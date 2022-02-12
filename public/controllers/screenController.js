@@ -12,15 +12,15 @@ class ScreenController{
     p.background(img);
     Matter.Engine.update(game.engine);
     game.ground.show(p);
-    // worm.show(p);
-    // worm2.show(p);
+    game.worm.show(p);
+    game.worm2.show(p);
   
-    // bullets.forEach(element => element.show());
+    game.bullets.forEach(element => element.show());
   }
 
   static gameOverScreen(p) {
     p.background('blue')
-    text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", windowWidth / 2 - 300, windowHeight / 2)
+    text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", p.windowWidth / 2 - 300, p.windowHeight / 2)
   }
 
   static instructionsScreen(p) {
