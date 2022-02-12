@@ -4,6 +4,7 @@ let world, engine;
 let ground;
 let worm;
 let worm2;
+let wormsLogoImg;
 let backgroundImg;
 let wormImg0;
 let wormImg1;
@@ -15,6 +16,7 @@ let moveCount;
 
 preload = () =>
 {
+  wormsLogoImg = loadImage("images/WormsLogo.jpg");
   backgroundImg = loadImage("images/background-image.png");
   wormImg0 = loadImage("images/worm0.png");
   wormImg1 = loadImage("images/worm1.png");
