@@ -8,14 +8,16 @@ class Ground {
     this.h = h;
     this.body.isStatic = true;
   }
-  show() {
+  show(p) {
     const pos = this.body.position;
     const angle = this.body.angle;
-    push()
-    translate(pos.x,pos.y)
-    fill(0, 179, 0)
-    rectMode(CENTER)
-    rect(0,0, this.w, this.h);
-    pop()
+    p.push()
+    p.translate(pos.x,pos.y)
+    p.fill(0, 179, 0)
+    p.rectMode(CENTER)
+    p.rect(0,0, this.w, this.h);
+    p.pop()
   }
 }
+
+module.exports = Ground;

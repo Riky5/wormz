@@ -7,21 +7,23 @@ class Bullet {
     this.r = r
   }
   
-  show = () => {
+  show = (p) => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 5
-    push()
-    translate(pos.x,pos.y)
-    fill(255, 0, 0)
-    rectMode(CENTER)
-    circle(0,0, this.r);
-    pop()
+    p.push()
+    p.translate(pos.x,pos.y)
+    p.fill(255, 0, 0)
+    p.rectMode(CENTER)
+    p.circle(0,0, this.r);
+    p.pop()
   }
 
   static destroy = (bullet) => {
     Matter.World.remove(world, bullet);
-    bullets.pop();
+    bullets.pop(); //will need to change
   }
 
 }
+
+module.exports = Bullet;

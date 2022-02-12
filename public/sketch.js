@@ -1,52 +1,48 @@
 const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
 const p5 = require('p5');
+const Game = require('./controllers/game');
 const ScreenController = require('./controllers/screenController')
 
 class Sketch {
-  static sketchWorld() {
-    let world, engine;
-    let ground;
-    let worm;
-    let worm2;
-    let backgroundImg;
-    let wormImg0;
-    let wormImg1;
-    let bullets;
-    let mode;
-    let mousePos;
-    let moveLimit;
-    let moveCount;
 
+  constructor(gameInstance = new Game()) {
+    this.gameInstance = gameInstance;
+  }
+  
+  sketchWorld() {
     const sketch = new p5 (function(p) {
+      let backgroundImg;
+      let mode = this.gameInstance.mode;
+
       p.preload = () =>
       {
         backgroundImg = p.loadImage("images/background-image.png");
-        wormImg0 = p.loadImage("images/worm0.png");
-        wormImg1 = p.loadImage("images/worm1.png");
+        // this.wormImg0 = p.loadImage("images/worm0.png");
+        // this.wormImg1 = p.loadImage("images/worm1.png");
       }
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        // initializeWorld(); requiresp
+        // initializeWorld()
         // Matter.Events.on(engine, "collisionStart", (event) => collision(event))
         p.textSize(40);
-        mode = 'start';
       }
 
       p.draw = () => {
-        p.background('red')
-        ScreenController.setScreen(p, mode);
+        p.background(backgroundImg);
       }
 
       p.mouseClicked = () => {
-      // method is in controller.js
+        
         if(mode === 'game') {
           // Controller.fireBullet(); 
         }
       }
 
       p.keyPressed = () => {
-        console.log("key pressed")
+        if(keyCode ===ENTER) {
+          mode = 'game';
+        } 
       }
     }, "sketch")
   } 
@@ -69,18 +65,7 @@ class Sketch {
 
 module.exports = Sketch;
 
-// let world, engine;
-// let ground;
-// let worm;
-// let worm2;
-// let backgroundImg;
-// let wormImg0;
-// let wormImg1;
-// let bullets;
-// let mode;
-// let mousePos;
-// let moveLimit;
-// let moveCount;
+
 
 // p.preload = () =>
 //       {

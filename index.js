@@ -1,3 +1,5 @@
 const Sketch = require('./public/sketch')
 
-Sketch.sketchWorld();
+sketch = new Sketch();
+
+sketch.sketchWorld();

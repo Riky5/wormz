@@ -42,37 +42,39 @@ class ScreenController{
       ScreenController.instructionsScreen(p);
     }
   }
+
+  static setScreen(p) {
+    if(mode === 'start') {
+      ScreenController.startScreen(p);
+    }
+    else if(mode === 'game') {
+      ScreenController.gameScreen(p);
+    }
+    else if (mode === 'gameOver'){
+      ScreenController.gameOverScreen(p);
+    }
+    else if (mode === 'instructions') {
+      ScreenController.instructionsScreen(p);
+    }
+  }
+  
+  static screenControllerKeyPressed(p, mode) {
+    if(mode === 'start') {
+      if(keyCode ===ENTER) {
+        mode = 'game';
+      } 
+      else if(keyCode === BACKSPACE) {
+        mode = 'instructions';
+      }
+    }
+    else if(mode === 'gameOver' || mode === 'instructions') {
+      if(keyCode === ENTER) {
+        p.setup();
+      }
+    }
+  }
 }
 
 module.exports = ScreenController;
 
-function setScreen(p) {
-  if(mode === 'start') {
-    ScreenController.startScreen(p);
-  }
-  else if(mode === 'game') {
-    ScreenController.gameScreen(p);
-  }
-  else if (mode === 'gameOver'){
-    ScreenController.gameOverScreen(p);
-  }
-  else if (mode === 'instructions') {
-    ScreenController.instructionsScreen(p);
-  }
-}
 
-function screenControllerKeyPressed() {
-  if(mode === 'start') {
-    if(keyCode ===ENTER) {
-      mode = 'game';
-    } 
-    else if(keyCode === BACKSPACE) {
-      mode = 'instructions';
-    }
-  }
-  else if(mode === 'gameOver' || mode === 'instructions') {
-    if(keyCode === ENTER) {
-      setup();
-    }
-  }
-}
