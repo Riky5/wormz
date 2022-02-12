@@ -9,7 +9,7 @@ class Controller{
   static fireBullet(){
     if(Controller.player1Turn === true) {
       wormPos = {x: worm.body.position.x, y: worm.body.position.y }
-      angleDeg = Math.atan2(mousePos.y - mousePos.y, wormPos.x - mousePos.x);
+      angleDeg = Math.atan2(wormPos.y - mousePos.y, wormPos.x - mousePos.x);
       this.bullet = new Bullet(worm.body.position.x + 50, worm.body.position.y - 40, 15)
     }
     else {
