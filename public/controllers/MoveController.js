@@ -22,19 +22,10 @@ class MoveController {
     };
   };
 
-  static displayWhichPlayerTurn() {
-    textSize(30)
-    if(Controller.player1Turn) {
-      text("Player 1", windowWidth /2 + 200, windowHeight / 2 - 320);
-    }
-    else {
-      text("Player 2", windowWidth /2 + 200, windowHeight / 2 - 320);
-    };
-  };
-
   static increaseCount = () => {
     this.moveCount += 1;
   };
+  
   static resetCount = () => {
     this.moveCount = 0;
   }

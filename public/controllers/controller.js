@@ -40,6 +40,16 @@ class Controller{
   static resetTimer() {
     this.timer = 0
   }
+
+  static displayWhichPlayerTurn() {
+    textSize(30)
+    if(Controller.player1Turn === true) {
+      text("Player 1", windowWidth /2 + 200, windowHeight / 2 - 320);
+    }
+    else {
+      text("Player 2", windowWidth /2 + 200, windowHeight / 2 - 320);
+    };
+  };
 }
 
 document.addEventListener("mousemove", function(e) {

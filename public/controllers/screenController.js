@@ -15,7 +15,7 @@ class ScreenController{
     worm2.show();
   
     bullets.forEach(element => element.show());
-    MoveController.displayWhichPlayerTurn(); 
+    Controller.displayWhichPlayerTurn(); 
     textSize(20);
     text(`Moves Left: ${MoveController.moveLimit - MoveController.moveCount}`, windowWidth /2 + 200, windowHeight / 2 - 300);
     image(clockTimer, windowWidth /2 + 190, windowHeight / 2 - 280, 50,50)
