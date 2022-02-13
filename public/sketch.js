@@ -5,8 +5,8 @@ const ScreenController = require('./controllers/ScreenController')
 const MoveController = require('./controllers/MoveController')
 const Controller = require('./controllers/Controller')
 const ShootingController = require('./controllers/ShootingController')
-const Worm = require('./entities/worm');
-const Ground = require('./entities/ground');
+const Worm = require('./entities/Worm');
+const Ground = require('./entities/Ground');
 
 class Sketch {
 

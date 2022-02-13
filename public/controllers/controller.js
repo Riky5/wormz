@@ -17,10 +17,11 @@ class Controller{
   static findAndDamageWorm = (pair, game) => {
     if (Controller.isInCollision(pair, "wormTwo")) {
       game.worm2.reduceHP();
-      Controller.isWormDead(game);
+      if (game.isWormDead()) {game.setGameOver()}
+      
     } else if (Controller.isInCollision(pair, "wormOne")) {
       game.worm.reduceHP();
-      Controller.isWormDead(game);
+      if (game.isWormDead()) {game.setGameOver()}
     }
   }
   
