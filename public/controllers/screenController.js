@@ -5,8 +5,8 @@ class ScreenController{
     p.background(logo);
     p.textSize(28);
     p.fill("#000000");
-    p.text("PRESS ENTER TO START GAME", p.windowWidth / 2 - 174, p.windowHeight / 2 + 110);
-    p.text("PRESS I FOR INSTRUCTIONS", p.windowWidth / 2 - 220, p.windowHeight / 2 + 160);
+    p.text("PRESS ENTER TO START GAME", p.windowWidth / 2 - 216, p.windowHeight / 2 + 110);
+    p.text("PRESS I FOR INSTRUCTIONS", p.windowWidth / 2 - 200, p.windowHeight / 2 + 160);
   }
 
   static gameScreen(p, game, img) {
@@ -22,20 +22,20 @@ class ScreenController{
   static gameOverScreen(p) {
     p.background('#f9ebf9');
     p.textSize(42)
-    p.text("GAME OVER", windowWidth / 2 - 140, windowHeight / 2 - 60)
+    p.text("GAME OVER", p.windowWidth / 2 - 140, p.windowHeight / 2 - 60)
     p.textSize(30);
-    p.text("Press ENTER to go back to main page", windowWidth / 2 - 260, windowHeight / 2 + 10);
+    p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 10);
   }
 
   static instructionsScreen(p) {
     p.background('#f9ebf9');
     p.textSize(32)
-    p.text("How to play:", windowWidth / 2 - 90, windowHeight / 3 - 140)
-    p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", windowWidth / 2 - 310, windowHeight / 2 - 180);
-    p.text("Use UP 🔼 to jump.", windowWidth / 2 - 310, windowHeight / 2 - 110)
-    p.text("Aim and CLICK to shoot target 💥.",  windowWidth / 2 - 310, windowHeight / 2 - 40)
+    p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140)
+    p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
+    p.text("Use UP 🔼 to jump.", p.windowWidth / 2 - 310,p. windowHeight / 2 - 110)
+    p.text("Aim and CLICK to shoot target 💥.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40)
     p.textSize(29)
-    p.text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 307, windowHeight / 2 + 50)
+    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50)
   }
 
   static setScreen(p, game, imgs) {
