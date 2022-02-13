@@ -18,10 +18,7 @@ class ScreenController{
   
     game.bullets.forEach(element => element.show(p));
     this.displayWhichPlayerTurn(p, game);
-    p.textSize(20);
-    p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
-    p.text(TimerController.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
-    p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
+    this.displayMovesLeftAndTimer(p, game)
   }
 
   static gameOverScreen(p) {
@@ -77,6 +74,13 @@ class ScreenController{
     else {
       p.text("Player 2", p.windowWidth /2 + 200, p.windowHeight / 2 - 320);
     };
+  }
+
+  static displayMovesLeftAndTimer(p, game) {
+    p.textSize(20);
+    p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
+    p.text(TimerController.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
+    p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
   }
   static switchToMode(modeChoice, game) {
     game.mode = modeChoice;
