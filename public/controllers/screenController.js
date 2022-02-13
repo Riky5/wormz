@@ -54,6 +54,8 @@ function screenControllerKeyPressed() {
   if(mode === 'start') {
     if(keyCode ===ENTER) {
       switchToMode('game');
+      Controller.resetTimer();
+      Controller.startTimer();
     } 
     else if(keyCode === BACKSPACE) {
       switchToMode('instructions');

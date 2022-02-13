@@ -29,16 +29,20 @@ class Controller{
   static changeTurn() {
     Controller.player1Turn = !Controller.player1Turn;
   }
-
+  
   static timeLeftOnTurn() {
-    if (frameCount % 60 === 0) {
-      this.timer += (1/3)
-    }
     return this.timeLimit - this.timer;
   }
 
+  static startTimer() {
+    interval = setInterval(Controller.increaseTimer, 1000)
+  }
+
+  static increaseTimer() {
+   Controller.timer ++;
+  }
   static resetTimer() {
-    this.timer = 0
+    this.timer = 0;
   }
 
   static displayWhichPlayerTurn() {

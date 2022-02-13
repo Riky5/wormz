@@ -12,6 +12,7 @@ let mode;
 let mousePos;
 let moveLimit;
 let moveCount;
+let interval;
 
 preload = () =>
 {
@@ -25,8 +26,10 @@ setup = () => {
   createCanvas(windowWidth, windowHeight - 50);
   initializeWorld();
   Matter.Events.on(engine, "collisionStart", (event) => collision(event))
+  // Controller.startTimer();
   textSize(40);
   mode = 'start';
+  
 }
 
 draw = () => {
