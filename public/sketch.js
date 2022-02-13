@@ -5,6 +5,7 @@ const ScreenController = require('./controllers/screenController')
 const MoveController = require('./controllers/moveController')
 const CollisionController = require('./controllers/collisionController')
 const ShootingController = require('./controllers/shootingController')
+const TimerController = require('./controllers/timerController')
 const Worm = require('./entities/worm');
 const Ground = require('./entities/ground');
 

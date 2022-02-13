@@ -1,4 +1,5 @@
-const Matter = require("matter-js")
+const Matter = require("matter-js");
+const TimerController = require("./timerController");
 
 class ScreenController{
 
@@ -54,7 +55,7 @@ class ScreenController{
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
         this.switchToMode('game', game);
-        game.resetTimer();
+        TimerController.resetTimer();
       } 
       else if(p.keyCode === 73) {
         this.switchToMode('instructions', game);
