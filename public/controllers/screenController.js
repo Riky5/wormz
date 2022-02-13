@@ -1,72 +1,75 @@
+const Matter = require("matter-js")
+
 class ScreenController{
-
-  static startScreen() {
-    background(wormsLogoImg);
-    textSize(28);
-    fill("#000000");
-    text("Press ENTER to start game", windowWidth / 2 - 174, windowHeight / 2 + 110);
-    text("Press BACKSPACE for instructions", windowWidth / 2 - 220, windowHeight / 2 + 160);
+  static startScreen(p, logo) {
+    p.background(logo);
+    p.textSize(28);
+    p.fill("#000000");
+    p.text("PRESS ENTER TO START GAME", p.windowWidth / 2 - 174, p.windowHeight / 2 + 110);
+    p.text("PRESS I FOR INSTRUCTIONS", p.windowWidth / 2 - 220, p.windowHeight / 2 + 160);
   }
 
-  static gameScreen() {
-    background(backgroundImg);
-    Matter.Engine.update(engine);
-    ground.show();
+  static gameScreen(p, game, img) {
+    p.background(img);
+    Matter.Engine.update(game.engine);
+    game.ground.show(p);
+    game.worm.show(p);
+    game.worm2.show(p);
   
-    worm.show();
-    worm2.show();
-  
-    bullets.forEach(element => element.show());
+    game.bullets.forEach(element => element.show(p));
   }
 
-  static gameOverScreen() {
-    background('#f9ebf9')
-    textSize(42)
-    text("GAME OVER", windowWidth / 2 - 140, windowHeight / 2 - 60)
-    textSize(30)
-    text("Press ENTER to go back to main page", windowWidth / 2 - 260, windowHeight / 2 + 10)
+  static gameOverScreen(p) {
+    p.background('#f9ebf9');
+    p.textSize(42)
+    p.text("GAME OVER", windowWidth / 2 - 140, windowHeight / 2 - 60)
+    p.textSize(30);
+    p.text("Press ENTER to go back to main page", windowWidth / 2 - 260, windowHeight / 2 + 10);
   }
 
-  static instructionsScreen() {
-    background('#f9ebf9')
-    textSize(32)
-    text("How to play:", windowWidth / 2 - 90, windowHeight / 3 - 140)
-    // textLeading(48)
-    text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", windowWidth / 2 - 310, windowHeight / 2 - 180);
-    text("Use UP 🔼 to jump.", windowWidth / 2 - 310, windowHeight / 2 - 110)
-    text("Aim and CLICK to shoot target 💥.",  windowWidth / 2 - 310, windowHeight / 2 - 40)
-    textSize(29)
-    text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 307, windowHeight / 2 + 50)
+  static instructionsScreen(p) {
+    p.background('#f9ebf9');
+    p.textSize(32)
+    p.text("How to play:", windowWidth / 2 - 90, windowHeight / 3 - 140)
+    p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", windowWidth / 2 - 310, windowHeight / 2 - 180);
+    p.text("Use UP 🔼 to jump.", windowWidth / 2 - 310, windowHeight / 2 - 110)
+    p.text("Aim and CLICK to shoot target 💥.",  windowWidth / 2 - 310, windowHeight / 2 - 40)
+    p.textSize(29)
+    p.text("Ready? Press ENTER to go back to main page", windowWidth / 2 - 307, windowHeight / 2 + 50)
   }
-}
 
-function setScreen() {
-  if(mode === 'start') {
-    ScreenController.startScreen();
-  }
-  else if(mode === 'game') {
-    ScreenController.gameScreen();
-  }
-  else if (mode === 'gameOver'){
-    ScreenController.gameOverScreen();
-  }
-  else if (mode === 'instructions') {
-    ScreenController.instructionsScreen();
-  }
-}
-
-function screenControllerKeyPressed() {
-  if(mode === 'start') {
-    if(keyCode ===ENTER) {
-      mode = 'game';
-    } 
-    else if(keyCode === BACKSPACE) {
-      mode = 'instructions';
+  static setScreen(p, game, imgs) {
+    if(game.mode === 'start') {
+      ScreenController.startScreen(p, imgs[0]);
+    }
+    else if(game.mode === 'game') {
+      ScreenController.gameScreen(p, game, imgs[1]);
+    }
+    else if (game.mode === 'gameOver'){
+      ScreenController.gameOverScreen(p);
+    }
+    else if (game.mode === 'instructions') {
+      ScreenController.instructionsScreen(p);
     }
   }
-  else if(mode === 'gameOver' || mode === 'instructions') {
-    if(keyCode === ENTER) {
-      setup();
+  
+  static KeyPressed(p, game) {
+    if(game.mode === 'start') {
+      if(p.keyCode === p.ENTER) {
+        game.mode = 'game';
+      } 
+      else if(p.keyCode === 73) {
+        game.mode = 'instructions';
+      }
+    }
+    else if(game.mode === 'gameOver' || game.mode === 'instructions') {
+      if(p.keyCode === p.ENTER) {
+        p.setup();
+      }
     }
   }
 }
+
+module.exports = ScreenController;
+
+
