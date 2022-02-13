@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "start": "node server.js",
-    "build": "esbuild index.js --bundle --minify --sourcemap --outfile=public/bundle.js --watch"
+    "build": "esbuild index.js --bundle --minify --sourcemap --outfile=public/bundle.js --watch",
+    "heroku-postbuild": "esbuild index.js --bundle --minify --sourcemap --outfile=public/bundle.js",
+    "start": "node server.js"
   },
   "keywords": [
     "p5.js",
@@ -18,7 +19,6 @@
     "build": "^0.1.4",
     "chai": "^4.3.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
     "esbuild": "^0.14.21",
     "express": "^4.17.2",
     "matter-js": "^0.18.0",
