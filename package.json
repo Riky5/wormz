@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "node server.js",
-    "build": "esbuild index.js --bundle --outfile=public/bundle.js --watch"
+    "build": "esbuild index.js --bundle --minify --sourcemap --outfile=public/bundle.js --watch"
   },
   "keywords": [
     "p5.js",
