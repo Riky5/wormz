@@ -17,6 +17,8 @@ class ScreenController{
   
     game.bullets.forEach(element => element.show(p));
     this.displayWhichPlayerTurn(p, game);
+    p.textSize(20);
+    p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
     p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
   }
 
