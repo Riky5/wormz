@@ -33,7 +33,7 @@ class TimerController {
       // Sets the number shown on the timer to red
       p.fill(220,0,0)
     }
-    return this.timeLeftOnTurn().toFixed();
+    return this.timeLeftOnTurn();
   }
 
 }
