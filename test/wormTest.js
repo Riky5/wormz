@@ -1,6 +1,6 @@
 'use strict';
 
-const Worm = require('../public/entities/Worm');
+const Worm = require('../public/entities/worm');
 const Matter = require('matter-js');
 const expect = require('chai').expect;
 

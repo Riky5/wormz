@@ -1,5 +1,5 @@
 const Matter = require("matter-js")
-const Bullet = require('../entities/Bullet')
+const Bullet = require('../entities/bullet')
 
 class ShootingController {
   constructor() {
