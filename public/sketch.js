@@ -60,7 +60,7 @@ function setup() {
               {Matter.World.remove(world, element.body); 
                 terrain_generated.splice(index, 1)};})
           Matter.World.remove(world, explosion.body)
-          setTimeout(explosions.pop(),500)
+          setTimeout(() => {explosions.pop()}, 500);
           Matter.World.remove(world, pair.bodyA)
           bullets.pop();
         } else {
@@ -71,7 +71,7 @@ function setup() {
               {Matter.World.remove(world, element.body); 
                 terrain_generated.splice(index, 1)};})
           Matter.World.remove(world, explosion.body)
-          setTimeout(explosions.pop(),500)
+          setTimeout(() => {explosions.pop()}, 500);
           Matter.World.remove(world, pair.bodyB)
           bullets.pop();
         }
