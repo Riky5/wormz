@@ -19,6 +19,7 @@ class ScreenController{
     this.displayWhichPlayerTurn(p, game);
     p.textSize(20);
     p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
+    p.text(game.timer, p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
     p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
   }
 
@@ -52,7 +53,8 @@ class ScreenController{
   static KeyPressed(p, game) {
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
-        this.switchToMode('game', game)
+        this.switchToMode('game', game);
+        game.resetTimer();
       } 
       else if(p.keyCode === 73) {
         this.switchToMode('instructions', game);

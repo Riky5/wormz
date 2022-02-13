@@ -14,6 +14,7 @@ class Game {
     this.moveLimit = MAXMOVES;
     this.moveCount = 0;
     this.clockTimer = imgs[2];
+    this.timer = 0;
   }
 
   changePlayerTurn = () => {
@@ -22,7 +23,11 @@ class Game {
   }
 
   resetMoveCount = () => {
-    this.moveCount = 0;}
+    this.moveCount = 0;
+  }
+  resetTimer = () => {
+    this.timer = 0;
+  }
 
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
