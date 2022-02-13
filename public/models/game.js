@@ -16,13 +16,11 @@ class Game {
   }
 
   changePlayerTurn = () => {
-    console.log('player turn changed')
     this.resetMoveLimit();
     this.player1Turn = !this.player1Turn;
   }
 
   resetMoveLimit = () => {
-    console.log(this.moveCount)
     this.moveCount = 0;}
 }
 

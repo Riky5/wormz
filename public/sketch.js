@@ -52,7 +52,7 @@ class Sketch {
           ScreenController.screenControllerKeyPressed(p, game)
         }  else {
           let input = p.keyCode
-          if(Controller.player1Turn === true) {
+          if(game.player1Turn === true) {
             MoveController.moveWorm(game.worm, input, p, game);
           } 
           else {

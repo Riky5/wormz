@@ -1,8 +1,6 @@
-const Game = require("../models/game");
-const Controller = require("./Controller")
 class MoveController {
   static moveWorm = (activeWorm, input, p, game) => {
-    if (Controller.moveCount >= Controller.moveLimit) {
+    if (game.moveCount >= game.moveLimit) {
       return;
     }
 
