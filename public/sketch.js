@@ -10,6 +10,7 @@ let wormImg0;
 let wormImg1;
 let music;
 let musicVolumeSlider;
+let explosionSound;
 let startMusicBtn;
 let stopMusicBtn;
 let backToMain;
@@ -26,6 +27,7 @@ preload = () =>
   wormImg0 = loadImage("images/worm0.png");
   wormImg1 = loadImage("images/worm1.png");
   music = loadSound("assets/Whimsical-Popsicle.mp3");
+  explosionSound = loadSound("assets/Explosion.mp3");
 }
 
 setup = () => {
@@ -72,25 +74,3 @@ keyPressed = () => {
     }
   }
 };
-
-initializeSound = () => {
-  musicDiv = createDiv('');
-  createP('Music background:').parent(musicDiv);
-  startMusicBtn = createButton('ON').parent(musicDiv);
-  stopMusicBtn = createButton('OFF').parent(musicDiv);
-  musicVolumeDiv = createDiv('');
-  createP('Adjust music volume:').parent(musicVolumeDiv);
-  musicVolumeSlider = createSlider(0, 1, 0.5, 0.01);
-  musicVolumeSlider.parent(musicVolumeDiv);
-  soundDiv = createDiv('');
-  createP('Sound Effects:').parent(soundDiv);
-  createButton('ON').parent(soundDiv);
-  createButton('OFF').parent(soundDiv);
-  soundVolumeDiv = createDiv('');
-  createP('Adjust sound effects volume:').parent(soundVolumeDiv);
-  createSlider(0, 1, 0.5, 0.01).parent(soundVolumeDiv);
-  buttonDiv = createDiv('');
-  createP('Back to main page:').parent(buttonDiv);
-  backToMain = createButton('🔙');
-  backToMain.parent(buttonDiv);
-}

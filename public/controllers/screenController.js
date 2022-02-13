@@ -42,9 +42,11 @@ class ScreenController{
   static musicSoundScreen() {
     resizeCanvas(0, 0);
     music.setVolume(musicVolumeSlider.value());
-    startMusicBtn.mousePressed(startMusic);
-    stopMusicBtn.mousePressed(stopMusic);
-    backToMain.mousePressed(goToMain);
+    startMusicBtn.mouseOver(startMusic);
+    stopMusicBtn.mouseOver(stopMusic);
+    explosionSound.setVolume(musicVolumeSlider.value());
+    startSoundEffects.mouseOver(enableSoundEffects);
+    stopSoundEffects.mouseOver(disableSoundEffects);
   }
 }
 
@@ -78,19 +80,11 @@ function screenControllerKeyPressed() {
       mode = 'music-sound-settings'
     }
   }
-  else if(mode === 'gameOver' || mode === 'instructions') {
+  else if(mode === 'gameOver' || mode === 'instructions' || mode == 'music-sound-settings') {
     if(keyCode === ENTER) {
       goToMain();
     }
   }
-}
-
-startMusic = () => {
-  music.loop();
-}
-
-stopMusic = () => {
-  music.stop();
 }
 
 goToMain = () => {

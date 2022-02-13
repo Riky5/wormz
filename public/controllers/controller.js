@@ -1,7 +1,7 @@
 class Controller{
   static moveLimit = 5;
   static moveCount = 0;
-  static player1Turn = true
+  static player1Turn = true;
   constructor(){
     this.bullet;
   }
@@ -19,6 +19,7 @@ class Controller{
     }
     
     bullets.push(this.bullet);
+    explosionSound.play();
     Matter.Body.setVelocity(this.bullet.body,{x:(-cos(angleDeg))*30, y:-(sin(angleDeg))*30})
     
     Controller.player1Turn = !Controller.player1Turn;
