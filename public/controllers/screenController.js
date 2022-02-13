@@ -5,7 +5,7 @@ class ScreenController{
   static startScreen(p) {
     p.background('red')
     p.text("PRESS ENTER TO START GAME", p.windowWidth / 2 - 300, p.windowHeight / 2 - 200)
-    p.text("PRESS BACKSPACE FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2 )
+    p.text("PRESS I FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2 )
   }
 
   static gameScreen(p, game, img) {
