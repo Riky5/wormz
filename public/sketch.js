@@ -47,6 +47,10 @@ class Sketch {
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg]);
       }
 
+      p.windowResized = () => {
+        p.resizeCanvas(p.windowWidth, p.windowHeight);
+      }
+
       p.mouseClicked = () => {
         if(game.mode === 'game') {
           ShootingController.fireBullet(p, game, grenade); 
