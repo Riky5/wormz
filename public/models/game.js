@@ -16,11 +16,11 @@ class Game {
   }
 
   changePlayerTurn = () => {
-    this.resetMoveLimit();
+    this.resetMoveCount();
     this.player1Turn = !this.player1Turn;
   }
 
-  resetMoveLimit = () => {
+  resetMoveCount = () => {
     this.moveCount = 0;}
 
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
