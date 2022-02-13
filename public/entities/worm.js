@@ -45,7 +45,7 @@ class Worm {
     text(this.hp, pos.x + 10, pos.y - 55);
   }
 
-  moveLimit = 5;
+  moveLimit = 50;
   moveCount = 0;
 
   keyPressed(wormChoice) {
