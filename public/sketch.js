@@ -17,23 +17,25 @@ class Sketch {
   sketchWorld() {
     // These variables need to stay here due to strange scope of this function
     let backgroundImg;
-    let wormImg0;
     let wormImg1;
+    let wormImg2;
     let gameClass = this.gameClass;
     let game;
 
     const sketch = new p5 (function(p) {
+      // In order to use p5 functions in other classes, pass p as a parameter to methods in other classes.
+      // p cannot be stored in a variable.
 
       p.preload = () =>
       {
         backgroundImg = p.loadImage("images/background-image.png");
-        wormImg0 = p.loadImage("images/worm0.png");
-        wormImg1 = p.loadImage("images/worm1.png");
+        wormImg1 = p.loadImage("images/worm0.png");
+        wormImg2 = p.loadImage("images/worm1.png");
       }
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({p: p, imgs: [wormImg0, wormImg1], matter: Matter, ground: Ground, worm: Worm});
+        game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game))
         p.textSize(40);
       }

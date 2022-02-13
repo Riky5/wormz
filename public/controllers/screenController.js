@@ -50,7 +50,7 @@ class ScreenController{
       if(p.keyCode === p.ENTER) {
         game.mode = 'game';
       } 
-      else if(keyCode === p.BACKSPACE) {
+      else if(p.keyCode === 73) {
         game.mode = 'instructions';
       }
     }
