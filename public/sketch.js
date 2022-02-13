@@ -1,62 +1,70 @@
-const { Engine, World, Bodies, Mouse, MouseConstraint, Constraint } = Matter;
+const Matter = require('matter-js')
+const p5 = require('p5');
+const Game = require('./models/game');
+const ScreenController = require('./controllers/screenController')
+const MoveController = require('./controllers/moveController')
+const CollisionController = require('./controllers/collisionController')
+const ShootingController = require('./controllers/shootingController')
+const Worm = require('./entities/worm');
+const Ground = require('./entities/ground');
 
-let world, engine;
-let ground;
-let worm;
-let worm2;
-let backgroundImg;
-let wormImg0;
-let wormImg1;
-let bullets;
-let mode;
-let mousePos;
-let moveLimit;
-let moveCount;
+class Sketch {
 
-preload = () =>
-{
-  backgroundImg = loadImage("images/background-image.png");
-  wormImg0 = loadImage("images/worm0.png");
-  wormImg1 = loadImage("images/worm1.png");
-}
-
-setup = () => {
-  createCanvas(windowWidth, windowHeight - 50);
-  initializeWorld();
-  Matter.Events.on(engine, "collisionStart", (event) => collision(event))
-  textSize(40);
-  mode = 'start';
-}
-
-draw = () => {
-  // method is in screenController.js
-  setScreen();
-}
-
-mouseClicked = () => {
-  // method is in controller.js
-  if(mode === 'game') {
-    Controller.fireBullet(); 
+  constructor(gameClass = Game) {
+    this.gameClass = gameClass;
   }
+  
+  sketchWorld() {
+    // These variables need to stay here due to strange scope of this function
+    let backgroundImg;
+    let wormImg1;
+    let wormImg2;
+    let gameClass = this.gameClass;
+    let game;
+
+    const sketch = new p5 (function(p) {
+      // In order to use p5 functions in other classes, pass p as a parameter to methods in other classes.
+      // p cannot be stored in a variable.
+
+      p.preload = () =>
+      {
+        backgroundImg = p.loadImage("images/background-image.png");
+        wormImg1 = p.loadImage("images/worm0.png");
+        wormImg2 = p.loadImage("images/worm1.png");
+      }
+
+      p.setup = () => {
+        p.createCanvas(p.windowWidth, p.windowHeight - 50);
+        game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game))
+        p.textSize(40);
+      }
+
+      p.draw = () => {
+        ScreenController.setScreen(p, game, backgroundImg);
+      }
+
+      p.mouseClicked = () => {
+        if(game.mode === 'game') {
+          ShootingController.fireBullet(p, game); 
+        }
+      }
+
+      p.keyPressed = () => {
+        if (game.mode != 'game') {
+          ScreenController.KeyPressed(p, game)
+        }  else {
+          let input = p.keyCode
+          if(game.player1Turn === true) {
+            MoveController.moveWorm(game.worm, input, p, game);
+          } 
+          else {
+            MoveController.moveWorm(game.worm2, input, p, game);
+          }
+        }
+      }
+    }, "sketch")
+  } 
 }
 
-keyPressed = () => {
-  if (mode != 'game') {
-    // method is in screenController.js
-    screenControllerKeyPressed()
-  }
-  else {
-
-    let input = keyCode
-
-    if(Controller.player1Turn === true) {
-      // method is in controller.js
-      MoveController.moveWorm(worm, input);
-    } 
-    else {
-      // method is in controller.js
-      MoveController.moveWorm(worm2, input);
-    }
-  }
-};
-
+module.exports = Sketch;

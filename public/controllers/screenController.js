@@ -1,62 +1,67 @@
+const Matter = require("matter-js")
+
 class ScreenController{
 
-  static startScreen() {
-    background('red')
-    text("PRESS ENTER TO START GAME", windowWidth / 2 - 300, windowHeight / 2 - 200)
-    text("PRESS BACKSPACE FOR INSTRUCTIONS", windowWidth / 2 - 300, windowHeight / 2 )
+  static startScreen(p) {
+    p.background('red')
+    p.text("PRESS ENTER TO START GAME", p.windowWidth / 2 - 300, p.windowHeight / 2 - 200)
+    p.text("PRESS I FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2 )
   }
 
-  static gameScreen() {
-    background(backgroundImg);
-    Matter.Engine.update(engine);
-    ground.show();
+  static gameScreen(p, game, img) {
+    p.background(img);
+    Matter.Engine.update(game.engine);
+    game.ground.show(p);
+    game.worm.show(p);
+    game.worm2.show(p);
   
-    worm.show();
-    worm2.show();
-  
-    bullets.forEach(element => element.show());
+    game.bullets.forEach(element => element.show(p));
   }
 
-  static gameOverScreen() {
-    background('blue')
-    text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", windowWidth / 2 - 300, windowHeight / 2)
+  static gameOverScreen(p) {
+    p.background('blue')
+    p.text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", p.windowWidth / 2 - 300, p.windowHeight / 2)
   }
 
-  static instructionsScreen() {
-    background('red')
-    textSize(30)
-    text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, windowHeight / 2 - 300 / 2)
-    text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, windowHeight / 2)
+  static instructionsScreen(p) {
+    p.background('red')
+    p.textSize(30)
+    p.text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, p.windowHeight / 2 - 300 / 2)
+    p.text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, p.windowHeight / 2)
   }
-}
 
-function setScreen() {
-  if(mode === 'start') {
-    ScreenController.startScreen();
-  }
-  else if(mode === 'game') {
-    ScreenController.gameScreen();
-  }
-  else if (mode === 'gameOver'){
-    ScreenController.gameOverScreen();
-  }
-  else if (mode === 'instructions') {
-    ScreenController.instructionsScreen();
-  }
-}
-
-function screenControllerKeyPressed() {
-  if(mode === 'start') {
-    if(keyCode ===ENTER) {
-      mode = 'game';
-    } 
-    else if(keyCode === BACKSPACE) {
-      mode = 'instructions';
+  static setScreen(p, game, img) {
+    if(game.mode === 'start') {
+      ScreenController.startScreen(p);
+    }
+    else if(game.mode === 'game') {
+      ScreenController.gameScreen(p, game, img);
+    }
+    else if (game.mode === 'gameOver'){
+      ScreenController.gameOverScreen(p);
+    }
+    else if (game.mode === 'instructions') {
+      ScreenController.instructionsScreen(p);
     }
   }
-  else if(mode === 'gameOver' || mode === 'instructions') {
-    if(keyCode === ENTER) {
-      setup();
+  
+  static KeyPressed(p, game) {
+    if(game.mode === 'start') {
+      if(p.keyCode === p.ENTER) {
+        game.mode = 'game';
+      } 
+      else if(p.keyCode === 73) {
+        game.mode = 'instructions';
+      }
+    }
+    else if(game.mode === 'gameOver' || game.mode === 'instructions') {
+      if(p.keyCode === p.ENTER) {
+        p.setup();
+      }
     }
   }
 }
+
+module.exports = ScreenController;
+
+
