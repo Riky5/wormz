@@ -2,9 +2,9 @@ const Matter = require('matter-js')
 const p5 = require('p5');
 const Game = require('./models/game');
 const ScreenController = require('./controllers/screenController')
-const MoveController = require('./controllers/moveController')
+const MoveController = require('./controllers/MoveController')
 const CollisionController = require('./controllers/collisionController')
-const ShootingController = require('./controllers/shootingController')
+const ShootingController = require('./controllers/ShootingController')
 const Worm = require('./entities/worm');
 const Ground = require('./entities/ground');
 
