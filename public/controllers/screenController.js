@@ -16,6 +16,7 @@ class ScreenController{
     game.worm2.show(p);
   
     game.bullets.forEach(element => element.show(p));
+    this.displayWhichPlayerTurn(p, game);
   }
 
   static gameOverScreen(p) {
@@ -59,6 +60,15 @@ class ScreenController{
         p.setup();
       }
     }
+  }
+  static displayWhichPlayerTurn(p, game) {
+    p.textSize(30)
+    if(game.player1Turn === true) {
+      p.text("Player 1", p.windowWidth /2 + 200, p.windowHeight / 2 - 320);
+    }
+    else {
+      p.text("Player 2", p.windowWidth /2 + 200, p.windowHeight / 2 - 320);
+    };
   }
 }
 
