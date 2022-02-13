@@ -13,6 +13,7 @@ class Game {
     this.player1Turn = true;
     this.moveLimit = MAXMOVES;
     this.moveCount = 0;
+    this.clockTimer = imgs[2];
   }
 
   changePlayerTurn = () => {

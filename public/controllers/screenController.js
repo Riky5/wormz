@@ -17,6 +17,7 @@ class ScreenController{
   
     game.bullets.forEach(element => element.show(p));
     this.displayWhichPlayerTurn(p, game);
+    p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
   }
 
   static gameOverScreen(p) {
