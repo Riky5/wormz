@@ -32,11 +32,5 @@ class Controller{
       }
     }
   }
-  
-  static isWormDead(game) {
-    if(game.worm.hp === 0 || game.worm2.hp === 0) {
-      game.mode = 'gameOver';
-    }
-  }
 }
 module.exports = Controller;

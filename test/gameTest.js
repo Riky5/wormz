@@ -56,4 +56,16 @@ describe('Game', () => {
     game.resetMoveLimit();
     expect(game.moveCount).to.eq(0);
   })
+
+  it(".setGameOver sets game mode to 'gameOver'", () => {
+    expect(game.mode).to.eq('start');
+    game.setGameOver();
+    expect(game.mode).to.eq('gameOver');
+  })
+
+  it('.isWormDead returns true if a worm has 0 hp', () => {
+    expect(game.isWormDead()).to.eq(false);
+    game.worm.hp = 0;
+    expect(game.isWormDead()).to.eq(true);
+  });
 });

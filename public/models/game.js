@@ -22,6 +22,10 @@ class Game {
 
   resetMoveLimit = () => {
     this.moveCount = 0;}
+
+  isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
+  
+  setGameOver = () => this.mode = 'gameOver';
 }
 
 module.exports = Game;
