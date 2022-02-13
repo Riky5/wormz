@@ -38,8 +38,9 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
+        ScreenController.setupInstructionScreen(p);
         game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
-        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game))
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
         p.textSize(40);
       }
 

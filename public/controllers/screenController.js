@@ -28,6 +28,8 @@ class ScreenController{
   }
 
   static instructionsScreen(p) {
+    resizeCanvas(0, 0);
+
     p.background('#f9ebf9');
     p.textSize(32)
     p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140)
@@ -36,6 +38,11 @@ class ScreenController{
     p.text("Aim and CLICK to shoot target 💥.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40)
     p.textSize(29)
     p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50)
+  }
+
+  static setupInstructionScreen(p) {
+    containerDiv = p.createDiv('');
+    
   }
 
   static setScreen(p, game, imgs) {
@@ -64,7 +71,10 @@ class ScreenController{
     }
     else if(game.mode === 'gameOver' || game.mode === 'instructions') {
       if(p.keyCode === p.ENTER) {
-        p.setup();
+        p.createCanvas(p.windowWidth, p.windowHeight - 50);
+        game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
+        p.textSize(40);
       }
     }
   }
