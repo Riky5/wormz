@@ -53,10 +53,10 @@ class Sketch {
         }  else {
           let input = p.keyCode
           if(Controller.player1Turn === true) {
-            MoveController.moveWorm(game.worm, input, p);
+            MoveController.moveWorm(game.worm, input, p, game);
           } 
           else {
-            MoveController.moveWorm(game.worm2, input, p);
+            MoveController.moveWorm(game.worm2, input, p, game);
           }
         }
       }

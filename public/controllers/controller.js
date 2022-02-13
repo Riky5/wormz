@@ -1,11 +1,7 @@
 const Bullet = require('../entities/Bullet')
 const Matter = require('matter-js')
-const DamageController = require('./controllers/DamageController')
 
-class Controller{
-  static moveLimit = 5;
-  static moveCount = 0;
-  
+class Controller{  
 
   constructor() {
     this.bullet;
@@ -27,8 +23,7 @@ class Controller{
     game.bullets.push(this.bullet);
     Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
 
-    game.player1Turn = !game.player1Turn;
-    Controller.moveCount = 0;
+    game.changePlayerTurn();
   }
 
   static isInCollision = (pair, label) => {

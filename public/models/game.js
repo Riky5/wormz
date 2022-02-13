@@ -1,5 +1,5 @@
 // Moved to a models folder for now not sure where it should be housed
-
+const MAXMOVES = 5;
 class Game {
   constructor({p: p, imgs: imgs, matter: matter, ground: ground, worm: worm}) {
     this.engine = matter.Engine.create();
@@ -11,7 +11,19 @@ class Game {
     matter.World.add(this.world, [this.worm.body,this.worm2.body]);
     this.mode = "start";
     this.player1Turn = true;
+    this.moveLimit = MAXMOVES;
+    this.moveCount = 0;
   }
+
+  changePlayerTurn = () => {
+    console.log('player turn changed')
+    this.resetMoveLimit();
+    this.player1Turn = !this.player1Turn;
+  }
+
+  resetMoveLimit = () => {
+    console.log(this.moveCount)
+    this.moveCount = 0;}
 }
 
 module.exports = Game;
