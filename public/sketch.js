@@ -1,14 +1,13 @@
 const Matter = require('matter-js')
 const p5 = require('p5');
-const Game = require('./controllers/game');
-const ScreenController = require('./controllers/screenController')
+const Game = require('./models/game');
+const ScreenController = require('./controllers/ScreenController')
 const MoveController = require('./controllers/MoveController')
-const Controller = require('./controllers/controller')
+const Controller = require('./controllers/Controller')
 const Worm = require('./entities/worm');
 const Ground = require('./entities/ground');
 
 class Sketch {
-  
 
   constructor(gameClass = Game) {
     this.gameClass = gameClass;
@@ -54,11 +53,9 @@ class Sketch {
         }  else {
           let input = p.keyCode
           if(Controller.player1Turn === true) {
-            // method is in controller.js
             MoveController.moveWorm(game.worm, input, p);
           } 
           else {
-            // method is in controller.js
             MoveController.moveWorm(game.worm2, input, p);
           }
         }

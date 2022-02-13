@@ -1,10 +1,11 @@
 const Bullet = require('../entities/Bullet')
 const Matter = require('matter-js')
+const DamageController = require('./controllers/DamageController')
 
 class Controller{
   static moveLimit = 5;
   static moveCount = 0;
-  static player1Turn = true
+  
 
   constructor() {
     this.bullet;
@@ -12,7 +13,7 @@ class Controller{
 
   static fireBullet(p, game){
     let angleDeg;
-    if(Controller.player1Turn === true) {
+    if(game.player1Turn === true) {
       let wormPos = {x: game.worm.body.position.x, y: game.worm.body.position.y }
       angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
       this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game});
@@ -26,7 +27,7 @@ class Controller{
     game.bullets.push(this.bullet);
     Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
 
-    Controller.player1Turn = !Controller.player1Turn;
+    game.player1Turn = !game.player1Turn;
     Controller.moveCount = 0;
   }
 

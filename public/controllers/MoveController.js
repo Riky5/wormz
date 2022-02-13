@@ -1,4 +1,4 @@
-const Controller = require("./controller")
+const Controller = require("./Controller")
 class MoveController {
   static moveWorm = (activeWorm, input, p) => {
     if (Controller.moveCount >= Controller.moveLimit) {
