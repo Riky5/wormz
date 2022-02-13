@@ -45,7 +45,7 @@ class ScreenController{
     }
   }
   
-  static screenControllerKeyPressed(p, game) {
+  static KeyPressed(p, game) {
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
         game.mode = 'game';

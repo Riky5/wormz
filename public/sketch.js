@@ -52,7 +52,7 @@ class Sketch {
 
       p.keyPressed = () => {
         if (game.mode != 'game') {
-          ScreenController.screenControllerKeyPressed(p, game)
+          ScreenController.KeyPressed(p, game)
         }  else {
           let input = p.keyCode
           if(game.player1Turn === true) {
