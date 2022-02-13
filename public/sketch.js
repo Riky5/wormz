@@ -4,6 +4,7 @@ const Game = require('./models/game');
 const ScreenController = require('./controllers/ScreenController')
 const MoveController = require('./controllers/MoveController')
 const Controller = require('./controllers/Controller')
+const ShootingController = require('./controllers/ShootingController')
 const Worm = require('./entities/worm');
 const Ground = require('./entities/ground');
 
@@ -43,7 +44,7 @@ class Sketch {
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
-          Controller.fireBullet(p, game); 
+          ShootingController.fireBullet(p, game); 
         }
       }
 
