@@ -14,7 +14,6 @@ class Game {
     this.moveLimit = MAXMOVES;
     this.moveCount = 0;
     this.clockTimer = imgs[2];
-    this.timer = 0;
   }
 
   changePlayerTurn = () => {

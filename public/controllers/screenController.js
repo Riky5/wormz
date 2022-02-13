@@ -1,5 +1,4 @@
 const Matter = require("matter-js");
-const { timerForTurn, interval } = require("./timerController");
 const TimerController = require("./timerController");
 
 class ScreenController{
