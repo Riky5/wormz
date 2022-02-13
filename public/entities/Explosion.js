@@ -1,19 +1,21 @@
-class Obstacle {
-  constructor(x,y,w,h) {
-    this.body = Matter.Bodies.rectangle(x,y,w,h,{label: "obstacle"});
+class Explosion {
+  constructor(x,y,r) {
+    this.body = Matter.Bodies.circle(x,y,r,{label:"explosion"})
     Matter.World.add(world, this.body)
-    this.w = w;
-    this.h = h;
+    this.r = r
     this.body.isStatic = true;
   }
+  
   show() {
     const pos = this.body.position;
     const angle = this.body.angle;
+    this.body.mass = 0
     push()
     translate(pos.x,pos.y)
-    fill(0, 179, 0)
+    fill(255, 0, 0)
     rectMode(CENTER)
-    rect(0,0, this.w, this.h);
+    circle(0,0, this.r);
     pop()
   }
+
 }

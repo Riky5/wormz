@@ -11,6 +11,8 @@ let wormImg1;
 let bullets;
 let p1;
 let terrain;
+let explosion;
+let explosions = [];
 
 
 function preload()
@@ -39,6 +41,7 @@ function setup() {
   // Maybe be moved to the bullet class
   Matter.Events.on(engine, "collisionStart", (event) => {
     for (const pair of event.pairs) {
+      // added for water
       if(isInCollision(pair, "water")){
         if (isInCollision(pair, "wormTwo")) {
           Matter.Body.translate(worm2.body, {x: 0,y:-10})
@@ -50,9 +53,25 @@ function setup() {
       }
       if(isInCollision(pair, "bullet")) {
         if(pair.bodyA.label === "bullet") {
+          explosion = new Explosion(pair.bodyA.position.x,pair.bodyA.position.y,40)
+          explosions.push(explosion);
+          terrain_generated.forEach ((element,index) => 
+            {if((Math.abs(element.body.position.x - explosion.body.position.x) < 25) && (Math.abs(element.body.position.y - explosion.body.position.y) < 25))
+              {Matter.World.remove(world, element.body); 
+                terrain_generated.splice(index, 1)};})
+          Matter.World.remove(world, explosion.body)
+          setTimeout(explosions.pop(),500)
           Matter.World.remove(world, pair.bodyA)
           bullets.pop();
         } else {
+          explosion = new Explosion(pair.bodyB.position.x,pair.bodyB.position.y,50)
+          explosions.push(explosion);
+          terrain_generated.forEach ((element,index) => 
+            {if((Math.abs(element.body.position.x - explosion.body.position.x) < 25) && (Math.abs(element.body.position.y - explosion.body.position.y) < 25))
+              {Matter.World.remove(world, element.body); 
+                terrain_generated.splice(index, 1)};})
+          Matter.World.remove(world, explosion.body)
+          setTimeout(explosions.pop(),500)
           Matter.World.remove(world, pair.bodyB)
           bullets.pop();
         }
@@ -67,10 +86,15 @@ function setup() {
   player1Turn = true;
 }
 
+function remove_explosion(explosion)
+  {Matter.World.remove(world, explosion)
+    explosions.pop();}
+
 function draw() {
   background(backgroundImg);
   Matter.Engine.update(engine);
   (terrain.loadTerrain()).forEach (element => element.show())
+  explosions.forEach (element => element.show())
 
   worm.show();
   if ((worm.body.angle != 0  && player1Turn != true )|| ((worm.body.angle > 1.5 || worm.body.angle < -1.5 ) && worm.body.velocity.x < 0.1 && worm.body.velocity.y < 0.1)) {worm.body.angle = 0}
