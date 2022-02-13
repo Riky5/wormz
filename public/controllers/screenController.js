@@ -49,10 +49,10 @@ class ScreenController{
   static KeyPressed(p, game) {
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
-        game.mode = 'game';
+        this.switchToMode('game', game)
       } 
       else if(p.keyCode === 73) {
-        game.mode = 'instructions';
+        this.switchToMode('instructions', game);
       }
     }
     else if(game.mode === 'gameOver' || game.mode === 'instructions') {
@@ -69,6 +69,9 @@ class ScreenController{
     else {
       p.text("Player 2", p.windowWidth /2 + 200, p.windowHeight / 2 - 320);
     };
+  }
+  static switchToMode(modeChoice, game) {
+    game.mode = modeChoice;
   }
 }
 
