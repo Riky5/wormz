@@ -8,6 +8,7 @@ let wormsLogoImg;
 let backgroundImg;
 let wormImg0;
 let wormImg1;
+let grenade;
 let bullets;
 let mode;
 let mousePos;
@@ -20,6 +21,7 @@ preload = () =>
   backgroundImg = loadImage("images/background-image.png");
   wormImg0 = loadImage("images/worm0.png");
   wormImg1 = loadImage("images/worm1.png");
+  grenade = loadImage("images/grenade.png");
 }
 
 setup = () => {

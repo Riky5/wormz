@@ -4,7 +4,6 @@ class ScreenController{
     background(wormsLogoImg);
     textSize(28);
     fill("#000000");
-    text(CENTER);
     text("Press ENTER to start game", windowWidth / 2 - 174, windowHeight / 2 + 110);
     text("Press BACKSPACE for instructions", windowWidth / 2 - 220, windowHeight / 2 + 160);
   }
