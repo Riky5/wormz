@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 
-app.listen(port);
+app.listen(port, '0.0.0.0');
 
 app.use(express.static('public'));
 
