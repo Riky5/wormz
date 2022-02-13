@@ -35,10 +35,25 @@ describe('Game', () => {
   it('initialized with correct parameters', function(done) {
     expect(game.bullets).deep.to.equal([]);
     expect(game.mode).to.eq("start");
-    expect(game.worm).to.be.a("object")
-    expect(game.worm2).to.be.a("object")
-    expect(game.ground).to.be.a("object")
+    expect(game.worm).to.be.a("object");
+    expect(game.worm2).to.be.a("object");
+    expect(game.ground).to.be.a("object");
+    expect(game.player1Turn).to.eq(true);
+    expect(game.moveCount).to.eq(0);
+    expect(game.moveLimit).to.eq(5);
     done();
   });
 
+  it ('.changePlayerTurn sets player turn to opposite value', () => {
+    expect(game.player1Turn).to.eq(true);
+    game.changePlayerTurn();
+    expect(game.player1Turn).to.eq(false);
+  })
+
+  it ('.resetMoveLimit sets moveCount back to 0', () => {
+    game.moveCount = 5;
+    expect(game.moveCount).to.eq(5);
+    game.resetMoveLimit();
+    expect(game.moveCount).to.eq(0);
+  })
 });
