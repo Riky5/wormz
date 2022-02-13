@@ -25,6 +25,10 @@ class Game {
     this.moveCount = 0;
   }
 
+  switchToMode(modeChoice) {
+    this.mode = modeChoice;
+  }
+
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
   setGameOver = () => this.mode = 'gameOver';

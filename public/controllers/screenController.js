@@ -51,13 +51,13 @@ class ScreenController{
   static KeyPressed(p, game) {
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
-        this.switchToMode('game', game);
+        game.switchToMode('game');
         TimerController.resetTimer();
         TimerController.clearTimer();
         TimerController.startTimer();
       } 
       else if(p.keyCode === 73) {
-        this.switchToMode('instructions', game);
+       game.switchToMode('instructions');
       }
     }
     else if(game.mode === 'gameOver' || game.mode === 'instructions') {
@@ -81,9 +81,6 @@ class ScreenController{
     p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
     p.text(TimerController.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
     p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
-  }
-  static switchToMode(modeChoice, game) {
-    game.mode = modeChoice;
   }
 }
 
