@@ -19,8 +19,9 @@ describe('Weapon', () => {
   }
   let wormImgMock = [];
   beforeEach(() => {
-    game = new Game({p: p5Mock, imgs: wormImgMock, matter: Matter, ground: Ground, worm: Worm});
-    weapon = new Weapon({name: 'Grenade', velocity: 30, image: 'testImage', damage: 5, bulletModel: Bullet, game: game});
+    
+    weapon = new Weapon({name: 'Grenade', velocity: 30, image: 'testImage', damage: 5, bulletModel: Bullet});
+    // game = new Game({p: p5Mock, imgs: wormImgMock, matter: Matter, ground: Ground, worm: Worm, weaponModel: Weapon, bulletModel: Bullet});
 
   })
 
@@ -29,16 +30,15 @@ describe('Weapon', () => {
     expect(weapon.velocity).to.eq(30);
     expect(weapon.image).to.eq('testImage');
     expect(weapon.damage).to.eq(5);
-    expect(weapon.game).to.eq(game)
     done();
   });
   it('.createBullet creates an instance of bullet', function(done) {
-    let bullet = weapon.createBullet();
+    let bullet = weapon.createBullet({x: 0, y: 0});
     expect(bullet).to.be.an.instanceOf(Bullet)
     done();
   })
   it('.createBullet sets the parameters of bullet', function(done) {
-    let bullet = weapon.createBullet();
+    let bullet = weapon.createBullet({x: 0, y: 0});
     // expect(bullet.damage).to.eq(5)
     expect(bullet.image).to.eq('testImage');
     expect(bullet.velocity).to.eq(30);
