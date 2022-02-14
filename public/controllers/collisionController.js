@@ -42,22 +42,28 @@ class CollisionController{
     } else if (pair.bodyB.label === "bullet") {
       this.explosion = new Explosion({x: pair.bodyB.position.x, y: pair.bodyB.position.y , r: 40, game: game})
       game.explosions.push(this.explosion)
+      CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
       Matter.World.remove(game.world, this.explosion.body);
       setTimeout(function(){game.explosions.pop();},500)
     }
   }
 
-  // static destroyTerrain = (pair,game) => {
-  //   if (CollisionController.isInCollision(pair,'obstacle') && )
+  static destroyTerrain = (explosion,game) => {
+    console.log(explosion)
+    game.terrain.forEach ((piece, index) => {
+      console.log(piece)
+      if ((Math.abs(piece.body.position.x - explosion.body.position.x) < 25) && (Math.abs(piece.body.position.y - explosion.body.position.y) < 25)) 
+      {Matter.World.remove(game.world, piece.body);
+        game.terrain.splice(index, 1)}
 
-  // }
+    })
+  }
   
   static collision = (event, game) => {
     for (const pair of event.pairs) {
       if(CollisionController.isInCollision(pair, "bullet")) {
          CollisionController.createExplosion(pair,game)
-        // CollisionController.destroyTerrain(pair,game)
         CollisionController.findAndDamageWorm(pair, game);
       }
     }
