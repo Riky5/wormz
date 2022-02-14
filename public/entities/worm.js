@@ -1,5 +1,5 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter}) {
+  constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
