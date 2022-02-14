@@ -18,7 +18,9 @@ class Sketch {
     let wormsLogoImg;
     let backgroundImg;
     let wormImg1;
+    let wormImg1Rev;
     let wormImg2;
+    let wormImg2Rev;
     let grenade;
     let gameOver;
     let clockTimer;
@@ -34,7 +36,9 @@ class Sketch {
         wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
         backgroundImg = p.loadImage("images/background-image.png");
         wormImg1 = p.loadImage("images/worm0.png");
+        wormImg1Rev = p.loadImage("images/worm0_rev.png")
         wormImg2 = p.loadImage("images/worm1.png");
+        wormImg2Rev = p.loadImage("images/worm1_rev.png")
         grenade = p.loadImage("images/grenade.png");
         gameOver = p.loadImage("images/game-over.jpg");
         clockTimer = p.loadImage("images/clock_timer.png")
@@ -42,7 +46,7 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, ground: Ground, worm: Worm});
+        game = new gameClass({p: p, imgs: [[wormImg1, wormImg1Rev], [wormImg2, wormImg2Rev], clockTimer], matter: Matter, ground: Ground, worm: Worm});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game))
         p.textSize(40);
       }

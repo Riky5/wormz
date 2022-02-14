@@ -1,34 +1,54 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter}) {
+  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, imgs: imgs, matter: matter}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
     this.x = x;
     this.y = y;
-    this.worm = img;
+    this.imgs = imgs;
     const HP = 100;
     this.hp = HP;
     this.matter = matter;
+    this.flip = false;
   }
 
-  show = (p) => {
+  show = (p,img = this.imgs[0]) => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
-    p.push();
-    p.translate(pos.x, pos.y);
-    p.rotate(angle);
-    p.fill(255);
+    if (this.flip === false) {
+      p.push();
+      p.translate(pos.x, pos.y);
+      p.rotate(angle);
+      p.fill(255);
 
-    // SQUARE - uncomment here
-    // p.rectMode(CENTER); 
-    // p.rect(0, 0, this.w, this.h)
+      // SQUARE - uncomment here
+      // p.rectMode(p.CENTER); 
+      // p.rect(0, 0, this.w, this.h)
 
-    // WORM IMAGE - uncomment here
-    p.imageMode(p.CENTER);
-    p.image(this.worm, 0, 0, this.w, this.h);
+      // WORM IMAGE - uncomment here
+      p.imageMode(p.CENTER);
+      p.image(img, 0, 0, this.w, this.h);
 
-    p.pop();
+      p.pop();
+    } else {
+      p.push();
+      p.translate(pos.x, pos.y);
+      p.scale(-1, 1)
+      p.rotate(angle);
+      p.fill(255);
+
+      // SQUARE - uncomment here
+      // p.rectMode(p.CENTER); 
+      // p.rect(0, 0, this.w, this.h)
+
+      // WORM IMAGE - uncomment here
+      p.imageMode(p.CENTER);
+      p.image(img, 0, 0, this.w, this.h);
+      p.pop();
+      
+    }
+    
 
     // p.rect(this.x, this.y, this.w, this.h);
     // HP above the element
