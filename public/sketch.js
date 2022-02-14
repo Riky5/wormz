@@ -8,7 +8,6 @@ const ShootingController = require('./controllers/shootingController')
 const TimerController = require('./controllers/timerController');
 const Worm = require('./entities/worm');
 const Ground = require('./entities/ground');
-
 class Sketch {
 
   constructor(gameClass = Game) {
@@ -17,9 +16,12 @@ class Sketch {
   
   sketchWorld() {
     // These variables need to stay here due to strange scope of this function
+    let wormsLogoImg;
     let backgroundImg;
     let wormImg1;
     let wormImg2;
+    let grenade;
+    let gameOver;
     let clockTimer;
     let gameClass = this.gameClass;
     let game;
@@ -30,9 +32,12 @@ class Sketch {
 
       p.preload = () =>
       {
+        wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
         backgroundImg = p.loadImage("images/background-image.png");
         wormImg1 = p.loadImage("images/worm0.png");
         wormImg2 = p.loadImage("images/worm1.png");
+        grenade = p.loadImage("images/grenade.png");
+        gameOver = p.loadImage("images/game-over.jpg");
         clockTimer = p.loadImage("images/clock_timer.png")
       }
 
@@ -44,12 +49,16 @@ class Sketch {
       }
 
       p.draw = () => {
-        ScreenController.setScreen(p, game, backgroundImg);
+        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver]);
+      }
+
+      p.windowResized = () => {
+        p.resizeCanvas(p.windowWidth, p.windowHeight);
       }
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
-          ShootingController.fireBullet(p, game); 
+          ShootingController.fireBullet(p, game, grenade); 
         }
       }
 

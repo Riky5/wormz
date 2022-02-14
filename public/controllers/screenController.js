@@ -1,11 +1,12 @@
 const Matter = require("matter-js");
 
 class ScreenController{
-
-  static startScreen(p) {
-    p.background('red')
-    p.text("PRESS ENTER TO START GAME", p.windowWidth / 2 - 300, p.windowHeight / 2 - 200)
-    p.text("PRESS I FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2 )
+  static startScreen(p, logo) {
+    p.background(logo);
+    p.textSize(28);
+    p.fill("#000000");
+    p.text("Press ENTER to start game", p.windowWidth / 2 - 175, p.windowHeight / 2 + 110);
+    p.text("Press I for instructions", p.windowWidth / 2 - 142, p.windowHeight / 2 + 160);
   }
 
   static gameScreen(p, game, img) {
@@ -20,27 +21,32 @@ class ScreenController{
     this.displayMovesLeftAndTimer(p, game)
   }
 
-  static gameOverScreen(p) {
-    p.background('blue')
-    p.text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", p.windowWidth / 2 - 300, p.windowHeight / 2)
+  static gameOverScreen(p, gameOver) {
+    p.background(gameOver);
+    p.textSize(30);
+    p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 90);
   }
 
   static instructionsScreen(p) {
-    p.background('red')
-    p.textSize(30)
-    p.text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, p.windowHeight / 2 - 300 / 2)
-    p.text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, p.windowHeight / 2)
+    p.background('#f9ebf9');
+    p.textSize(32)
+    p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140)
+    p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
+    p.text("Use UP 🔼 to jump.", p.windowWidth / 2 - 310,p. windowHeight / 2 - 110)
+    p.text("Aim and CLICK to shoot target 💥.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40)
+    p.textSize(29)
+    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50)
   }
 
-  static setScreen(p, game, img) {
+  static setScreen(p, game, imgs) {
     if(game.mode === 'start') {
-      ScreenController.startScreen(p);
+      ScreenController.startScreen(p, imgs[0]);
     }
     else if(game.mode === 'game') {
-      ScreenController.gameScreen(p, game, img);
+      ScreenController.gameScreen(p, game, imgs[1]);
     }
     else if (game.mode === 'gameOver'){
-      ScreenController.gameOverScreen(p);
+      ScreenController.gameOverScreen(p, imgs[2]);
     }
     else if (game.mode === 'instructions') {
       ScreenController.instructionsScreen(p);
