@@ -32,6 +32,22 @@ class Game {
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
   setGameOver = () => this.mode = 'gameOver';
+
+  setActiveWormDirection = (p) => {
+    if(this.player1Turn === true) {
+      if (p.mouseX < this.worm.body.position.x) {
+        this.worm.setDirection("left");
+      } else {
+        this.worm.setDirection("right");
+      }
+    } else {
+      if (p.mouseX < this.worm2.body.position.x) {
+        this.worm2.setDirection("left");
+      } else {
+        this.worm2.setDirection("right");
+      }
+    }
+  }
 }
 
 module.exports = Game;
