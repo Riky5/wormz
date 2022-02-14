@@ -4,7 +4,7 @@ class Bullet {
     this.body = Matter.Bodies.circle(x,y,r,{label:"bullet"});
     Matter.World.add(game.world, this.body);
     this.r = r;
-    this.grenade = img;
+    this.image = img;
     this.velocity = velocity;
   }
   
@@ -22,7 +22,7 @@ class Bullet {
 
     // uncomment here for grenade image..
     p.imageMode(p.CENTER);
-    p.image(this.grenade, 0, 0, 15, 20);
+    p.image(this.image, 0, 0, 15, 20);
 
     p.pop();
   }
