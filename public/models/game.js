@@ -31,6 +31,13 @@ class Game {
     this.mode = modeChoice;
   }
 
+  uprightWorm = () => {
+    if ((this.worm.body.angle != 0  && this.player1Turn != true )|| ((this.worm.body.angle > 1.5 || this.worm.body.angle < -1.5 ) && this.worm.body.velocity.x < 0.1 && this.worm.body.velocity.y < 0.1)) 
+    {this.worm.body.angle = 0}
+  if ((this.worm2.body.angle != 0 && this.player1Turn == true )|| ((this.worm2.body.angle > 1.5 || this.worm2.body.angle < -1.5 ) && this.worm.body.velocity.x < 0.1 && this.worm.body.velocity.y < 0.1)) 
+    {this.worm2.body.angle = 0}
+  }
+
   isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
   
   setGameOver = () => this.mode = 'gameOver';
