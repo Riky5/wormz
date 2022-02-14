@@ -70,4 +70,8 @@ describe('Game', () => {
     game.worm.hp = 0;
     expect(game.isWormDead()).to.eq(true);
   });
+
+  it('.getActiveWorm() returns a worm', () => {
+    expect(game.getActiveWorm()).to.be.an.instanceOf(Worm);
+  });
 });
