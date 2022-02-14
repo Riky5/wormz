@@ -1,5 +1,4 @@
 const Matter = require("matter-js");
-const TimerController = require("./timerController");
 
 class ScreenController{
   static startScreen(p, logo) {
@@ -58,9 +57,9 @@ class ScreenController{
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
         game.switchToMode('game');
-        TimerController.resetTimer();
-        TimerController.clearTimer();
-        TimerController.startTimer();
+        game.timer.resetTimer();
+        game.timer.clearTimer();
+        game.timer.startTimer();
       } 
       else if(p.keyCode === 73) {
        game.switchToMode('instructions');
@@ -85,7 +84,7 @@ class ScreenController{
   static displayMovesLeftAndTimer(p, game) {
     p.textSize(20);
     p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
-    p.text(TimerController.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
+    p.text(game.timer.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
     p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
   }
 }
