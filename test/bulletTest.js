@@ -39,4 +39,11 @@ describe('Bullet', () => {
 		done();
 	});
 
+	describe("show() method", ()=>{
+		it("has a show method", ()=>{
+			expect(bullet.show).to.exist
+		})
+		
+	})
+
 });
