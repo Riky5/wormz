@@ -20,7 +20,7 @@ describe('Weapon', () => {
   let wormImgMock = [];
   beforeEach(() => {
     game = new Game({p: p5Mock, imgs: wormImgMock, matter: Matter, ground: Ground, worm: Worm});
-    weapon = new Weapon({name: 'Grenade', velocity: 30, image: 'testImage', damage: 5, bulletModel: Bullet, worm: new Worm({x: 0, y: 0, matter: Matter, weapons: ['gunImage', 'knifeImage']}), game: game});
+    weapon = new Weapon({name: 'Grenade', velocity: 30, image: 'testImage', damage: 5, bulletModel: Bullet, game: game});
 
   })
 
@@ -29,7 +29,6 @@ describe('Weapon', () => {
     expect(weapon.velocity).to.eq(30);
     expect(weapon.image).to.eq('testImage');
     expect(weapon.damage).to.eq(5);
-    expect(weapon.worm).to.be.an.instanceOf(Worm)
     expect(weapon.game).to.eq(game)
     done();
   });

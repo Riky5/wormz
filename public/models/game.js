@@ -29,6 +29,15 @@ class Game {
     this.mode = modeChoice;
   }
 
+  getActiveWorm() {
+    if(this.player1Turn) {
+      return this.worm;
+    } 
+    else {
+      return this.worm2;
+    }
+  }
+
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
   setGameOver = () => this.mode = 'gameOver';
