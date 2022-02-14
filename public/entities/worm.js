@@ -16,7 +16,6 @@ class Worm {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
-    console.log(this.direction)
     if (this.direction === "right") {
       p.push();
       p.translate(pos.x, pos.y);

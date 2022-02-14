@@ -70,6 +70,7 @@ class Sketch {
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
+          console.log("mouse click")
           ShootingController.fireBullet(p, game, grenade); 
         }
       }
