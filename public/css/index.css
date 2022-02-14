@@ -1,3 +1,7 @@
+body {
+  background-color: #f9ebf9;
+}
+
 div {
   display: flex;
   padding: 1rem;
