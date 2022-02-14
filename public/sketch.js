@@ -42,7 +42,7 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, ground: Ground, worm: Worm});
+        game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, ground: Ground, worm: Worm});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game))
         p.textSize(40);
       }
@@ -57,7 +57,12 @@ class Sketch {
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
-          ShootingController.fireBullet(p, game, grenade); 
+          if(game.player1Turn) {
+            ShootingController.fireBullet(p, game, game.worm.currentWeapon); 
+          } 
+          else {
+            ShootingController.fireBullet(p, game, game.worm2.currentWeapon); 
+          }
         }
       }
 
