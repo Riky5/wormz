@@ -19,7 +19,6 @@ class Weapon {
       velocity: this.velocity, 
       damage: this.damage
     });
-    console.log(bullet)
     return bullet;
   }
 

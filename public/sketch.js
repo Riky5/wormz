@@ -59,12 +59,7 @@ class Sketch {
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
-          if(game.player1Turn) {
-            ShootingController.fireBullet(p, game, game.worm.currentWeapon); 
-          } 
-          else {
-            ShootingController.fireBullet(p, game, game.worm2.currentWeapon); 
-          }
+          ShootingController.fireBullet(p, game, game.worm.currentWeapon); 
         }
       }
 
