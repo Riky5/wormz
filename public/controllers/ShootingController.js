@@ -7,17 +7,17 @@ class ShootingController {
     this.bullet;
   }
 
-  static fireBullet(p, game){
+  static fireBullet(p, game, img){
     let angleDeg;
     if(game.player1Turn === true) {
       let wormPos = {x: game.worm.body.position.x, y: game.worm.body.position.y }
       angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-      this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game});
+      this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game, img: img});
     }
     else {
       let wormPos = {x: game.worm2.body.position.x, y: game.worm2.body.position.y }
       angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-      this.bullet = new Bullet({x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game: game});
+      this.bullet = new Bullet({x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game: game, img: img});
     }
 
     game.bullets.push(this.bullet);
