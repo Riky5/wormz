@@ -8,10 +8,9 @@ class ShootingController {
   }
 
   static fireBullet(p, game){
-    let angleDeg;
-    const wormPos = game.getActiveWormPos();
-
-    angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
+    let wormPos = game.getActiveWormPos();
+    let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
+    
     this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game, img: game.worm.currentWeapon.image});
 
     game.bullets.push(this.bullet);
