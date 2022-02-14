@@ -10,6 +10,7 @@ class CollisionController{
 
   // Not sure where this should go, maybe in shooting controller?
   static findAndDestroyBullet = (pair, game) => {
+    game.bulletExists = false
     if(pair.bodyA.label === "bullet") {
       Bullet.destroy(pair.bodyA, game);
     } else {

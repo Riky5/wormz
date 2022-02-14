@@ -21794,6 +21794,7 @@
           this.moveLimit = MAXMOVES;
           this.moveCount = 0;
           this.clockTimer = imgs[2];
+          this.bulletExists = false;
         }
         changePlayerTurn = () => {
           this.resetMoveCount();
@@ -22050,6 +22051,7 @@
       };
       var CollisionController = _CollisionController;
       __publicField(CollisionController, "findAndDestroyBullet", (pair, game) => {
+        game.bulletExists = false;
         if (pair.bodyA.label === "bullet") {
           Bullet.destroy(pair.bodyA, game);
         } else {
@@ -22140,6 +22142,7 @@
         }
         static fireBullet(p, game, img) {
           let angleDeg;
+          game.bulletExists = true;
           if (game.player1Turn === true) {
             let wormPos = { x: game.worm.body.position.x, y: game.worm.body.position.y };
             angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
@@ -22378,7 +22381,10 @@
               p.textSize(40);
             };
             p.draw = () => {
-              if (game.player1Turn === true) {
+              if (game.bulletExists === true) {
+                mx = ShootingController.bullet.body.position.x;
+                my = ShootingController.bullet.body.position.y;
+              } else if (game.player1Turn === true) {
                 mx = game.worm.body.position.x;
                 my = game.worm.body.position.y;
               } else {

@@ -52,7 +52,11 @@ class Sketch {
       }
 
       p.draw = () => {
-        if(game.player1Turn === true)
+        if (game.bulletExists === true)
+        { 
+          mx = ShootingController.bullet.body.position.x;
+        my = ShootingController.bullet.body.position.y;}
+        else if(game.player1Turn === true)
         { 
           mx = game.worm.body.position.x;
         my = game.worm.body.position.y;}

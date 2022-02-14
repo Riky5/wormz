@@ -9,6 +9,7 @@ class ShootingController {
 
   static fireBullet(p, game, img){
     let angleDeg;
+    game.bulletExists = true;
     if(game.player1Turn === true) {
       let wormPos = {x: game.worm.body.position.x, y: game.worm.body.position.y }
       angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
