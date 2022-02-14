@@ -7,6 +7,8 @@ const CollisionController = require('./controllers/collisionController')
 const ShootingController = require('./controllers/shootingController')
 const Worm = require('./entities/worm');
 const Ground = require('./entities/ground');
+const Bullet = require('./entities/bullet');
+const Weapon = require('./models/weapon')
 class Sketch {
 
   constructor(gameClass = Game) {
@@ -42,7 +44,7 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, ground: Ground, worm: Worm});
+        game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, ground: Ground, worm: Worm, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game))
         p.textSize(40);
       }

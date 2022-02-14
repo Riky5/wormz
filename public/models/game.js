@@ -7,9 +7,8 @@ class Game {
     this.world = this.engine.world;
     this.bullets = [];
     this.ground = new ground({x: p.width/2, y: p.height-20, w: p.width, h: 180, world: this.world, matter: matter})
-    this.grenade = new weaponModel({name: 'Grenade', velocity: 30, image: imgs[3], damage: 10, bulletModel: bulletModel})
-    this.worm = new worm({x: (p.windowWidth/10)*2, y: p.windowHeight - 100, options: "wormOne", img: imgs[0], matter: matter, weapons: [imgs[2],imgs[3]]});
-    this.worm2 = new worm({x: (p.windowWidth/10)*8, y: p.windowHeight - 100, options: "wormTwo", img: imgs[1], matter: matter, weapons: [imgs[2],imgs[3]]});
+    this.worm = new worm({x: (p.windowWidth/10)*2, y: p.windowHeight - 100, options: "wormOne", img: imgs[0], matter: matter, weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
+    this.worm2 = new worm({x: (p.windowWidth/10)*8, y: p.windowHeight - 100, options: "wormTwo", img: imgs[1], matter: matter, weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
     matter.World.add(this.world, [this.worm.body,this.worm2.body]);
     this.mode = "start";
     this.player1Turn = true;
@@ -31,7 +30,7 @@ class Game {
     this.mode = modeChoice;
   }
 
-  getActiveWorm() {
+  getActiveWorm = () => {
     if(this.player1Turn) {
       return this.worm;
     } 
@@ -43,6 +42,12 @@ class Game {
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
   setGameOver = () => this.mode = 'gameOver';
+
+  createWeapons = (weaponModel, bulletModel, imgs) => {
+    const grenade = new weaponModel({name: 'Grenade', velocity: 30, image: imgs[3], damage: 10, bulletModel: bulletModel})
+    const clock = new weaponModel({name: 'Clock', velocity: 10, image: imgs[2], damage: 15, bulletModel: bulletModel})
+    return [grenade,clock]
+  }
 }
 
 module.exports = Game;

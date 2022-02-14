@@ -10,7 +10,7 @@ class Worm {
     this.hp = HP;
     this.matter = matter;
     this.weapons = weapons;
-    this.currentWeapon = this.weapons[0];
+    this.currentWeapon = this.weapons[0].image;
   }
 
   show = (p) => {
@@ -60,9 +60,7 @@ class Worm {
     }
   }
   changeWeapon(weaponInput) {
-
     return this.currentWeapon = this.weapons[weaponInput - 1];
-
   }
 }
 
