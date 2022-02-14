@@ -1,7 +1,6 @@
 const Bullet = require('../entities/bullet')
 
 class CollisionController{  
-
   // Not sure where this should go, maybe in shooting controller?
   static findAndDestroyBullet = (pair, game) => {
     if(pair.bodyA.label === "bullet") {
