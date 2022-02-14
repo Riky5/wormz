@@ -57,6 +57,17 @@ class CollisionController{
         game.terrain.splice(index, 1)}
     })
   }
+
+  static lavaCollision = (pair,game) => {
+    if (CollisionController.isInCollision(pair, "wormTwo")) {
+      game.worm2.reduceHP(50);
+      if (game.isWormDead()) {game.setGameOver()}
+      
+    } else if (CollisionController.isInCollision(pair, "wormOne")) {
+      game.worm.reduceHP(50);
+      if (game.isWormDead()) {game.setGameOver()}
+    }
+  }
   
   static collision = (event, game) => {
     for (const pair of event.pairs) {
@@ -64,6 +75,8 @@ class CollisionController{
          CollisionController.createExplosion(pair,game)
         CollisionController.findAndDamageWorm(pair, game);
       }
+      else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava"))
+      {CollisionController.lavaCollision(pair,game)}
     }
   }
 }

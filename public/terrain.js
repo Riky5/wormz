@@ -4,7 +4,6 @@ class Terrain {
   createTerrain(p,world,matter) {
     let terrain_generated = [];
     let ground_piece;
-    // this.lava = new lava({x: p.width/2, y: p.height-20, w: p.width, h: 180, world: this.world, matter: matter})
     let left_border = new Obstacle({x: p.windowWidth + 20,y: 0,w: 100,h: p.windowHeight * 2,  world: world, matter: matter})
     let right_border = new Obstacle({x: -20,y: 0,w: 100,h: p.windowHeight * 2,  world: world, matter: matter})
     let top_border = new Obstacle({x: p.windowWidth / 2,y: p.windowHeight,w: 100,h: 200,  world: world, matter: matter})

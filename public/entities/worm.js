@@ -52,9 +52,9 @@ class Worm {
     return this.body.position
   }
 
-  reduceHP() {
+  reduceHP(amount = 5) {
     if (this.hp > 0) {
-      this.hp -= 5;
+      this.hp -= amount;
     }
   }
 }

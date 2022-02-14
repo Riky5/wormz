@@ -5,6 +5,7 @@ class MoveController {
     }
 
     if (input === p.LEFT_ARROW) {
+      console.log(activeWorm)
       activeWorm.move({ x: -0.1, y:0 }, 10)
       MoveController.increaseCount(game);
 

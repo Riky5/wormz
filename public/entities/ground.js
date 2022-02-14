@@ -5,6 +5,7 @@ class Lava {
     this.w = w;
     this.h = h;
     this.body.isStatic = true;
+    this.body.restitution = 1;
   }
   show(p) {
     const pos = this.body.position;
