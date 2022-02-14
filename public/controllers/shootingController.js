@@ -8,13 +8,14 @@ class ShootingController {
   }
 
   static fireBullet(p, game){
+    let worm = game.getActiveWorm();
     let wormPos = game.getActiveWormPos();
     let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
     
-    this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game, img: game.worm.currentWeapon.image});
+    this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game, img: worm.currentWeapon.image, velocity: worm.currentWeapon.velocity});
 
     game.bullets.push(this.bullet);
-    Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
+    Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*this.bullet.velocity, y:-(p.sin(angleDeg))*this.bullet.velocity});
 
     game.changePlayerTurn();
     TimerController.resetTimer();

@@ -39,7 +39,14 @@ class Game {
     }
   }
 
-  getActiveWormPos = () => this.getActiveWorm().body.position;
+  getActiveWormPos = () => {
+    if(this.player1Turn) {
+      return {x: this.worm.body.position.x + 50, y: this.worm.body.position.y - 40}
+    } 
+    else {
+      return {x: this.worm2.body.position.x - 50, y: this.worm2.body.position.y - 40}
+    }
+  }
 
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
