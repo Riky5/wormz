@@ -89,8 +89,8 @@ class Sketch {
         } else {
           let input = p.keyCode
           if (input === p.DOWN_ARROW) {
-            ZoomController.sf = 0.5;
-            setTimeout(function(){ZoomController.sf = 2;},2000)
+            ZoomController.sf = 1;
+            setTimeout(function(){ZoomController.sf = 2;},1000)
           }
           if (game.player1Turn === true) {
             MoveController.moveWorm(game.worm, input, p, game);
