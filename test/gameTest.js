@@ -34,6 +34,7 @@ describe('Game', () => {
 
   it('initialized with correct parameters', function(done) {
     expect(game.bullets).deep.to.equal([]);
+    expect(game.explosions).deep.to.equal([]);
     expect(game.mode).to.eq("start");
     expect(game.worm).to.be.a("object");
     expect(game.worm2).to.be.a("object");

@@ -1,3 +1,5 @@
+
+const Matter = require('matter-js');
 class Explosion {
   constructor({x: x, y: y, r: r, game: game}) {
     this.body = Matter.Bodies.circle(x,y,r,{label:"explosion"})
@@ -13,14 +15,14 @@ class Explosion {
     p.push()
     p.translate(pos.x,pos.y)
     p.fill(255, 0, 0)
-    p.rectMode(CENTER)
+    p.rectMode(p.CENTER)
     p.circle(0,0, this.r);
     p.pop()
   }
 
   static destroy = (explosion, game) => {
-    Matter.World.remove(game.world, explosion);
-    game.explosions.pop();
+    Matter.World.remove(game.world, explosion.body);
+    // game.explosions.pop();
   }
 
 } 
