@@ -1,5 +1,5 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter}) {
+  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter, direction: direction}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
@@ -9,7 +9,7 @@ class Worm {
     const HP = 100;
     this.hp = HP;
     this.matter = matter;
-    this.flip = false;
+    this.direction = direction;
   }
 
   show = (p,img = this.img) => {
@@ -79,7 +79,7 @@ class Worm {
   }
 
   flipWorm() {
-    this.flip = !this.flip;
+    this.direction === "left" ? this.direction = "right" : this.direction = "left";
   }
 }
 
