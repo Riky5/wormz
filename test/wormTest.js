@@ -6,8 +6,9 @@ const expect = require('chai').expect;
 
 describe('Worm', () => {
   let worm;
+  let weapons = ['gunImage', 'knifeImage']
   beforeEach(() => {
-    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter});
+    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter, weapons: weapons});
   })
 
   it('initialized with correct parameters', function(done) {
@@ -18,6 +19,7 @@ describe('Worm', () => {
     expect(worm.hp).to.eq(100);
     expect(worm.worm).to.eq('testIMG');
     expect(worm.matter).to.eq(Matter);
+    expect(worm.weapons).to.eq(weapons);
     done();
   });
 
@@ -51,4 +53,9 @@ describe('Worm', () => {
       done();
     });
   });
+  it('.changeWeapon changes the worms weapon', function(done) {
+    worm.changeWeapon(1)
+    expect(worm.currentWeapon).to.eq('gunImage');
+    done();
+  })
 });

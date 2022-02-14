@@ -1,5 +1,5 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter, currentWeapon: currentWeapon}) {
+  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter, weapons: weapons}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
@@ -9,7 +9,8 @@ class Worm {
     const HP = 100;
     this.hp = HP;
     this.matter = matter;
-    this.currentWeapon = currentWeapon;
+    this.weapons = weapons;
+    this.currentWeapon = this.weapons[1];
   }
 
   show = (p) => {
@@ -57,6 +58,11 @@ class Worm {
     if (this.hp > 0) {
       this.hp -= 5;
     }
+  }
+  changeWeapon(weaponInput) {
+
+    return this.currentWeapon = this.weapons[weaponInput - 1];
+
   }
 }
 
