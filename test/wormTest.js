@@ -52,8 +52,8 @@ describe('Worm', () => {
       done();
     });
 
-    it('changes the worm direction', function(done) {
-      worm.flipWorm();
+    it('changes the worm direction to left', function(done) {
+      worm.setDirection("left");
       expect(worm.direction).to.eq("left");
       done();
     })

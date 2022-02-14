@@ -16,7 +16,8 @@ class Worm {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
-    if (this.flip === false) {
+    console.log(this.direction)
+    if (this.direction === "right") {
       p.push();
       p.translate(pos.x, pos.y);
       p.rotate(angle);
@@ -78,8 +79,8 @@ class Worm {
     }
   }
 
-  flipWorm() {
-    this.direction === "left" ? this.direction = "right" : this.direction = "left";
+  setDirection(direction) {
+    this.direction = direction;
   }
 }
 

@@ -49,8 +49,12 @@ class Sketch {
 
       p.draw = () => {
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver]);
-        if (p.mouseX < game.worm.body.position.x) {
-          game.worm.flipWorm();
+        if(game.player1Turn === true) {
+          if (p.mouseX < game.worm.body.position.x) {
+            game.worm.setDirection("left");
+          } else {
+            game.worm.setDirection("right");
+          }
         }
       }
 
