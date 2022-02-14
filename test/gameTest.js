@@ -50,10 +50,10 @@ describe('Game', () => {
     expect(game.player1Turn).to.eq(false);
   })
 
-  it ('.resetMoveLimit sets moveCount back to 0', () => {
+  it ('.resetMoveCount sets moveCount back to 0', () => {
     game.moveCount = 5;
     expect(game.moveCount).to.eq(5);
-    game.resetMoveLimit();
+    game.resetMoveCount();
     expect(game.moveCount).to.eq(0);
   })
 

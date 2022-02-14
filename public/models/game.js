@@ -13,15 +13,21 @@ class Game {
     this.player1Turn = true;
     this.moveLimit = MAXMOVES;
     this.moveCount = 0;
+    this.clockTimer = imgs[2];
   }
 
   changePlayerTurn = () => {
-    this.resetMoveLimit();
+    this.resetMoveCount();
     this.player1Turn = !this.player1Turn;
   }
 
-  resetMoveLimit = () => {
-    this.moveCount = 0;}
+  resetMoveCount = () => {
+    this.moveCount = 0;
+  }
+
+  switchToMode(modeChoice) {
+    this.mode = modeChoice;
+  }
 
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
