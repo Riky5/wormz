@@ -39,6 +39,8 @@ class Game {
     }
   }
 
+  getActiveWormPos = () => this.getActiveWorm().body.position;
+
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
   setGameOver = () => this.mode = 'gameOver';
