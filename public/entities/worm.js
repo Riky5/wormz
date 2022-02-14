@@ -6,7 +6,7 @@ class Worm {
     this.x = x;
     this.y = y;
     this.worm = img;
-    const HP = 10;
+    const HP = 100;
     this.hp = HP;
     this.matter = matter;
   }
