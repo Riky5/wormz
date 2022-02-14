@@ -50,5 +50,11 @@ describe('Worm', () => {
       expect(worm.body.mass).to.eq(10)
       done();
     });
+
+    it('flips the worm', function(done) {
+      worm.flipWorm();
+      expect(worm.flip).to.eq(true);
+      done();
+    })
   });
 });

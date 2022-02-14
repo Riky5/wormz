@@ -77,6 +77,10 @@ class Worm {
       this.hp -= 5;
     }
   }
+
+  flipWorm() {
+    this.flip = !this.flip;
+  }
 }
 
 module.exports = Worm;
