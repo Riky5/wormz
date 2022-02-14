@@ -21791,14 +21791,18 @@
           this.player1Turn = true;
           this.moveLimit = MAXMOVES;
           this.moveCount = 0;
+          this.clockTimer = imgs[2];
         }
         changePlayerTurn = () => {
-          this.resetMoveLimit();
+          this.resetMoveCount();
           this.player1Turn = !this.player1Turn;
         };
-        resetMoveLimit = () => {
+        resetMoveCount = () => {
           this.moveCount = 0;
         };
+        switchToMode(modeChoice) {
+          this.mode = modeChoice;
+        }
         isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
         setGameOver = () => this.mode = "gameOver";
       };
@@ -21806,15 +21810,58 @@
     }
   });
 
+  // public/controllers/timerController.js
+  var require_timerController = __commonJS({
+    "public/controllers/timerController.js"(exports, module) {
+      var _TimerController = class {
+        constructor() {
+          this.interval = 0;
+          this.timer = 0;
+        }
+      };
+      var TimerController = _TimerController;
+      __publicField(TimerController, "timeLimit", 20);
+      __publicField(TimerController, "resetTimer", () => {
+        _TimerController.timer = 0;
+      });
+      __publicField(TimerController, "clearTimer", () => {
+        clearInterval(_TimerController.interval);
+      });
+      __publicField(TimerController, "increaseTimer", () => {
+        _TimerController.timer++;
+      });
+      __publicField(TimerController, "startTimer", () => {
+        _TimerController.interval = setInterval(_TimerController.increaseTimer, 1e3);
+      });
+      __publicField(TimerController, "timeLeftOnTurn", () => {
+        return _TimerController.timeLimit - _TimerController.timer;
+      });
+      __publicField(TimerController, "timerForTurn", (p, game) => {
+        if (_TimerController.timeLeftOnTurn() <= 0) {
+          game.changePlayerTurn();
+          _TimerController.resetTimer();
+          game.resetMoveCount();
+        } else if (_TimerController.timeLeftOnTurn() <= 5) {
+          p.fill(220, 0, 0);
+        }
+        return _TimerController.timeLeftOnTurn();
+      });
+      module.exports = TimerController;
+    }
+  });
+
   // public/controllers/screenController.js
   var require_screenController = __commonJS({
     "public/controllers/screenController.js"(exports, module) {
       var Matter = require_matter();
+      var TimerController = require_timerController();
       var ScreenController = class {
-        static startScreen(p) {
-          p.background("red");
-          p.text("PRESS ENTER TO START GAME", p.windowWidth / 2 - 300, p.windowHeight / 2 - 200);
-          p.text("PRESS I FOR INSTRUCTIONS", p.windowWidth / 2 - 300, p.windowHeight / 2);
+        static startScreen(p, logo) {
+          p.background(logo);
+          p.textSize(28);
+          p.fill("#000000");
+          p.text("Press ENTER to start game", p.windowWidth / 2 - 175, p.windowHeight / 2 + 110);
+          p.text("Press I for instructions", p.windowWidth / 2 - 142, p.windowHeight / 2 + 160);
         }
         static gameScreen(p, game, img) {
           p.background(img);
@@ -21823,24 +21870,31 @@
           game.worm.show(p);
           game.worm2.show(p);
           game.bullets.forEach((element) => element.show(p));
+          this.displayWhichPlayerTurn(p, game);
+          this.displayMovesLeftAndTimer(p, game);
         }
-        static gameOverScreen(p) {
-          p.background("blue");
-          p.text("GAME OVER. PRESS ENTER TO GO BACK TO MAIN PAGE", p.windowWidth / 2 - 300, p.windowHeight / 2);
+        static gameOverScreen(p, gameOver) {
+          p.background(gameOver);
+          p.textSize(30);
+          p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 90);
         }
         static instructionsScreen(p) {
-          p.background("red");
-          p.textSize(30);
-          p.text("Use LEFT and RIGHT to move. UP to jump. CLICK to shoot.", 10, p.windowHeight / 2 - 300 / 2);
-          p.text("READY? PRESS ENTER TO GO BACK TO MAIN PAGE", 10, p.windowHeight / 2);
+          p.background("#f9ebf9");
+          p.textSize(32);
+          p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140);
+          p.text("Use LEFT \u25C0\uFE0F and RIGHT \u25B6\uFE0F to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
+          p.text("Use UP \u{1F53C} to jump.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 110);
+          p.text("Aim and CLICK to shoot target \u{1F4A5}.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40);
+          p.textSize(29);
+          p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
         }
-        static setScreen(p, game, img) {
+        static setScreen(p, game, imgs) {
           if (game.mode === "start") {
-            ScreenController.startScreen(p);
+            ScreenController.startScreen(p, imgs[0]);
           } else if (game.mode === "game") {
-            ScreenController.gameScreen(p, game, img);
+            ScreenController.gameScreen(p, game, imgs[1]);
           } else if (game.mode === "gameOver") {
-            ScreenController.gameOverScreen(p);
+            ScreenController.gameOverScreen(p, imgs[2]);
           } else if (game.mode === "instructions") {
             ScreenController.instructionsScreen(p);
           }
@@ -21848,15 +21902,33 @@
         static KeyPressed(p, game) {
           if (game.mode === "start") {
             if (p.keyCode === p.ENTER) {
-              game.mode = "game";
+              game.switchToMode("game");
+              TimerController.resetTimer();
+              TimerController.clearTimer();
+              TimerController.startTimer();
             } else if (p.keyCode === 73) {
-              game.mode = "instructions";
+              game.switchToMode("instructions");
             }
           } else if (game.mode === "gameOver" || game.mode === "instructions") {
             if (p.keyCode === p.ENTER) {
               p.setup();
             }
           }
+        }
+        static displayWhichPlayerTurn(p, game) {
+          p.textSize(30);
+          if (game.player1Turn === true) {
+            p.text("Player 1", p.windowWidth / 2 + 200, p.windowHeight / 2 - 320);
+          } else {
+            p.text("Player 2", p.windowWidth / 2 + 200, p.windowHeight / 2 - 320);
+          }
+          ;
+        }
+        static displayMovesLeftAndTimer(p, game) {
+          p.textSize(20);
+          p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth / 2 + 200, p.windowHeight / 2 - 300);
+          p.text(TimerController.timerForTurn(p, game), p.windowWidth / 2 + 270, p.windowHeight / 2 - 250);
+          p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50);
         }
       };
       module.exports = ScreenController;
@@ -21887,6 +21959,9 @@
       __publicField(MoveController, "increaseCount", (game) => {
         game.moveCount += 1;
       });
+      __publicField(MoveController, "resetCount", (game) => {
+        game.moveCount = 0;
+      });
       module.exports = MoveController;
     }
   });
@@ -21896,10 +21971,11 @@
     "public/entities/bullet.js"(exports, module) {
       var Matter = require_matter();
       var Bullet = class {
-        constructor({ x, y, r, game }) {
+        constructor({ x, y, r, game, img }) {
           this.body = Matter.Bodies.circle(x, y, r, { label: "bullet" });
           Matter.World.add(game.world, this.body);
           this.r = r;
+          this.grenade = img;
         }
         show = (p) => {
           const pos = this.body.position;
@@ -21907,9 +21983,8 @@
           this.body.mass = 5;
           p.push();
           p.translate(pos.x, pos.y);
-          p.fill(255, 0, 0);
-          p.rectMode(p.CENTER);
-          p.circle(0, 0, this.r);
+          p.imageMode(p.CENTER);
+          p.image(this.grenade, 0, 0, 15, 20);
           p.pop();
         };
       };
@@ -21968,27 +22043,54 @@
     "public/controllers/shootingController.js"(exports, module) {
       var Matter = require_matter();
       var Bullet = require_bullet();
+      var TimerController = require_timerController();
       var ShootingController = class {
         constructor() {
           this.bullet;
         }
-        static fireBullet(p, game) {
+        static fireBullet(p, game, img) {
           let angleDeg;
           if (game.player1Turn === true) {
             let wormPos = { x: game.worm.body.position.x, y: game.worm.body.position.y };
             angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-            this.bullet = new Bullet({ x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game });
+            this.bullet = new Bullet({ x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game, img });
           } else {
             let wormPos = { x: game.worm2.body.position.x, y: game.worm2.body.position.y };
             angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-            this.bullet = new Bullet({ x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game });
+            this.bullet = new Bullet({ x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game, img });
           }
           game.bullets.push(this.bullet);
           Matter.Body.setVelocity(this.bullet.body, { x: -p.cos(angleDeg) * 30, y: -p.sin(angleDeg) * 30 });
           game.changePlayerTurn();
+          TimerController.resetTimer();
         }
       };
       module.exports = ShootingController;
+    }
+  });
+
+  // public/controllers/zoomController.js
+  var require_zoomController = __commonJS({
+    "public/controllers/zoomController.js"(exports, module) {
+      var _ZoomController = class {
+        static zoom(p, mx, my, scaleFactor) {
+          p.translate(mx, my);
+          p.scale(scaleFactor);
+          p.translate(-mx, -my);
+          p.translate();
+        }
+        static adjustXYCoords(p) {
+          if (p.mouseIsPressed) {
+            _ZoomController.x -= p.pmouseX - p.mouseX;
+            _ZoomController.y -= p.pmouseY - p.mouseY;
+          }
+        }
+      };
+      var ZoomController = _ZoomController;
+      __publicField(ZoomController, "sf", 1);
+      __publicField(ZoomController, "x", 0);
+      __publicField(ZoomController, "y", 0);
+      module.exports = ZoomController;
     }
   });
 
@@ -22081,6 +22183,7 @@
       var MoveController = require_moveController();
       var CollisionController = require_collisionController();
       var ShootingController = require_shootingController();
+      var ZoomController = require_zoomController();
       var Worm = require_worm();
       var Ground = require_ground();
       var Sketch2 = class {
@@ -22088,29 +22191,52 @@
           this.gameClass = gameClass;
         }
         sketchWorld() {
+          let wormsLogoImg;
           let backgroundImg;
           let wormImg1;
           let wormImg2;
+          let grenade;
+          let gameOver;
+          let clockTimer;
           let gameClass = this.gameClass;
           let game;
+          let mx;
+          let my;
           const sketch2 = new p5(function(p) {
             p.preload = () => {
+              wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
               backgroundImg = p.loadImage("images/background-image.png");
               wormImg1 = p.loadImage("images/worm0.png");
               wormImg2 = p.loadImage("images/worm1.png");
+              grenade = p.loadImage("images/grenade.png");
+              gameOver = p.loadImage("images/game-over.jpg");
+              clockTimer = p.loadImage("images/clock_timer.png");
             };
             p.setup = () => {
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm });
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, ground: Ground, worm: Worm });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
               p.textSize(40);
             };
             p.draw = () => {
-              ScreenController.setScreen(p, game, backgroundImg);
+              mx = p.mouseX;
+              my = p.mouseY;
+              ZoomController.zoom(p, mx, my, ZoomController.sf);
+              ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver]);
+              ZoomController.adjustXYCoords(p);
+            };
+            window.addEventListener("wheel", (e) => {
+              if (e.deltaY > 0 && ZoomController.sf < 2)
+                ZoomController.sf *= 1.05;
+              else if (ZoomController.sf > 0.5)
+                ZoomController.sf *= 0.95;
+            });
+            p.windowResized = () => {
+              p.resizeCanvas(p.windowWidth, p.windowHeight);
             };
             p.mouseClicked = () => {
               if (game.mode === "game") {
-                ShootingController.fireBullet(p, game);
+                ShootingController.fireBullet(p, game, grenade);
               }
             };
             p.keyPressed = () => {
