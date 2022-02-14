@@ -55,6 +55,12 @@ class Sketch {
           } else {
             game.worm.setDirection("right");
           }
+        } else {
+          if (p.mouseX < game.worm2.body.position.x) {
+            game.worm2.setDirection("left");
+          } else {
+            game.worm2.setDirection("right");
+          }
         }
       }
 
