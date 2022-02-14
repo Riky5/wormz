@@ -20,6 +20,7 @@ class Sketch {
     let wormImg1;
     let wormImg2;
     let grenade;
+    let gameOver;
     let gameClass = this.gameClass;
     let game;
 
@@ -34,18 +35,18 @@ class Sketch {
         wormImg1 = p.loadImage("images/worm0.png");
         wormImg2 = p.loadImage("images/worm1.png");
         grenade = p.loadImage("images/grenade.png");
+        gameOver = p.loadImage("images/game-over.jpg");
       }
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        ScreenController.setupInstructionScreen(p);
         game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
         p.textSize(40);
       }
 
       p.draw = () => {
-        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg]);
+        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver]);
       }
 
       p.windowResized = () => {
