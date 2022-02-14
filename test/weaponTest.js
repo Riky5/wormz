@@ -41,8 +41,8 @@ describe('Weapon', () => {
   it('.createBullet sets the parameters of bullet', function(done) {
     let bullet = weapon.createBullet();
     // expect(bullet.damage).to.eq(5)
-    expect(bullet.grenade).to.eq('testImage')
-    // expect(bullet.velocity).to.eq(30)
+    expect(bullet.grenade).to.eq('testImage');
+    expect(bullet.velocity).to.eq(30);
     done();
   })
 });

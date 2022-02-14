@@ -1,10 +1,11 @@
 const Matter = require('matter-js');
 class Bullet {
-  constructor({x: x, y: y, r: r, game: game, img: img}) {
+  constructor({x: x, y: y, r: r, game: game, img: img, velocity: velocity}) {
     this.body = Matter.Bodies.circle(x,y,r,{label:"bullet"});
     Matter.World.add(game.world, this.body);
     this.r = r;
     this.grenade = img;
+    this.velocity = velocity;
   }
   
   show = (p) => {
