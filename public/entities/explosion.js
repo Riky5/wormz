@@ -20,11 +20,6 @@ class Explosion {
     p.pop()
   }
 
-  static destroy = (explosion, game) => {
-    Matter.World.remove(game.world, explosion.body);
-    // game.explosions.pop();
-  }
-
 } 
 
 module.exports = Explosion;

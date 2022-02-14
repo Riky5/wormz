@@ -36,9 +36,10 @@ class CollisionController{
     if(pair.bodyA.label === "bullet") {
       this.explosion = new Explosion({x: pair.bodyA.position.x, y: pair.bodyA.position.y , r: 40, game: game})
       game.explosions.push(this.explosion)
+      CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
-      explosion = this.explosion
-      setTimeout(function(){CollisionController.destroyExplosion(explosion, game)},500)
+      Matter.World.remove(game.world, this.explosion.body);
+      setTimeout(function(){game.explosions.pop();},500)
     } else if (pair.bodyB.label === "bullet") {
       this.explosion = new Explosion({x: pair.bodyB.position.x, y: pair.bodyB.position.y , r: 40, game: game})
       game.explosions.push(this.explosion)
@@ -50,13 +51,10 @@ class CollisionController{
   }
 
   static destroyTerrain = (explosion,game) => {
-    console.log(explosion)
     game.terrain.forEach ((piece, index) => {
-      console.log(piece)
       if ((Math.abs(piece.body.position.x - explosion.body.position.x) < 25) && (Math.abs(piece.body.position.y - explosion.body.position.y) < 25)) 
       {Matter.World.remove(game.world, piece.body);
         game.terrain.splice(index, 1)}
-
     })
   }
   
