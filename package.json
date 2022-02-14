@@ -6,9 +6,8 @@
   "scripts": {
     "test": "mocha",
     "start": "node server",
-    "build": "esbuild index.js --bundle --outfile=public/bundle.js --watch"
+    "build": "esbuild index.js --bundle --outfile=public/bundle.js"
   },
-  "heroku-run-build-script": true,
   "keywords": [
     "p5.js",
     "node"
