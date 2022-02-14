@@ -1,18 +1,18 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, imgs: imgs, matter: matter}) {
+  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
     this.x = x;
     this.y = y;
-    this.imgs = imgs;
+    this.img = img;
     const HP = 100;
     this.hp = HP;
     this.matter = matter;
     this.flip = false;
   }
 
-  show = (p,img = this.imgs[0]) => {
+  show = (p,img = this.img) => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8

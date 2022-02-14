@@ -16,7 +16,7 @@ describe('Worm', () => {
     expect(worm.w).to.eq(90);
     expect(worm.h).to.eq(90);
     expect(worm.hp).to.eq(100);
-    expect(worm.worm).to.eq('testIMG');
+    expect(worm.img).to.eq('testIMG');
     expect(worm.matter).to.eq(Matter);
     done();
   });
