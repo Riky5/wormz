@@ -58,9 +58,9 @@ class Game {
 
   createWeapons = (weaponModel, bulletModel, imgs) => {
     const grenade = new weaponModel({name: 'Grenade', velocity: 15, image: imgs[3], damage: 25, bulletModel: bulletModel})
-    const clock = new weaponModel({name: 'Clock', velocity: 20, image: imgs[2], damage: 15, bulletModel: bulletModel})
-    const worm = new weaponModel({name: 'Worm', velocity: 40, image: imgs[1], damage: 5, bulletModel: bulletModel})
-    return [grenade,clock, worm]
+    const tennisBall = new weaponModel({name: 'TennisBall', velocity: 25, image: imgs[6], damage: 15, bulletModel: bulletModel})
+    const tomato = new weaponModel({name: 'Tomato', velocity: 35, image: imgs[7], damage: 5, bulletModel: bulletModel})
+    return [grenade, tennisBall, tomato]
   }
 
   setActiveWormDirection = (p) => {
