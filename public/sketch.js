@@ -7,12 +7,16 @@ const ScreenController = require('./controllers/screenController')
 const MoveController = require('./controllers/moveController')
 const CollisionController = require('./controllers/collisionController')
 const ShootingController = require('./controllers/shootingController')
+const WeaponController = require('./controllers/weaponController')
+const Bullet = require('./entities/bullet');
+const Weapon = require('./models/weapon')
 const ZoomController = require('./controllers/zoomController')
-const TimerController = require('./controllers/timerController');
-const MusicController = require('./controllers/musicController');
 const Worm = require('./entities/worm');
 const Lava = require('./entities/ground');
 const Terrain = require('./terrain')
+const TimerController = require('./controllers/timerController');
+const MusicController = require('./controllers/musicController');
+
 class Sketch {
   constructor(gameClass = Game) {
     this.gameClass = gameClass;
@@ -59,7 +63,7 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -69,7 +73,7 @@ class Sketch {
         MusicController.changeToHidden(p);
         p.loop();
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
       }
@@ -99,7 +103,7 @@ class Sketch {
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
-          ShootingController.fireBullet(p, game, grenade, explosionSound); 
+          ShootingController.fireBullet(p, game, explosionSound ); 
         }
       }
 
@@ -108,15 +112,14 @@ class Sketch {
           ScreenController.KeyPressed(p, game)
         } else {
           let input = p.keyCode
-          if (input === p.DOWN_ARROW) {
+          let worm = game.getActiveWorm()
+          if (MoveController.isValidInput(input)) {
+            MoveController.moveWorm(worm, input, p, game, [jumpSound, whooshSound]);
+          } else if (WeaponController.isValidInput(input)) {
+            WeaponController.activeWormChangeWeapon(worm, input)
+          } else if (input === p.DOWN_ARROW) {
             ZoomController.sf = 1;
             setTimeout(function(){ZoomController.sf = 2;},1000)
-          }
-          if(game.player1Turn === true) {
-            MoveController.moveWorm(game.worm, input, p, game, [jumpSound, whooshSound]);
-          } 
-          else {
-            MoveController.moveWorm(game.worm2, input, p, game, [jumpSound, whooshSound]);
           }
         }
       }

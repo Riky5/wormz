@@ -6,8 +6,9 @@ const expect = require('chai').expect;
 
 describe('Worm', () => {
   let worm;
+  let weapons = ['gunImage', 'knifeImage']
   beforeEach(() => {
-    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter, direction: "right"});
+    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter, direction: "right", weapons: weapons});
   })
 
   it('initialized with correct parameters', function(done) {
@@ -18,16 +19,21 @@ describe('Worm', () => {
     expect(worm.hp).to.eq(100);
     expect(worm.img).to.eq('testIMG');
     expect(worm.matter).to.eq(Matter);
+    expect(worm.weapons).to.eq(weapons);
     expect(worm.direction).to.eq("right");
     done();
   });
 
   it('.reduceHp reduces worm hp by 5', function(done) {
     expect(worm.hp).to.eq(100);
-    worm.reduceHP();
+    worm.reduceHP(5);
     expect(worm.hp).to.eq(95);
-    worm.reduceHP();
-    expect(worm.hp).to.eq(90);
+    done();
+  });
+  it('.reduceHp reduces worm hp by 50', function(done) {
+    expect(worm.hp).to.eq(100);
+    worm.reduceHP(50);
+    expect(worm.hp).to.eq(50);
     done();
   });
 
@@ -58,4 +64,16 @@ describe('Worm', () => {
       done();
     })
   });
+  it('.changeWeapon changes the worms weapon', function(done) {
+    worm.changeWeapon(2)
+    expect(worm.currentWeapon).to.eq('knifeImage');
+    done();
+  })
+  it('.changeWeapon doesnt change the worms weapon if invalid input', function(done) {
+    worm.changeWeapon(2)
+    expect(worm.currentWeapon).to.eq('knifeImage');
+    worm.changeWeapon(99)
+    expect(worm.currentWeapon).to.eq('knifeImage');
+    done();
+  })
 });

@@ -1,13 +1,12 @@
 'use strict';
-
-const Matter = require('matter-js');
 const expect = require('chai').expect;
 const Game = require('../public/models/game');
 const Worm = require('../public/entities/worm');
+const weaponModel = require('../public/models/weapon')
+const bulletModel = require('../public/entities/bullet')
 const Lava = require('../public/entities/ground');
 const Terrain = require('../public/terrain');
 const TimerController = require('../public/controllers/timerController')
-
 
 describe('Game', () => {
   let game;
@@ -32,7 +31,7 @@ describe('Game', () => {
 
   beforeEach(() => {
     // struggled to find a way to mock constructor for ground and worm
-    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController});
+    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: weaponModel, bulletModel: bulletModel});
   })
 
   it('initialized with correct parameters', function(done) {
@@ -71,5 +70,9 @@ describe('Game', () => {
     expect(game.isWormDead()).to.eq(false);
     game.worm.hp = 0;
     expect(game.isWormDead()).to.eq(true);
+  });
+
+  it('.getActiveWorm() returns a worm', () => {
+    expect(game.getActiveWorm()).to.be.an.instanceOf(Worm);
   });
 });

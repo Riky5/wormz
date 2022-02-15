@@ -1,4 +1,6 @@
 class MoveController {
+  static validKeyCodes = () => [37, 38, 39];
+ 
   static moveWorm = (activeWorm, input, p, game, sounds) => {
     if (game.moveCount >= game.moveLimit) {
       return;
@@ -27,6 +29,12 @@ class MoveController {
   static resetCount = (game) => {
     game.moveCount = 0;
   }
+
+  static isValidInput = (keyCode) => {
+    let validArray = MoveController.validKeyCodes()
+    return validArray.includes(keyCode);
+  }
+
 }
 
 module.exports = MoveController;

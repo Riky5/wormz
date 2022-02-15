@@ -9,7 +9,6 @@ class ZoomController {
 		p.translate(mx, my)
 		p.scale(scaleFactor)
 		p.translate(-mx, -my);
-		p.translate();
 	}
 
 	static adjustXYCoords(p) {

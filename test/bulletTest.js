@@ -30,12 +30,12 @@ describe('Bullet', () => {
 		world: undefined
 	}
   beforeEach(() => {
-    bullet = new Bullet({ x: 10, y: 10, r: 15, game: gameMock, img: 'testImg', matter: matterMock })
+    bullet = new Bullet({ x: 10, y: 10, r: 15, game: gameMock, img: 'testImg', matter: matterMock, velocity: 15, damage: 15})
   })
 
 	it('Bullet creates an instance of itself with correct parameters', function (done) {
 		expect(bullet.r).to.eq(15);
-		expect(bullet.grenade).to.eq('testImg');
+		expect(bullet.image).to.eq('testImg');
 		done();
 	});
 

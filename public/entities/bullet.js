@@ -1,17 +1,20 @@
-const Matter = require('matter-js');
+const Matter = require('matter-js')
 
 class Bullet {
-  constructor({ x: x, y: y, r: r, game: game, img: img, matter: matter }) {
-    this.body = matter.Bodies.circle(x, y, r, { label: "bullet" });
+  constructor({x: x, y: y, r: r, game: game, img: img, velocity: velocity, damage: damage, matter: matter}) {
+    this.body = matter.Bodies.circle(x,y,r,{label:"bullet"});
     matter.World.add(game.world, this.body);
     this.r = r;
-    this.grenade = img;
+    this.image = img;
+    this.velocity = velocity;
+    this.damage = damage;
   }
 
   show = (p) => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 5;
+    this.damage ;
     p.push();
     p.translate(pos.x, pos.y);
 
@@ -22,7 +25,7 @@ class Bullet {
 
     // uncomment here for grenade image..
     p.imageMode(p.CENTER);
-    p.image(this.grenade, 0, 0, 15, 20);
+    p.image(this.image, 0, 0, 15, 20);
 
     p.pop();
   }
