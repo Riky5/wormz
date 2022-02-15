@@ -72249,7 +72249,7 @@ geometric ideas.`,
           this.explosions = [];
           this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 180, world: this.world, matter });
           this.worm = new worm({ x: p.windowWidth / 10 * 1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
-          this.worm2 = new worm({ x: p.windowWidth / 10 * 6, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
+          this.worm2 = new worm({ x: p.windowWidth / 10 * 6.5, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           matter.World.add(this.world, [this.worm.body, this.worm2.body]);
           this.terrain = new terrain().createTerrain(p, this.world, matter);
           this.mode = "start";
@@ -72282,14 +72282,6 @@ geometric ideas.`,
             return { x: worm.body.position.x + worm.w / 2, y: worm.body.position.y - worm.h / 2 };
           } else {
             return { x: worm.body.position.x - worm.w / 2, y: worm.body.position.y - worm.h / 2 };
-          }
-        };
-        uprightWorm = () => {
-          if (this.worm.body.angle != 0 && this.player1Turn != true || (this.worm.body.angle > 1.5 || this.worm.body.angle < -1.5) && this.worm.body.velocity.x < 0.1 && this.worm.body.velocity.y < 0.1) {
-            this.worm.body.angle = 0;
-          }
-          if (this.worm2.body.angle != 0 && this.player1Turn == true || (this.worm2.body.angle > 1.5 || this.worm2.body.angle < -1.5) && this.worm.body.velocity.x < 0.1 && this.worm.body.velocity.y < 0.1) {
-            this.worm2.body.angle = 0;
           }
         };
         isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
@@ -72403,7 +72395,6 @@ geometric ideas.`,
           game.terrain.forEach((element) => element.show(p));
           game.explosions.forEach((element) => element.show(p));
           game.bullets.forEach((element) => element.show(p));
-          game.uprightWorm();
           this.displayWhichPlayerTurn(p, game);
           this.displayMovesLeftAndTimer(p, game);
           this.displayWeaponChoice(p, game);
@@ -72835,6 +72826,7 @@ geometric ideas.`,
           this.weapons = weapons;
           this.currentWeapon = this.weapons[0];
           this.direction = direction;
+          matter.Body.setInertia(this.body, 5e8);
         }
         show = (p, img = this.img) => {
           const pos = this.body.position;
@@ -72930,6 +72922,7 @@ geometric ideas.`,
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
+          this.body.friction = 0.5;
         }
         show(p) {
           const pos = this.body.position;
@@ -72946,9 +72939,9 @@ geometric ideas.`,
     }
   });
 
-  // public/terrain.js
+  // public/entities/terrain.js
   var require_terrain = __commonJS({
-    "public/terrain.js"(exports, module) {
+    "public/entities/terrain.js"(exports, module) {
       var Obstacle = require_obstacle();
       var Terrain = class {
         createTerrain(p, world, matter) {

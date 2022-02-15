@@ -12,6 +12,7 @@ class Worm {
     this.weapons = weapons;
     this.currentWeapon = this.weapons[0]
     this.direction = direction;
+    matter.Body.setInertia(this.body, 10000);
   }
 
   show = (p,img = this.img) => {
