@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "start": "node server",
-    "build": "esbuild index.js --bundle --outfile=public/bundle.js"
+    "build": "esbuild index.js --bundle --outfile=public/bundle.js",
+    "dev-build": "esbuild index.js --bundle --outfile=public/bundle.js --watch"
   },
   "keywords": [
     "p5.js",
@@ -22,8 +23,7 @@
     "express": "^4.17.2",
     "matter-js": "^0.18.0",
     "mocha": "^9.2.0",
-    "p5": "^1.4.1",
-    "sinon": "^13.0.1",
+    "p5": "^0.9.0",
     "socket.io": "^4.4.1",
     "webpack": "^5.68.0"
   },

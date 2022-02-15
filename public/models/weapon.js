@@ -1,11 +1,14 @@
+const Matter = require('matter-js')
+
 class Weapon {
 
-  constructor({name: name, velocity: velocity, image: image, damage: damage, bulletModel: bullet}) {
+  constructor({name: name, velocity: velocity, image: image, damage: damage, bulletModel: bullet, matter: matter = Matter}) {
     this.name = name;
     this.velocity = velocity;
     this.image = image;
     this.damage = damage;
     this.bulletModel = bullet; 
+    this.matter = matter
   }
 
   createBullet(wormPos, game) {
@@ -17,7 +20,8 @@ class Weapon {
       game: game, 
       img: this.image, 
       velocity: this.velocity, 
-      damage: this.damage
+      damage: this.damage,
+      matter: this.matter
     });
     return bullet;
   }

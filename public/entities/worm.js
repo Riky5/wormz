@@ -1,36 +1,56 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter, weapons: weapons}) {
+  constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter, direction: direction, weapons: weapons}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
     this.x = x;
     this.y = y;
-    this.worm = img;
+    this.img = img;
     const HP = 100;
     this.hp = HP;
     this.matter = matter;
     this.weapons = weapons;
     this.currentWeapon = this.weapons[0]
+    this.direction = direction;
   }
 
-  show = (p) => {
+  show = (p,img = this.img) => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
-    p.push();
-    p.translate(pos.x, pos.y);
-    p.rotate(angle);
-    p.fill(255);
+    if (this.direction === "right") {
+      p.push();
+      p.translate(pos.x, pos.y);
+      p.rotate(angle);
+      p.fill(255);
 
-    // SQUARE - uncomment here
-    // p.rectMode(CENTER); 
-    // p.rect(0, 0, this.w, this.h)
+      // SQUARE - uncomment here
+      // p.rectMode(p.CENTER); 
+      // p.rect(0, 0, this.w, this.h)
 
-    // WORM IMAGE - uncomment here
-    p.imageMode(p.CENTER);
-    p.image(this.worm, 0, 0, this.w, this.h);
+      // WORM IMAGE - uncomment here
+      p.imageMode(p.CENTER);
+      p.image(img, 0, 0, this.w, this.h);
 
-    p.pop();
+      p.pop();
+    } else {
+      p.push();
+      p.translate(pos.x, pos.y);
+      p.scale(-1, 1)
+      p.rotate(angle);
+      p.fill(255);
+
+      // SQUARE - uncomment here
+      // p.rectMode(p.CENTER); 
+      // p.rect(0, 0, this.w, this.h)
+
+      // WORM IMAGE - uncomment here
+      p.imageMode(p.CENTER);
+      p.image(img, 0, 0, this.w, this.h);
+      p.pop();
+      
+    }
+    
 
     // p.rect(this.x, this.y, this.w, this.h);
     // HP above the element
@@ -64,6 +84,10 @@ class Worm {
     if (weaponInput <= this.weapons.length && weaponInput > 0) {
       return this.currentWeapon = this.weapons[weaponInput - 1];
     }
+  }
+
+  setDirection(direction) {
+    this.direction = direction;
   }
 }
 

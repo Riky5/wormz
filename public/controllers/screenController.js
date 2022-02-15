@@ -1,5 +1,5 @@
-const Matter = require("matter-js");
-const TimerController = require("./timerController");
+const Matter = require("matter-js")
+const MusicController = require("./musicController");
 
 class ScreenController{
   static startScreen(p, logo) {
@@ -8,16 +8,19 @@ class ScreenController{
     p.fill("#000000");
     p.text("Press ENTER to start game", p.windowWidth / 2 - 175, p.windowHeight / 2 + 110);
     p.text("Press I for instructions", p.windowWidth / 2 - 142, p.windowHeight / 2 + 160);
+    p.text("Press OPTION for Music/Sound settings", p.windowWidth / 2 - 252, p.windowHeight / 2 + 210);
   }
 
   static gameScreen(p, game, img) {
     p.background(img);
     Matter.Engine.update(game.engine);
-    game.ground.show(p);
+    game.lava.show(p);
     game.worm.show(p);
     game.worm2.show(p);
-  
+    (game.terrain).forEach (element => element.show(p))
+    game.explosions.forEach(element => element.show(p));
     game.bullets.forEach(element => element.show(p));
+    game.uprightWorm()
     this.displayWhichPlayerTurn(p, game);
     this.displayMovesLeftAndTimer(p, game)
     this.displayWeaponChoice(p, game)
@@ -31,13 +34,17 @@ class ScreenController{
 
   static instructionsScreen(p) {
     p.background('#f9ebf9');
-    p.textSize(32)
-    p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140)
+    p.textSize(32);
+    p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140);
     p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
-    p.text("Use UP 🔼 to jump.", p.windowWidth / 2 - 310,p. windowHeight / 2 - 110)
-    p.text("Aim and CLICK to shoot target 💥.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40)
-    p.textSize(29)
-    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50)
+    p.text("Use UP 🔼 to jump.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 110);
+    p.text("Aim and CLICK to shoot target 💥.",  p.windowWidth / 2 - 310, p.windowHeight / 2 - 40);
+    p.textSize(29);
+    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
+  }
+
+  static musicSoundScreen(p) {
+    p.resizeCanvas(0, 0);
   }
 
   static setScreen(p, game, imgs) {
@@ -53,23 +60,32 @@ class ScreenController{
     else if (game.mode === 'instructions') {
       ScreenController.instructionsScreen(p);
     }
+    else if (game.mode === 'musicSoundSettings') {
+      MusicController.changeToVisible(p);
+      p.noLoop();
+      ScreenController.musicSoundScreen(p);
+    }
   }
-  
+
   static KeyPressed(p, game) {
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
         game.switchToMode('game');
-        TimerController.resetTimer();
-        TimerController.clearTimer();
-        TimerController.startTimer();
+        game.timer.resetTimer();
+        game.timer.clearTimer();
+        game.timer.startTimer();
       } 
       else if(p.keyCode === 73) {
        game.switchToMode('instructions');
       }
-    }
-    else if(game.mode === 'gameOver' || game.mode === 'instructions') {
+      else if(p.keyCode === p.OPTION) {
+        game.mode = 'musicSoundSettings';
+      }
+    } 
+    else if(game.mode === 'gameOver' || game.mode === 'instructions' || game.mode === 'musicSoundSettings') {
       if(p.keyCode === p.ENTER) {
-        p.setup();
+        p.loop();
+        p.resetMain();
       }
     }
   }
@@ -86,7 +102,7 @@ class ScreenController{
   static displayMovesLeftAndTimer(p, game) {
     p.textSize(20);
     p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
-    p.text(TimerController.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
+    p.text(game.timer.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
     p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
   }
   static displayWeaponChoice(p) {
@@ -99,5 +115,3 @@ class ScreenController{
 }
 
 module.exports = ScreenController;
-
-
