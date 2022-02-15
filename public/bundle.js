@@ -72288,9 +72288,9 @@ geometric ideas.`,
         setGameOver = () => this.mode = "gameOver";
         createWeapons = (weaponModel, bulletModel, imgs) => {
           const grenade = new weaponModel({ name: "Grenade", velocity: 15, image: imgs[3], damage: 25, bulletModel });
-          const clock = new weaponModel({ name: "Clock", velocity: 20, image: imgs[2], damage: 15, bulletModel });
-          const worm = new weaponModel({ name: "Worm", velocity: 40, image: imgs[1], damage: 5, bulletModel });
-          return [grenade, clock, worm];
+          const tennisBall = new weaponModel({ name: "TennisBall", velocity: 25, image: imgs[6], damage: 15, bulletModel });
+          const tomato = new weaponModel({ name: "Tomato", velocity: 35, image: imgs[7], damage: 5, bulletModel });
+          return [grenade, tennisBall, tomato];
         };
         setActiveWormDirection = (p) => {
           if (this.player1Turn === true) {
@@ -72305,6 +72305,13 @@ geometric ideas.`,
             } else {
               this.worm2.setDirection("right");
             }
+          }
+        };
+        getWinner = () => {
+          if (this.worm.hp > this.worm2.hp) {
+            return "Player 1";
+          } else {
+            return "Player 2";
           }
         };
       };
@@ -72399,9 +72406,11 @@ geometric ideas.`,
           this.displayMovesLeftAndTimer(p, game);
           this.displayWeaponChoice(p, game);
         }
-        static gameOverScreen(p, gameOver) {
+        static gameOverScreen(p, gameOver, game) {
           p.background(gameOver);
           p.textSize(30);
+          let winner = game.getWinner();
+          p.text(`${winner} won!`, p.windowWidth / 2 - 260, p.windowHeight / 2 + 40);
           p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 90);
         }
         static instructionsScreen(p) {
@@ -72424,7 +72433,7 @@ geometric ideas.`,
           } else if (game.mode === "game") {
             ScreenController.gameScreen(p, game, imgs[1]);
           } else if (game.mode === "gameOver") {
-            ScreenController.gameOverScreen(p, imgs[2]);
+            ScreenController.gameOverScreen(p, imgs[2], game);
           } else if (game.mode === "instructions") {
             ScreenController.instructionsScreen(p);
           } else if (game.mode === "musicSoundSettings") {
@@ -72702,16 +72711,17 @@ geometric ideas.`,
   // public/controllers/weaponController.js
   var require_weaponController = __commonJS({
     "public/controllers/weaponController.js"(exports, module) {
-      var _WeaponController = class {
+      var WeaponController = class {
+        constructor() {
+          this.validKeyCodes = [49, 50, 51];
+        }
+        activeWormChangeWeapon = (activeWorm, input) => {
+          activeWorm.changeWeapon(input - 48);
+        };
+        isValidInput = (keyCode) => {
+          return this.validKeyCodes.includes(keyCode);
+        };
       };
-      var WeaponController = _WeaponController;
-      __publicField(WeaponController, "validKeyCodes", () => [49, 50, 51]);
-      __publicField(WeaponController, "activeWormChangeWeapon", (activeWorm, input) => {
-        activeWorm.changeWeapon(input - 48);
-      });
-      __publicField(WeaponController, "isValidInput", (keyCode) => {
-        return _WeaponController.validKeyCodes().includes(keyCode);
-      });
       module.exports = WeaponController;
     }
   });
@@ -73013,6 +73023,8 @@ geometric ideas.`,
           let wormImg2;
           let lavaImg;
           let rockImg;
+          let tennisBallImg;
+          let tomatoImg;
           let music;
           let explosionSound;
           let jumpSound;
@@ -73026,6 +73038,7 @@ geometric ideas.`,
           let mx;
           let my;
           let explosionEffect;
+          let weaponController = new WeaponController();
           const sketch2 = new p5(function(p) {
             p.preload = () => {
               wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
@@ -73042,11 +73055,13 @@ geometric ideas.`,
               clockTimer = p.loadImage("images/clock_timer.png");
               lavaImg = p.loadImage("images/lava.png");
               rockImg = p.loadImage("images/rock.png");
+              tennisBallImg = p.loadImage("images/tennis_ball.png");
+              tomatoImg = p.loadImage("images/tomato.png");
               explosionEffect = p.loadImage("images/explosion.png");
             };
             p.setup = () => {
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
               MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -73055,7 +73070,7 @@ geometric ideas.`,
               MusicController.changeToHidden(p);
               p.loop();
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
             };
@@ -73091,8 +73106,8 @@ geometric ideas.`,
                 let worm = game.getActiveWorm();
                 if (MoveController.isValidInput(input)) {
                   MoveController.moveWorm(worm, input, p, game, [jumpSound, whooshSound]);
-                } else if (WeaponController.isValidInput(input)) {
-                  WeaponController.activeWormChangeWeapon(worm, input);
+                } else if (weaponController.isValidInput(input)) {
+                  weaponController.activeWormChangeWeapon(worm, input);
                 } else if (input === p.DOWN_ARROW) {
                   ZoomController.sf = 1;
                   setTimeout(function() {

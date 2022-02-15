@@ -1,12 +1,15 @@
 class WeaponController {
-  static validKeyCodes = () => [49, 50, 51];
+  constructor() {
+    this.validKeyCodes = [49,50,51];
+  }
+  // static validKeyCodes = () => [49, 50, 51];
  
-  static activeWormChangeWeapon = (activeWorm, input) => {
+  activeWormChangeWeapon = (activeWorm, input) => {
     activeWorm.changeWeapon(input - 48)
   }
 
-  static isValidInput = (keyCode) => {
-    return WeaponController.validKeyCodes().includes(keyCode);
+  isValidInput = (keyCode) => {
+    return this.validKeyCodes.includes(keyCode);
   }
 }
 
