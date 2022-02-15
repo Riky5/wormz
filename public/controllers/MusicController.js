@@ -27,12 +27,16 @@ class MusicController {
     soundOnBtn.mouseClicked(function() {
       sounds[1].connect();
       sounds[2].connect();
+      sounds[3].connect();
+      sounds[4].connect();
     });
     let soundOffBtn = p.createButton('OFF').parent(soundDiv);
     soundOffBtn.id('soundOffBtn');
     soundOffBtn.mouseClicked(function() {
       sounds[1].disconnect();
       sounds[2].disconnect();
+      sounds[3].disconnect();
+      sounds[4].disconnect();
     });
     let backToMain = p.createP('Press ENTER to go back to main page').parent(mainDiv);
     backToMain.id('enterMsg');

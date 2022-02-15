@@ -25,6 +25,8 @@ class Sketch {
     let music;
     let explosionSound;
     let jumpSound;
+    let whooshSound;
+    let hitSound;
     let grenade;
     let gameOver;
     let clockTimer;
@@ -44,6 +46,8 @@ class Sketch {
         music = p.loadSound("assets/Whimsical-Popsicle.mp3");
         explosionSound = p.loadSound("assets/Explosion.mp3");
         jumpSound = p.loadSound('assets/jump.mp3');
+        whooshSound = p.loadSound('assets/whoosh.mp3');
+        hitSound = p.loadSound('assets/hit.mp3')
         grenade = p.loadImage("images/grenade.png");
         gameOver = p.loadImage("images/game-over.jpg");
         clockTimer = p.loadImage("images/clock_timer.png")
@@ -52,9 +56,9 @@ class Sketch {
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
         game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, ground: Ground, worm: Worm, timer: TimerController});
-        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
-        MusicController.createSoundScreen(p, [music, explosionSound, jumpSound]);
+        MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
       }
 
       p.resetMain = () => {
@@ -62,7 +66,7 @@ class Sketch {
         p.loop();
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
         game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, ground: Ground, worm: Worm, timer: TimerController});
-        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
       }
 
@@ -86,10 +90,10 @@ class Sketch {
         }  else {
           let input = p.keyCode
           if(game.player1Turn === true) {
-            MoveController.moveWorm(game.worm, input, p, game, jumpSound);
+            MoveController.moveWorm(game.worm, input, p, game, [jumpSound, whooshSound]);
           } 
           else {
-            MoveController.moveWorm(game.worm2, input, p, game, jumpSound);
+            MoveController.moveWorm(game.worm2, input, p, game, [jumpSound, whooshSound]);
           }
         }
       }
