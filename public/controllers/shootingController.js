@@ -6,7 +6,7 @@ class ShootingController {
     this.bullet;
   }
 
-  static fireBullet(p, game, img) {
+  static fireBullet(p, game, img, sound) {
     let angleDeg;
     if(game.player1Turn === true) {
       angleDeg = ShootingController.fire(p, game.worm, game, img);
@@ -15,7 +15,10 @@ class ShootingController {
       angleDeg = ShootingController.fire(p, game.worm2, game, img);
     }
     game.bullets.push(this.bullet);
+
+    sound.play(); 
     Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
+
 
     game.changePlayerTurn();
     game.timer.resetTimer();

@@ -1,4 +1,5 @@
 const Matter = require('matter-js');
+
 class Bullet {
   constructor({ x: x, y: y, r: r, game: game, img: img, matter: matter }) {
     this.body = matter.Bodies.circle(x, y, r, { label: "bullet" });

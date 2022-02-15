@@ -14,22 +14,24 @@ class CollisionController{
     return pair.bodyA.label === label || pair.bodyB.label === label
   }
   
-  static findAndDamageWorm = (pair, game) => {
+  static findAndDamageWorm = (pair, game, sound) => {
     if (CollisionController.isInCollision(pair, "wormTwo")) {
+      sound.play();
       game.worm2.reduceHP();
       if (game.isWormDead()) {game.setGameOver()}
       
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
+      sound.play();
       game.worm.reduceHP();
       if (game.isWormDead()) {game.setGameOver()}
     }
   }
   
-  static collision = (event, game) => {
+  static collision = (event, game, sound) => {
     for (const pair of event.pairs) {
       if(CollisionController.isInCollision(pair, "bullet")) {
         CollisionController.findAndDestroyBullet(pair, game);
-        CollisionController.findAndDamageWorm(pair, game);
+        CollisionController.findAndDamageWorm(pair, game, sound);
       }
     }
   }

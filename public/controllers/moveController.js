@@ -1,19 +1,22 @@
 class MoveController {
-  static moveWorm = (activeWorm, input, p, game) => {
+  static moveWorm = (activeWorm, input, p, game, sounds) => {
     if (game.moveCount >= game.moveLimit) {
       return;
     }
 
     if (input === p.LEFT_ARROW) {
-      activeWorm.move({ x: -0.1, y:0 }, 10)
+      activeWorm.move({ x: -0.1, y:0 }, 10);
+      sounds[1].play();
       MoveController.increaseCount(game);
 
     } else if (input === p.RIGHT_ARROW) {
-      activeWorm.move({ x: 0.1, y:0 }, 10)
+      activeWorm.move({ x: 0.1, y:0 }, 10);
+      sounds[1].play();
       MoveController.increaseCount(game);
 
     } else if (input === p.UP_ARROW) {
-      activeWorm.move({ x: 0, y:-0.2 }, 10)
+      activeWorm.move({ x: 0, y:-0.2 }, 10);
+      sounds[0].play();
       MoveController.increaseCount(game);
     }
   }

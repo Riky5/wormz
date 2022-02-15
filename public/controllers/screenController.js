@@ -1,4 +1,5 @@
-const Matter = require("matter-js");
+const Matter = require("matter-js")
+const MusicController = require("./musicController");
 
 class ScreenController{
   static startScreen(p, logo) {
@@ -7,6 +8,7 @@ class ScreenController{
     p.fill("#000000");
     p.text("Press ENTER to start game", p.windowWidth / 2 - 175, p.windowHeight / 2 + 110);
     p.text("Press I for instructions", p.windowWidth / 2 - 142, p.windowHeight / 2 + 160);
+    p.text("Press OPTION for Music/Sound settings", p.windowWidth / 2 - 252, p.windowHeight / 2 + 210);
   }
 
   static gameScreen(p, game, img) {
@@ -29,13 +31,17 @@ class ScreenController{
 
   static instructionsScreen(p) {
     p.background('#f9ebf9');
-    p.textSize(32)
-    p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140)
+    p.textSize(32);
+    p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140);
     p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
-    p.text("Use UP 🔼 to jump.", p.windowWidth / 2 - 310,p. windowHeight / 2 - 110)
-    p.text("Aim and CLICK to shoot target 💥.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40)
-    p.textSize(29)
-    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50)
+    p.text("Use UP 🔼 to jump.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 110);
+    p.text("Aim and CLICK to shoot target 💥.",  p.windowWidth / 2 - 310, p.windowHeight / 2 - 40);
+    p.textSize(29);
+    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
+  }
+
+  static musicSoundScreen(p) {
+    p.resizeCanvas(0, 0);
   }
 
   static setScreen(p, game, imgs) {
@@ -51,8 +57,13 @@ class ScreenController{
     else if (game.mode === 'instructions') {
       ScreenController.instructionsScreen(p);
     }
+    else if (game.mode === 'musicSoundSettings') {
+      MusicController.changeToVisible(p);
+      p.noLoop();
+      ScreenController.musicSoundScreen(p);
+    }
   }
-  
+
   static KeyPressed(p, game) {
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
@@ -64,10 +75,14 @@ class ScreenController{
       else if(p.keyCode === 73) {
        game.switchToMode('instructions');
       }
-    }
-    else if(game.mode === 'gameOver' || game.mode === 'instructions') {
+      else if(p.keyCode === p.OPTION) {
+        game.mode = 'musicSoundSettings';
+      }
+    } 
+    else if(game.mode === 'gameOver' || game.mode === 'instructions' || game.mode === 'musicSoundSettings') {
       if(p.keyCode === p.ENTER) {
-        p.setup();
+        p.loop();
+        p.resetMain();
       }
     }
   }
@@ -90,5 +105,3 @@ class ScreenController{
 }
 
 module.exports = ScreenController;
-
-
