@@ -8,7 +8,7 @@ class Game {
     this.bullets = [];
     this.ground = new ground({x: p.width/2, y: p.height-20, w: p.width, h: 180, world: this.world, matter: matter})
     this.worm = new worm({x: (p.windowWidth/10)*2, y: p.windowHeight - 100, options: "wormOne", img: imgs[0], matter: matter, weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
-    this.worm2 = new worm({x: (p.windowWidth/10)*8, y: p.windowHeight - 100, options: "wormTwo", img: imgs[1], matter: matter, weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
+    this.worm2 = new worm({x: (p.windowWidth/10)*8, y: p.windowHeight - 100, options: "wormTwo", img: imgs[1], matter: matter, weapons: [new weaponModel({name: 'Worm', velocity: 40, image: imgs[1], damage: 5, bulletModel: bulletModel})]});
     matter.World.add(this.world, [this.worm.body,this.worm2.body]);
     this.mode = "start";
     this.player1Turn = true;
@@ -53,7 +53,7 @@ class Game {
   setGameOver = () => this.mode = 'gameOver';
 
   createWeapons = (weaponModel, bulletModel, imgs) => {
-    const grenade = new weaponModel({name: 'Grenade', velocity: 10, image: imgs[3], damage: 25, bulletModel: bulletModel})
+    const grenade = new weaponModel({name: 'Grenade', velocity: 15, image: imgs[3], damage: 25, bulletModel: bulletModel})
     const clock = new weaponModel({name: 'Clock', velocity: 20, image: imgs[2], damage: 15, bulletModel: bulletModel})
     const worm = new weaponModel({name: 'Worm', velocity: 40, image: imgs[1], damage: 5, bulletModel: bulletModel})
     return [grenade,clock, worm]

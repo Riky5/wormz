@@ -17,6 +17,8 @@ class CollisionController{
   }
   
   static findAndDamageWorm = (pair, game) => {
+    // colission with wall to be checked 
+    // console.log(game.bullets.length)
     let bulletDamageValue = game.bullets[0].damage
     if (CollisionController.isInCollision(pair, "wormTwo")) {
       game.worm2.reduceHP(bulletDamageValue);
