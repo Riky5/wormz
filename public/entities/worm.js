@@ -1,5 +1,5 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 70, h: h= 70, options: options, img: img, matter: matter, direction: direction}) {
+  constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter, direction: direction}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
@@ -72,9 +72,9 @@ class Worm {
     return this.body.position
   }
 
-  reduceHP() {
+  reduceHP(amount = 5) {
     if (this.hp > 0) {
-      this.hp -= 5;
+      this.hp -= amount;
     }
   }
 

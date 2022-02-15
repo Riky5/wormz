@@ -14,11 +14,13 @@ class ScreenController{
   static gameScreen(p, game, img) {
     p.background(img);
     Matter.Engine.update(game.engine);
-    game.ground.show(p);
+    game.lava.show(p);
     game.worm.show(p);
     game.worm2.show(p);
-  
+    (game.terrain).forEach (element => element.show(p))
+    game.explosions.forEach(element => element.show(p));
     game.bullets.forEach(element => element.show(p));
+    game.uprightWorm()
     this.displayWhichPlayerTurn(p, game);
     this.displayMovesLeftAndTimer(p, game)
   }

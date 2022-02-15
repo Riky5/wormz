@@ -4,8 +4,10 @@ const Matter = require('matter-js');
 const expect = require('chai').expect;
 const Game = require('../public/models/game');
 const Worm = require('../public/entities/worm');
-const Ground = require('../public/entities/ground');
+const Lava = require('../public/entities/ground');
+const Terrain = require('../public/terrain');
 const TimerController = require('../public/controllers/timerController')
+
 
 describe('Game', () => {
   let game;
@@ -30,15 +32,16 @@ describe('Game', () => {
 
   beforeEach(() => {
     // struggled to find a way to mock constructor for ground and worm
-    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, ground: Ground, worm: Worm, timer: TimerController});
+    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController});
   })
 
   it('initialized with correct parameters', function(done) {
     expect(game.bullets).deep.to.equal([]);
+    expect(game.explosions).deep.to.equal([]);
     expect(game.mode).to.eq("start");
     expect(game.worm).to.be.a("object");
     expect(game.worm2).to.be.a("object");
-    expect(game.ground).to.be.a("object");
+    expect(game.lava).to.be.a("object");
     expect(game.player1Turn).to.eq(true);
     expect(game.moveCount).to.eq(0);
     expect(game.moveLimit).to.eq(5);

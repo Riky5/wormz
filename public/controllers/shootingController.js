@@ -8,6 +8,7 @@ class ShootingController {
 
   static fireBullet(p, game, img, sound) {
     let angleDeg;
+    game.bulletExists = true;
     if(game.player1Turn === true) {
       console.log("player 1 turn")
       angleDeg = ShootingController.fire(p, game.worm, game, img);

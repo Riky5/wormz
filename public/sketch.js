@@ -7,15 +7,17 @@ const ScreenController = require('./controllers/screenController')
 const MoveController = require('./controllers/moveController')
 const CollisionController = require('./controllers/collisionController')
 const ShootingController = require('./controllers/shootingController')
+const ZoomController = require('./controllers/zoomController')
 const TimerController = require('./controllers/timerController');
 const MusicController = require('./controllers/musicController');
 const Worm = require('./entities/worm');
-const Ground = require('./entities/ground');
+const Lava = require('./entities/ground');
+const Terrain = require('./terrain')
 class Sketch {
   constructor(gameClass = Game) {
     this.gameClass = gameClass;
   }
-  
+
   sketchWorld() {
     // These variables need to stay here due to strange scope of this function
     let wormsLogoImg;
@@ -32,13 +34,15 @@ class Sketch {
     let clockTimer;
     let gameClass = this.gameClass;
     let game;
+    let mx; // mouse coords
+    let my; // mouse coords
+  
 
-    const sketch = new p5 (function(p) {
+    const sketch = new p5(function (p) {
       // In order to use p5 functions in other classes, pass p as a parameter to methods in other classes.
       // p cannot be stored in a variable.
 
-      p.preload = () =>
-      {
+      p.preload = () => {
         wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
         backgroundImg = p.loadImage("images/background-image.png");
         wormImg1 = p.loadImage("images/worm0.png");
@@ -55,7 +59,7 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, ground: Ground, worm: Worm, timer: TimerController});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -65,16 +69,28 @@ class Sketch {
         MusicController.changeToHidden(p);
         p.loop();
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, ground: Ground, worm: Worm, timer: TimerController});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
       }
 
       p.draw = () => {
-
+        if (game.bulletExists === true)
+        { 
+          mx = ShootingController.bullet.body.position.x;
+          my = ShootingController.bullet.body.position.y;}
+        else if(game.player1Turn === true)
+        { 
+          mx = game.worm.body.position.x;
+          my = game.worm.body.position.y;
+        } else { 
+          mx = game.worm2.body.position.x;
+          my = game.worm2.body.position.y;
+        }
+        ZoomController.zoom(p, mx, my, ZoomController.sf)
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, music]);
+        ZoomController.adjustXYCoords(p)
         game.setActiveWormDirection(p);
-
       }
 
       p.windowResized = () => {
@@ -90,8 +106,12 @@ class Sketch {
       p.keyPressed = () => {
         if (game.mode != 'game') {
           ScreenController.KeyPressed(p, game)
-        }  else {
+        } else {
           let input = p.keyCode
+          if (input === p.DOWN_ARROW) {
+            ZoomController.sf = 1;
+            setTimeout(function(){ZoomController.sf = 2;},1000)
+          }
           if(game.player1Turn === true) {
             MoveController.moveWorm(game.worm, input, p, game, [jumpSound, whooshSound]);
           } 
@@ -101,7 +121,7 @@ class Sketch {
         }
       }
     }, "sketch")
-  } 
+  }
 }
 
 module.exports = Sketch;
