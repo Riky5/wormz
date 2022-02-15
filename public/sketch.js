@@ -62,12 +62,13 @@ class Sketch {
       }
 
       p.setup = () => {
-        p.createCanvas(2000, 2000);
+        p.createCanvas(p.windowWidth, p.windowHeight);
         game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
-        ZoomController.sf = 0.5;
+        ZoomController.sf = 1;
+        setTimeout(()=> {ZoomController.sf = 2},2000)
       }
 
       p.resetMain = () => {
@@ -94,7 +95,6 @@ class Sketch {
         }
         ZoomController.zoom(p, mx, my, ZoomController.sf)
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, music]);
-        ZoomController.adjustXYCoords(p)
         game.setActiveWormDirection(p);
       }
 
@@ -119,8 +119,9 @@ class Sketch {
           } else if (WeaponController.isValidInput(input)) {
             WeaponController.activeWormChangeWeapon(worm, input)
           } else if (input === p.DOWN_ARROW) {
-            ZoomController.sf = 1;
-            setTimeout(function(){ZoomController.sf = 2;},1000)
+            if (ZoomController.sf === 1)
+            {ZoomController.sf = 2;}
+            else {ZoomController.sf = 1;}
           }
         }
       }
