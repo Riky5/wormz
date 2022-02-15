@@ -102,7 +102,6 @@ class Sketch {
       }
 
       p.mouseClicked = () => {
-        Matter.Body.setVelocity(game.worm.body, {x:2, y:0})
         if(game.mode === 'game') {
           ShootingController.fireBullet(p, game, explosionSound ); 
         }

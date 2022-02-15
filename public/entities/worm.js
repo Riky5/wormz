@@ -10,9 +10,9 @@ class Worm {
     this.hp = HP;
     this.matter = matter;
     this.weapons = weapons;
-    this.currentWeapon = this.weapons[0];
+    this.currentWeapon = this.weapons[0]
     this.direction = direction;
-    this.body.isStatic = true;
+    matter.Body.setInertia(this.body, Infinity);
   }
 
   show = (p,img = this.img) => {
@@ -71,7 +71,6 @@ class Worm {
 
   move(force, mass) {
     this.matter.Body.applyForce(this.body, this.body.position, force)
-    this.body.torque = 0;
     this.body.mass = mass
     return this.body.position
   }

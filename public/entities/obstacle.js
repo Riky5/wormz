@@ -5,7 +5,6 @@ class Obstacle {
     this.w = w;
     this.h = h;
     this.body.isStatic = true;
-    this.body.friction = 1;
   }
   show(p) {
     const pos = this.body.position;

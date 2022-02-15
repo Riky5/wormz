@@ -72292,14 +72292,6 @@ geometric ideas.`,
           const worm = new weaponModel({ name: "Worm", velocity: 40, image: imgs[1], damage: 5, bulletModel });
           return [grenade, clock, worm];
         };
-        uprightWorm = () => {
-          if (this.worm.body.angle != 0 && this.player1Turn != true || (this.worm.body.angle > 1.5 || this.worm.body.angle < -1.5) && this.worm.body.velocity.x < 0.1 && this.worm.body.velocity.y < 0.1) {
-            this.worm.body.angle = 0;
-          }
-          if (this.worm2.body.angle != 0 && this.player1Turn == true || (this.worm2.body.angle > 1.5 || this.worm2.body.angle < -1.5) && this.worm.body.velocity.x < 0.1 && this.worm.body.velocity.y < 0.1) {
-            this.worm2.body.angle = 0;
-          }
-        };
         setActiveWormDirection = (p) => {
           if (this.player1Turn === true) {
             if (p.mouseX < this.worm.body.position.x) {
@@ -72834,8 +72826,7 @@ geometric ideas.`,
           this.weapons = weapons;
           this.currentWeapon = this.weapons[0];
           this.direction = direction;
-          this.body.friction = 1;
-          matter.Body.setInertia(this.body, 4e4);
+          matter.Body.setInertia(this.body, Infinity);
         }
         show = (p, img = this.img) => {
           const pos = this.body.position;
@@ -72873,7 +72864,6 @@ geometric ideas.`,
         };
         move(force, mass) {
           this.matter.Body.applyForce(this.body, this.body.position, force);
-          this.body.torque = 0;
           this.body.mass = mass;
           return this.body.position;
         }
@@ -72932,7 +72922,6 @@ geometric ideas.`,
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
-          this.body.friction = 1;
         }
         show(p) {
           const pos = this.body.position;
@@ -73082,7 +73071,6 @@ geometric ideas.`,
               p.resizeCanvas(p.windowWidth, p.windowHeight);
             };
             p.mouseClicked = () => {
-              Matter.Body.setVelocity(game.worm.body, { x: 2, y: 0 });
               if (game.mode === "game") {
                 ShootingController.fireBullet(p, game, explosionSound);
               }
