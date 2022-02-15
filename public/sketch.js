@@ -62,17 +62,18 @@ class Sketch {
       }
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth, p.windowHeight - 50);
+        p.createCanvas(2000, 2000);
         game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
+        ZoomController.sf = 0.5;
       }
 
       p.resetMain = () => {
         MusicController.changeToHidden(p);
         p.loop();
-        p.createCanvas(p.windowWidth, p.windowHeight - 50);
+        p.createCanvas(2000, 2000);
         game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);

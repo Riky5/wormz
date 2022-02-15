@@ -72247,7 +72247,7 @@ geometric ideas.`,
           this.world = this.engine.world;
           this.bullets = [];
           this.explosions = [];
-          this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 180, world: this.world, matter });
+          this.lava = new lava({ x: 1e3, y: 2e3, w: 3e3, h: 180, world: this.world, matter });
           this.worm = new worm({ x: p.windowWidth / 10 * 1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           this.worm2 = new worm({ x: p.windowWidth / 10 * 6, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           matter.World.add(this.world, [this.worm.body, this.worm2.body]);
@@ -72954,9 +72954,9 @@ geometric ideas.`,
         createTerrain(p, world, matter) {
           let terrain_generated = [];
           let ground_piece;
-          let left_border = new Obstacle({ x: p.windowWidth + 20, y: 0, w: 100, h: p.windowHeight * 2, world, matter });
-          let right_border = new Obstacle({ x: -20, y: 0, w: 100, h: p.windowHeight * 2, world, matter });
-          let top_border = new Obstacle({ x: p.windowWidth / 2, y: p.windowHeight, w: 100, h: 200, world, matter });
+          let left_border = new Obstacle({ x: 2e3 + 20, y: 1e3, w: 100, h: 3e3, world, matter });
+          let right_border = new Obstacle({ x: -20, y: 1e3, w: 100, h: 3e3, world, matter });
+          let top_border = new Obstacle({ x: 1e3, y: -400, w: 3e3, h: 200, world, matter });
           let block_height = 10;
           let platforms = [
             [100, 200],
@@ -72968,7 +72968,85 @@ geometric ideas.`,
             [300, 900],
             [400, 500],
             [500, 100],
-            [500, 800]
+            [500, 800],
+            [600, 200],
+            [600, 450],
+            [600, 800],
+            [700, 100],
+            [700, 600],
+            [700, 900],
+            [800, 200],
+            [800, 400],
+            [800, 700],
+            [900, 200],
+            [900, 650],
+            [900, 950],
+            [1e3, 200],
+            [1e3, 500],
+            [1e3, 720],
+            [1200, 400],
+            [1350, 250],
+            [1300, 600],
+            [1300, 900],
+            [1400, 500],
+            [1500, 100],
+            [1500, 800],
+            [1600, 200],
+            [1600, 450],
+            [1600, 800],
+            [1700, 100],
+            [1700, 600],
+            [1700, 900],
+            [1800, 200],
+            [1800, 400],
+            [1800, 700],
+            [1900, 200],
+            [1900, 650],
+            [1900, 950],
+            [100, 1200],
+            [100, 1500],
+            [100, 1720],
+            [200, 1400],
+            [350, 1250],
+            [300, 1600],
+            [300, 1900],
+            [400, 1500],
+            [500, 1100],
+            [500, 1800],
+            [600, 1200],
+            [600, 1450],
+            [600, 1800],
+            [700, 1100],
+            [700, 1100],
+            [700, 1900],
+            [800, 1200],
+            [800, 1400],
+            [800, 1700],
+            [900, 1200],
+            [900, 1650],
+            [900, 1950],
+            [1100, 1200],
+            [1100, 1500],
+            [1100, 1720],
+            [1200, 1400],
+            [1350, 1250],
+            [1300, 1600],
+            [1300, 1900],
+            [1400, 1500],
+            [1500, 1100],
+            [1500, 1800],
+            [1600, 1200],
+            [1600, 1450],
+            [1600, 1800],
+            [1700, 1100],
+            [1700, 1100],
+            [1700, 1900],
+            [1800, 1200],
+            [1800, 1400],
+            [1800, 1700],
+            [1900, 1200],
+            [1900, 1650],
+            [1900, 1950]
           ];
           platforms.forEach((platform_location) => {
             for (var i = 0; i < 15; i++) {
@@ -73045,16 +73123,17 @@ geometric ideas.`,
               clockTimer = p.loadImage("images/clock_timer.png");
             };
             p.setup = () => {
-              p.createCanvas(p.windowWidth, p.windowHeight - 50);
+              p.createCanvas(2e3, 2e3);
               game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
               p.textSize(40);
               MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
+              ZoomController.sf = 0.5;
             };
             p.resetMain = () => {
               MusicController.changeToHidden(p);
               p.loop();
-              p.createCanvas(p.windowWidth, p.windowHeight - 50);
+              p.createCanvas(2e3, 2e3);
               game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
               p.textSize(40);
