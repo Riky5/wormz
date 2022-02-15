@@ -50,6 +50,7 @@ class CollisionController{
 
   static destroyTerrain = (explosion,game) => {
     game.terrain.forEach ((piece, index) => {
+      // Checks if the terrain is in a certain radius of the explosion and if so destroys it
       if ((Math.abs(piece.body.position.x - explosion.body.position.x) < 25) && (Math.abs(piece.body.position.y - explosion.body.position.y) < 25)) 
       {Matter.World.remove(game.world, piece.body);
         game.terrain.splice(index, 1)}
