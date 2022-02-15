@@ -77,7 +77,7 @@ class CollisionController{
 
       if(CollisionController.isInCollision(pair, "bullet")) {
         CollisionController.findAndDamageWorm(pair, game, sound); 
-        CollisionController.createExplosion(pair, game, img)
+        CollisionController.createExplosion(pair, game, img);
       }
       else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava"))
       {CollisionController.lavaCollision(pair,game)}
