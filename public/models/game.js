@@ -1,3 +1,4 @@
+const ZoomController = require("../controllers/zoomController");
 
 // Moved to a models folder for now not sure where it should be housed
 const MAXMOVES = 5;
@@ -62,7 +63,7 @@ class Game {
 
   isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
   
-  setGameOver = () => this.mode = 'gameOver';
+  setGameOver = () => {this.mode = 'gameOver'; ZoomController.sf = 1}
 
   createWeapons = (weaponModel, bulletModel, imgs) => {
     const grenade = new weaponModel({name: 'Grenade', velocity: 15, image: imgs[3], damage: 25, bulletModel: bulletModel})

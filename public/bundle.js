@@ -72237,9 +72237,25 @@ geometric ideas.`,
     }
   });
 
+  // public/controllers/zoomController.js
+  var require_zoomController = __commonJS({
+    "public/controllers/zoomController.js"(exports, module) {
+      var ZoomController = class {
+        static zoom(p, mx, my, scaleFactor) {
+          p.translate(mx, my);
+          p.scale(scaleFactor);
+          p.translate(-mx, -my);
+        }
+      };
+      __publicField(ZoomController, "sf", 1);
+      module.exports = ZoomController;
+    }
+  });
+
   // public/models/game.js
   var require_game = __commonJS({
     "public/models/game.js"(exports, module) {
+      var ZoomController = require_zoomController();
       var MAXMOVES = 5;
       var Game = class {
         constructor({ p, imgs, matter, lava, worm, terrain, timer: timerController, weaponModel, bulletModel }) {
@@ -72293,7 +72309,10 @@ geometric ideas.`,
           }
         };
         isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
-        setGameOver = () => this.mode = "gameOver";
+        setGameOver = () => {
+          this.mode = "gameOver";
+          ZoomController.sf = 1;
+        };
         createWeapons = (weaponModel, bulletModel, imgs) => {
           const grenade = new weaponModel({ name: "Grenade", velocity: 15, image: imgs[3], damage: 25, bulletModel });
           const clock = new weaponModel({ name: "Clock", velocity: 20, image: imgs[2], damage: 15, bulletModel });
@@ -72583,21 +72602,6 @@ geometric ideas.`,
         }
       };
       module.exports = Explosion;
-    }
-  });
-
-  // public/controllers/zoomController.js
-  var require_zoomController = __commonJS({
-    "public/controllers/zoomController.js"(exports, module) {
-      var ZoomController = class {
-        static zoom(p, mx, my, scaleFactor) {
-          p.translate(mx, my);
-          p.scale(scaleFactor);
-          p.translate(-mx, -my);
-        }
-      };
-      __publicField(ZoomController, "sf", 1);
-      module.exports = ZoomController;
     }
   });
 
