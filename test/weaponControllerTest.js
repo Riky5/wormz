@@ -14,11 +14,10 @@ describe('WeaponController', () => {
     expect(weaponController.validKeyCodes).to.eql([49,50,51]);
     done();
   });
-  // it('.increaseTimer increases timer value by 1', function(done) {
-  //   timerController.increaseTimer();
-  //   expect(timerController.timer).to.eq(1);
-  //   done();
-  // });
+  it('.isValidInput returns true for a valid keyCode', function(done) {
+    expect(weaponController.isValidInput(51)).to.eq(true);
+    done();
+  });
   // it('.resetTimer changes the timer value back to 0', function(done) {
   //   timerController.increaseTimer();
   //   timerController.increaseTimer();
