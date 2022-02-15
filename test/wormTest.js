@@ -58,8 +58,15 @@ describe('Worm', () => {
     });
   });
   it('.changeWeapon changes the worms weapon', function(done) {
-    worm.changeWeapon(1)
-    expect(worm.currentWeapon).to.eq('gunImage');
+    worm.changeWeapon(2)
+    expect(worm.currentWeapon).to.eq('knifeImage');
+    done();
+  })
+  it('.changeWeapon doesnt change the worms weapon if invalid input', function(done) {
+    worm.changeWeapon(2)
+    expect(worm.currentWeapon).to.eq('knifeImage');
+    worm.changeWeapon(99)
+    expect(worm.currentWeapon).to.eq('knifeImage');
     done();
   })
 });

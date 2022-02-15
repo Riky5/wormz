@@ -59,8 +59,11 @@ class Worm {
       this.hp -= damageValue;
     }
   }
+
   changeWeapon(weaponInput) {
-    return this.currentWeapon = this.weapons[weaponInput - 1];
+    if (weaponInput <= this.weapons.length && weaponInput > 0) {
+      return this.currentWeapon = this.weapons[weaponInput - 1];
+    }
   }
 }
 
