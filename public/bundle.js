@@ -72738,7 +72738,9 @@ geometric ideas.`,
           game.bullets.push(this.bullet);
           sound.play();
           Matter.Body.setVelocity(this.bullet.body, { x: -p.cos(angleDeg) * this.bullet.velocity, y: -p.sin(angleDeg) * this.bullet.velocity });
-          game.changePlayerTurn();
+          setTimeout(function() {
+            game.changePlayerTurn();
+          }, 1e3);
           game.timer.resetTimer();
         }
       };
