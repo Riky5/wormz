@@ -3,9 +3,6 @@ const Explosion = require('../entities/explosion')
 const Matter = require('matter-js');
 
 class CollisionController{  
-  constructor() {
-    this.explosion;
-  }
 
 
   // Not sure where this should go, maybe in shooting controller?
