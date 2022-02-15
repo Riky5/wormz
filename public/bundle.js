@@ -72867,6 +72867,9 @@ geometric ideas.`,
           this.body.mass = mass;
           return this.body.position;
         }
+        stopWorm = () => {
+          this.matter.Body.setVelocity(this.body, { x: 0, y: this.body.velocity.y });
+        };
         reduceHP(damageValue) {
           if (this.hp > 0) {
             this.hp -= damageValue;
@@ -72922,6 +72925,7 @@ geometric ideas.`,
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
+          this.body.friction = 1;
         }
         show(p) {
           const pos = this.body.position;
