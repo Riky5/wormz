@@ -1,5 +1,5 @@
 class MoveController {
-  static moveWorm = (activeWorm, input, p, game) => {
+  static moveWorm = (activeWorm, input, p, game, sound) => {
     if (game.moveCount >= game.moveLimit) {
       return;
     }
@@ -14,6 +14,7 @@ class MoveController {
 
     } else if (input === p.UP_ARROW) {
       activeWorm.move({ x: 0, y:-0.2 }, 10)
+      sound.play();
       MoveController.increaseCount(game);
     }
   }

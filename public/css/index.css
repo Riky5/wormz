@@ -36,3 +36,7 @@ button {
 button:hover {
   background-color: #0099ff;
 }
+
+#enterMsg {
+  margin-top: 3rem;
+}

@@ -39,18 +39,8 @@ class ScreenController{
     p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
   }
 
-  //drawing
   static musicSoundScreen(p) {
     p.resizeCanvas(0, 0);
-    // volumeSlider = p.createSlider(0, 1, 0.5, 0.01);
-    // volumeSlider.position(100, 300)
-    // sound.loop();
-    // p.setVolume(0.5);
-    // let startBtn = p.select('#startBtn');
-    // startBtn.mouseOver(sound.play());
-    // sounds[1].setVolume(sliders[1].value());
-    // buttons[2].mouseOver(enableSoundEffects);
-    // buttons[3].mouseOver(disableSoundEffects);
   }
 
   static setScreen(p, game, imgs, volumeSlider, sound) {

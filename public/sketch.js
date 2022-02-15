@@ -24,13 +24,7 @@ class Sketch {
     let wormImg2;
     let music;
     let explosionSound;
-    let slider;
-    // let startMusicBtn;
-    // let stopMusicBtn;
-    // let startSoundEffects;
-    // let stopSoundEffects;
-    // let musicVolumeSlider;
-    // let soundVolumeSlider;
+    let jumpSound;
     let gameClass = this.gameClass;
     let game;
 
@@ -46,6 +40,7 @@ class Sketch {
         wormImg2 = p.loadImage("images/worm1.png");
         music = p.loadSound("assets/Whimsical-Popsicle.mp3");
         explosionSound = p.loadSound("assets/Explosion.mp3");
+        jumpSound = p.loadSound('assets/jump.mp3');
       }
 
       p.setup = () => {
@@ -53,22 +48,20 @@ class Sketch {
         game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
         p.textSize(40);
-        MusicController.initializeSound(p, [music, explosionSound]);
+        MusicController.createSoundScreen(p, [music, explosionSound, jumpSound]);
       }
 
       p.resetMain = () => {
         MusicController.changeToHidden(p);
         p.loop();
-        // p.push();
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
         game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
         p.textSize(40);
-        // p.pop();
       }
 
       p.draw = () => {
-        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg], slider, music);
+        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg], music);
       }
 
       p.windowResized = () => {
@@ -87,10 +80,10 @@ class Sketch {
         }  else {
           let input = p.keyCode
           if(game.player1Turn === true) {
-            MoveController.moveWorm(game.worm, input, p, game);
+            MoveController.moveWorm(game.worm, input, p, game, jumpSound);
           } 
           else {
-            MoveController.moveWorm(game.worm2, input, p, game);
+            MoveController.moveWorm(game.worm2, input, p, game, jumpSound);
           }
         }
       }
