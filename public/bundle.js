@@ -72279,9 +72279,9 @@ geometric ideas.`,
         };
         getWormPos = (worm) => {
           if (worm.direction === "right") {
-            return { x: worm.body.position.x + worm.w / 2, y: worm.body.position.y - worm.h / 2 };
+            return { x: worm.body.position.x + worm.w / 2 + 10, y: worm.body.position.y - worm.h };
           } else {
-            return { x: worm.body.position.x - worm.w / 2, y: worm.body.position.y - worm.h / 2 };
+            return { x: worm.body.position.x - worm.w / 2 - 10, y: worm.body.position.y - worm.h };
           }
         };
         uprightWorm = () => {
@@ -72680,51 +72680,10 @@ geometric ideas.`,
     }
   });
 
-  // public/controllers/timerController.js
-  var require_timerController = __commonJS({
-    "public/controllers/timerController.js"(exports, module) {
-      var TimerController = class {
-        constructor() {
-          this.interval = 0;
-          this.timer = 0;
-          this.timeLimit = 20;
-        }
-        resetTimer = () => {
-          this.timer = 0;
-        };
-        clearTimer = () => {
-          clearInterval(this.interval);
-        };
-        increaseTimer = () => {
-          this.timer++;
-        };
-        startTimer = () => {
-          this.interval = setInterval(this.increaseTimer, 1e3);
-        };
-        timeLeftOnTurn = () => {
-          return this.timeLimit - this.timer;
-        };
-        timerForTurn = (p, game) => {
-          if (this.timeLeftOnTurn() <= 0) {
-            game.changePlayerTurn();
-            this.resetTimer();
-            game.resetMoveCount();
-          } else if (this.timeLeftOnTurn() <= 5) {
-            p.fill(220, 0, 0);
-          }
-          return this.timeLeftOnTurn();
-        };
-      };
-      module.exports = TimerController;
-    }
-  });
-
   // public/controllers/shootingController.js
   var require_shootingController = __commonJS({
     "public/controllers/shootingController.js"(exports, module) {
       var Matter = require_matter();
-      var TimerController = require_timerController();
-      var Bullet = require_bullet();
       var ShootingController = class {
         constructor() {
           this.bullet;
@@ -72984,6 +72943,45 @@ geometric ideas.`,
         }
       };
       module.exports = Terrain;
+    }
+  });
+
+  // public/controllers/timerController.js
+  var require_timerController = __commonJS({
+    "public/controllers/timerController.js"(exports, module) {
+      var TimerController = class {
+        constructor() {
+          this.interval = 0;
+          this.timer = 0;
+          this.timeLimit = 20;
+        }
+        resetTimer = () => {
+          this.timer = 0;
+        };
+        clearTimer = () => {
+          clearInterval(this.interval);
+        };
+        increaseTimer = () => {
+          this.timer++;
+        };
+        startTimer = () => {
+          this.interval = setInterval(this.increaseTimer, 1e3);
+        };
+        timeLeftOnTurn = () => {
+          return this.timeLimit - this.timer;
+        };
+        timerForTurn = (p, game) => {
+          if (this.timeLeftOnTurn() <= 0) {
+            game.changePlayerTurn();
+            this.resetTimer();
+            game.resetMoveCount();
+          } else if (this.timeLeftOnTurn() <= 5) {
+            p.fill(220, 0, 0);
+          }
+          return this.timeLeftOnTurn();
+        };
+      };
+      module.exports = TimerController;
     }
   });
 

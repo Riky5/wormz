@@ -46,10 +46,10 @@ class Game {
 
   getWormPos = (worm) => {
     if(worm.direction === "right") {
-      return {x: worm.body.position.x + (worm.w / 2) , y: worm.body.position.y - (worm.h / 2)}
+      return {x: worm.body.position.x + (worm.w / 2) + 10, y: worm.body.position.y - (worm.h)}
     } 
     else {
-      return {x: worm.body.position.x - (worm.w / 2), y: worm.body.position.y - (worm.h / 2)}
+      return {x: worm.body.position.x - (worm.w / 2) - 10, y: worm.body.position.y - (worm.h)}
     }
   }
 
