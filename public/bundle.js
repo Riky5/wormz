@@ -72315,6 +72315,13 @@ geometric ideas.`,
             }
           }
         };
+        getWinner = () => {
+          if (this.worm.hp > this.worm2.hp) {
+            return "Player 1";
+          } else {
+            return "Player 2";
+          }
+        };
       };
       module.exports = Game;
     }
@@ -72408,9 +72415,11 @@ geometric ideas.`,
           this.displayMovesLeftAndTimer(p, game);
           this.displayWeaponChoice(p, game);
         }
-        static gameOverScreen(p, gameOver) {
+        static gameOverScreen(p, gameOver, game) {
           p.background(gameOver);
           p.textSize(30);
+          let winner = game.getWinner();
+          p.text(`${winner} won!`, p.windowWidth / 2 - 260, p.windowHeight / 2 + 40);
           p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 90);
         }
         static instructionsScreen(p) {
@@ -72433,7 +72442,7 @@ geometric ideas.`,
           } else if (game.mode === "game") {
             ScreenController.gameScreen(p, game, imgs[1]);
           } else if (game.mode === "gameOver") {
-            ScreenController.gameOverScreen(p, imgs[2]);
+            ScreenController.gameOverScreen(p, imgs[2], game);
           } else if (game.mode === "instructions") {
             ScreenController.instructionsScreen(p);
           } else if (game.mode === "musicSoundSettings") {

@@ -1,4 +1,3 @@
-
 // Moved to a models folder for now not sure where it should be housed
 const MAXMOVES = 5;
 class Game {
@@ -86,7 +85,13 @@ class Game {
       }
     }
   }
+
+  getWinner = () => {
+    if (this.worm.hp > this.worm2.hp) {
+      return 'Player 1';
+    } else {
+      return 'Player 2';
+    }
+  }
 }
-
 module.exports = Game;
-

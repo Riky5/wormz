@@ -26,9 +26,11 @@ class ScreenController{
     this.displayWeaponChoice(p, game)
   }
 
-  static gameOverScreen(p, gameOver) {
+  static gameOverScreen(p, gameOver, game) {
     p.background(gameOver);
     p.textSize(30);
+    let winner = game.getWinner();
+    p.text(`${winner} won!`, p.windowWidth / 2 - 260, p.windowHeight / 2 + 40);
     p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 90);
   }
 
@@ -56,7 +58,7 @@ class ScreenController{
       ScreenController.gameScreen(p, game, imgs[1]);
     }
     else if (game.mode === 'gameOver'){
-      ScreenController.gameOverScreen(p, imgs[2]);
+      ScreenController.gameOverScreen(p, imgs[2], game);
     }
     else if (game.mode === 'instructions') {
       ScreenController.instructionsScreen(p);
