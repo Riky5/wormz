@@ -8,13 +8,13 @@ class Weapon {
     this.bulletModel = bullet; 
   }
 
-  createBullet(wormPos) {
+  createBullet(wormPos, game) {
     const bullet = new this.bulletModel( 
       {
-      x: wormPos.x + 50, 
-      y: wormPos.y + 40, 
+      x: wormPos.x, 
+      y: wormPos.y, 
       r: 15, 
-      game: this.game, 
+      game: game, 
       img: this.image, 
       velocity: this.velocity, 
       damage: this.damage
