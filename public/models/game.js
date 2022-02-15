@@ -40,11 +40,12 @@ class Game {
   }
 
   getActiveWormPos = () => {
+
     if(this.player1Turn) {
-      return {x: this.worm.body.position.x + 50, y: this.worm.body.position.y - 40}
+      return {x: this.worm.body.position.x + (this.worm.w / 2) , y: this.worm.body.position.y - (this.worm.h / 2)}
     } 
     else {
-      return {x: this.worm2.body.position.x - 50, y: this.worm2.body.position.y - 40}
+      return {x: this.worm2.body.position.x - (this.worm.w / 2), y: this.worm2.body.position.y - (this.worm.h / 2)}
     }
   }
 
