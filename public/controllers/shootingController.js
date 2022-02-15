@@ -9,9 +9,10 @@ class ShootingController {
   static fireBullet(p, game, img, sound) {
     let angleDeg;
     if(game.player1Turn === true) {
+      console.log("player 1 turn")
       angleDeg = ShootingController.fire(p, game.worm, game, img);
-      console.log(angleDeg)
     } else {
+      console.log("player 2 turn")
       angleDeg = ShootingController.fire(p, game.worm2, game, img);
     }
     game.bullets.push(this.bullet);
@@ -33,16 +34,18 @@ class ShootingController {
   }
 
   static fireRight(p, worm, game, img) {
+    console.log("fire right")
     let wormPos = {x: worm.body.position.x, y: worm.body.position.y }
     let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-    this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game, img: img});
+    this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game, img: img, matter: Matter});
     return angleDeg;
   }
 
   static fireLeft(p, worm, game, img) {
+    console.log("fire left")
     let wormPos = {x: worm.body.position.x, y: worm.body.position.y }
     let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-    this.bullet = new Bullet({x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game: game, img: img});
+    this.bullet = new Bullet({x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game: game, img: img, matter: Matter});
     return angleDeg;
   }
 }
