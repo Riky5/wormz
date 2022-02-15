@@ -1,5 +1,5 @@
 const Matter = require("matter-js")
-const MusicController = require("../controllers/musicController");
+const MusicController = require("./musicController");
 
 class ScreenController{
   static startScreen(p, logo) {
