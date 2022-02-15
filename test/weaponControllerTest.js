@@ -18,6 +18,10 @@ describe('WeaponController', () => {
     expect(weaponController.isValidInput(51)).to.eq(true);
     done();
   });
+  it('.isValidInput returns false for a invalid keyCode', function(done) {
+    expect(weaponController.isValidInput(28)).to.eq(false);
+    done();
+  });
   // it('.resetTimer changes the timer value back to 0', function(done) {
   //   timerController.increaseTimer();
   //   timerController.increaseTimer();
