@@ -1,7 +1,7 @@
 // Moved to a models folder for now not sure where it should be housed
 const MAXMOVES = 5;
 class Game {
-  constructor({p: p, imgs: imgs, matter: matter, ground: ground, worm: worm}) {
+  constructor({p: p, imgs: imgs, matter: matter, ground: ground, worm: worm, timer: timerController}) {
     this.engine = matter.Engine.create();
     this.world = this.engine.world;
     this.bullets = [];
@@ -14,6 +14,7 @@ class Game {
     this.moveLimit = MAXMOVES;
     this.moveCount = 0;
     this.clockTimer = imgs[2];
+    this.timer = new timerController();
   }
 
   changePlayerTurn = () => {

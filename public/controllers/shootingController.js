@@ -1,13 +1,12 @@
 const Matter = require("matter-js")
 const Bullet = require('../entities/bullet');
-const TimerController = require("./timerController");
 
 class ShootingController {
   constructor() {
     this.bullet;
   }
 
-  static fireBullet(p, game, img){
+  static fireBullet(p, game, img) {
     let angleDeg;
     if(game.player1Turn === true) {
       angleDeg = ShootingController.fire(p, game.worm, game, img);
@@ -16,10 +15,10 @@ class ShootingController {
       angleDeg = ShootingController.fire(p, game.worm2, game, img);
     }
     game.bullets.push(this.bullet);
-    console.log(angleDeg)
     Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
+
     game.changePlayerTurn();
-    TimerController.resetTimer();
+    game.timer.resetTimer();
   }
 
   static fire(p, worm, game, img) {

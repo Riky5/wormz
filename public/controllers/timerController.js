@@ -3,27 +3,26 @@ class TimerController {
   constructor() {
     this.interval = 0;
     this.timer = 0;
+    this.timeLimit = 20;
   }
 
-  static timeLimit = 20;
-
-  static resetTimer = () => {
+  resetTimer = () => {
     this.timer = 0;
     
   }
-  static clearTimer = () => {
+  clearTimer = () => {
     clearInterval(this.interval);
   }
-  static increaseTimer = () => {
+  increaseTimer = () => {
     this.timer ++;
   }
-  static startTimer = () => {
+  startTimer = () => {
     this.interval = setInterval(this.increaseTimer, 1000);
   }
-  static timeLeftOnTurn = () => {
+  timeLeftOnTurn = () => {
     return this.timeLimit - this.timer;
   }
-  static timerForTurn = (p, game) => {
+  timerForTurn = (p, game) => {
     if (this.timeLeftOnTurn() <= 0) {
       game.changePlayerTurn();
       this.resetTimer();
@@ -35,7 +34,6 @@ class TimerController {
     }
     return this.timeLeftOnTurn();
   }
-
 }
 
 module.exports = TimerController;
