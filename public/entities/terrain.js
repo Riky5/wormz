@@ -1,4 +1,4 @@
-const Obstacle= require('./entities/obstacle');
+const Obstacle= require('./obstacle');
 
 class Terrain {
   createTerrain(p,world,matter, imgs) {

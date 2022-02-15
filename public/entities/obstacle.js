@@ -5,6 +5,7 @@ class Obstacle {
     this.w = w;
     this.h = h;
     this.body.isStatic = true;
+    this.body.friction = 1;
     this.img = img;
   }
   show(p) {

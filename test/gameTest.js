@@ -5,7 +5,7 @@ const Worm = require('../public/entities/worm');
 const weaponModel = require('../public/models/weapon')
 const bulletModel = require('../public/entities/bullet')
 const Lava = require('../public/entities/ground');
-const Terrain = require('../public/terrain');
+const Terrain = require('../public/entities/terrain');
 const TimerController = require('../public/controllers/timerController')
 
 describe('Game', () => {
@@ -26,6 +26,9 @@ describe('Game', () => {
     },
     Bodies: {
       rectangle: () => { return {isStatic: undefined}}
+    },
+    Body: {
+      setInertia: () => { undefined }
     }
   }
 

@@ -12,6 +12,7 @@ class Worm {
     this.weapons = weapons;
     this.currentWeapon = this.weapons[0]
     this.direction = direction;
+    matter.Body.setInertia(this.body, Infinity);
   }
 
   show = (p,img = this.img) => {
@@ -27,8 +28,8 @@ class Worm {
       // WORM IMAGE 
       p.imageMode(p.CENTER);
       p.image(img, 0, 0, this.w, this.h);
-
       p.pop();
+
     } else {
       p.push();
       p.translate(pos.x, pos.y);
