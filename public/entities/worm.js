@@ -33,7 +33,7 @@ class Worm {
       p.imageMode(p.CENTER);
       p.image(img, 0, 0, this.w, this.h);
       p.pop();
-      
+
     } else {
       p.push();
       p.translate(pos.x, pos.y);
@@ -72,10 +72,6 @@ class Worm {
     this.matter.Body.applyForce(this.body, this.body.position, force)
     this.body.mass = mass
     return this.body.position
-  }
-
-  stopWorm = () => {
-    this.matter.Body.setVelocity(this.body, {x: 0, y: this.body.velocity.y})
   }
 
   reduceHP(damageValue) {
