@@ -20,7 +20,6 @@ class ScreenController{
     (game.terrain).forEach (element => element.show(p))
     game.explosions.forEach(element => element.show(p));
     game.bullets.forEach(element => element.show(p));
-    game.uprightWorm()
     this.displayWhichPlayerTurn(p, game);
     this.displayMovesLeftAndTimer(p, game)
     this.displayWeaponChoice(p, game)

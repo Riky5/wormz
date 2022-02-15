@@ -13,7 +13,7 @@ const Weapon = require('./models/weapon')
 const ZoomController = require('./controllers/zoomController')
 const Worm = require('./entities/worm');
 const Lava = require('./entities/ground');
-const Terrain = require('./terrain')
+const Terrain = require('./entities/terrain')
 const TimerController = require('./controllers/timerController');
 const MusicController = require('./controllers/musicController');
 
