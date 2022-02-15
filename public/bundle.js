@@ -72247,11 +72247,11 @@ geometric ideas.`,
           this.world = this.engine.world;
           this.bullets = [];
           this.explosions = [];
-          this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 180, world: this.world, matter });
+          this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 180, world: this.world, matter, img: imgs });
           this.worm = new worm({ x: p.windowWidth / 10 * 1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           this.worm2 = new worm({ x: p.windowWidth / 10 * 6, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           matter.World.add(this.world, [this.worm.body, this.worm2.body]);
-          this.terrain = new terrain().createTerrain(p, this.world, matter);
+          this.terrain = new terrain().createTerrain(p, this.world, matter, imgs);
           this.mode = "start";
           this.player1Turn = true;
           this.moveLimit = MAXMOVES;
@@ -72868,22 +72868,22 @@ geometric ideas.`,
   var require_ground = __commonJS({
     "public/entities/ground.js"(exports, module) {
       var Lava = class {
-        constructor({ x, y, w, h, world, matter }) {
+        constructor({ x, y, w, h, world, matter, img: imgs }) {
           this.body = matter.Bodies.rectangle(x, y, w, h, { label: "lava" });
           matter.World.add(world, this.body);
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
           this.body.restitution = 1;
+          this.img = imgs[4];
         }
         show(p) {
           const pos = this.body.position;
           const angle = this.body.angle;
           p.push();
           p.translate(pos.x, pos.y);
-          p.fill(255, 0, 0);
-          p.rectMode(p.CENTER);
-          p.rect(0, 0, this.w, this.h);
+          p.imageMode(p.CENTER);
+          p.image(this.img, 0, 0, this.w, this.h);
           p.pop();
         }
       };
@@ -72895,21 +72895,21 @@ geometric ideas.`,
   var require_obstacle = __commonJS({
     "public/entities/obstacle.js"(exports, module) {
       var Obstacle = class {
-        constructor({ x, y, w, h, world, matter }) {
+        constructor({ x, y, w, h, world, matter, imgs: img }) {
           this.body = matter.Bodies.rectangle(x, y, w, h, { label: "ground" });
           matter.World.add(world, this.body);
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
+          this.img = img;
         }
         show(p) {
           const pos = this.body.position;
           const angle = this.body.angle;
           p.push();
           p.translate(pos.x, pos.y);
-          p.fill(0, 179, 0);
-          p.rectMode(p.CENTER);
-          p.rect(0, 0, this.w, this.h);
+          p.imageMode(p.CENTER);
+          p.image(this.img, 0, 0, this.w, this.h);
           p.pop();
         }
       };
@@ -72922,7 +72922,7 @@ geometric ideas.`,
     "public/terrain.js"(exports, module) {
       var Obstacle = require_obstacle();
       var Terrain = class {
-        createTerrain(p, world, matter) {
+        createTerrain(p, world, matter, imgs) {
           let terrain_generated = [];
           let ground_piece;
           let left_border = new Obstacle({ x: p.windowWidth + 20, y: 0, w: 100, h: p.windowHeight * 2, world, matter });
@@ -72943,11 +72943,11 @@ geometric ideas.`,
           ];
           platforms.forEach((platform_location) => {
             for (var i = 0; i < 15; i++) {
-              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0], w: 10, h: block_height, world, matter });
+              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0], w: 10, h: block_height, world, matter, imgs: imgs[5] });
               terrain_generated.push(ground_piece);
-              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0] + 10, w: 10, h: block_height, world, matter });
+              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0] + 10, w: 10, h: block_height, world, matter, imgs: imgs[5] });
               terrain_generated.push(ground_piece);
-              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0] + 20, w: 10, h: block_height, world, matter });
+              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0] + 20, w: 10, h: block_height, world, matter, imgs: imgs[5] });
               terrain_generated.push(ground_piece);
             }
           });
@@ -73027,6 +73027,8 @@ geometric ideas.`,
           let backgroundImg;
           let wormImg1;
           let wormImg2;
+          let lavaImg;
+          let rockImg;
           let music;
           let explosionSound;
           let jumpSound;
@@ -73054,11 +73056,13 @@ geometric ideas.`,
               grenade = p.loadImage("images/grenade.png");
               gameOver = p.loadImage("images/game-over.jpg");
               clockTimer = p.loadImage("images/clock_timer.png");
+              lavaImg = p.loadImage("images/lava.png");
+              rockImg = p.loadImage("images/rock.png");
               explosionEffect = p.loadImage("images/explosion.png");
             };
             p.setup = () => {
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
               MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -73067,7 +73071,7 @@ geometric ideas.`,
               MusicController.changeToHidden(p);
               p.loop();
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
             };
