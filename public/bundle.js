@@ -72586,6 +72586,21 @@ geometric ideas.`,
     }
   });
 
+  // public/controllers/zoomController.js
+  var require_zoomController = __commonJS({
+    "public/controllers/zoomController.js"(exports, module) {
+      var ZoomController = class {
+        static zoom(p, mx, my, scaleFactor) {
+          p.translate(mx, my);
+          p.scale(scaleFactor);
+          p.translate(-mx, -my);
+        }
+      };
+      __publicField(ZoomController, "sf", 1);
+      module.exports = ZoomController;
+    }
+  });
+
   // public/controllers/collisionController.js
   var require_collisionController = __commonJS({
     "public/controllers/collisionController.js"(exports, module) {
@@ -72593,6 +72608,7 @@ geometric ideas.`,
       var Explosion = require_explosion();
       var Matter = require_matter();
       var { gameScreen } = require_screenController();
+      var ZoomController = require_zoomController();
       var _CollisionController = class {
       };
       var CollisionController = _CollisionController;
@@ -72634,6 +72650,10 @@ geometric ideas.`,
           setTimeout(function() {
             game.explosions.pop();
           }, 500);
+          ZoomController.sf = 1;
+          setTimeout(() => {
+            ZoomController.sf = 2;
+          }, 1e3);
         } else if (pair.bodyB.label === "bullet") {
           _CollisionController.explosion = new Explosion({ x: pair.bodyB.position.x, y: pair.bodyB.position.y, r: 40, game });
           game.explosions.push(_CollisionController.explosion);
@@ -72643,6 +72663,10 @@ geometric ideas.`,
           setTimeout(function() {
             game.explosions.pop();
           }, 500);
+          ZoomController.sf = 1;
+          setTimeout(() => {
+            ZoomController.sf = 2;
+          }, 1e3);
         }
       });
       __publicField(CollisionController, "destroyTerrain", (explosion, game) => {
@@ -72791,21 +72815,6 @@ geometric ideas.`,
         }
       };
       module.exports = Weapon;
-    }
-  });
-
-  // public/controllers/zoomController.js
-  var require_zoomController = __commonJS({
-    "public/controllers/zoomController.js"(exports, module) {
-      var ZoomController = class {
-        static zoom(p, mx, my, scaleFactor) {
-          p.translate(mx, my);
-          p.scale(scaleFactor);
-          p.translate(-mx, -my);
-        }
-      };
-      __publicField(ZoomController, "sf", 1);
-      module.exports = ZoomController;
     }
   });
 
