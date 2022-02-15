@@ -4,7 +4,7 @@ const Matter = require('matter-js');
 const { gameScreen } = require('./screenController');
 
 class CollisionController{  
-  // Not sure where this should go, maybe in shooting controller?
+  
   static findAndDestroyBullet = (pair, game) => {
     game.bulletExists = false
     if(pair.bodyA.label === "bullet") {
@@ -34,16 +34,16 @@ class CollisionController{
     }
   }
 
-  static createExplosion = (pair,game) => {
+  static createExplosion = (pair,game, img) => {
     if(pair.bodyA.label === "bullet") {
-      this.explosion = new Explosion({x: pair.bodyA.position.x, y: pair.bodyA.position.y , r: 40, game: game})
+      this.explosion = new Explosion({x: pair.bodyA.position.x, y: pair.bodyA.position.y , r: 120, game: game, img: img})
       game.explosions.push(this.explosion)
       CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
       Matter.World.remove(game.world, this.explosion.body);
       setTimeout(function(){game.explosions.pop();},500)
     } else if (pair.bodyB.label === "bullet") {
-      this.explosion = new Explosion({x: pair.bodyB.position.x, y: pair.bodyB.position.y , r: 40, game: game})
+      this.explosion = new Explosion({x: pair.bodyB.position.x, y: pair.bodyB.position.y , r: 120, game: game, img: img})
       game.explosions.push(this.explosion)
       CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
@@ -72,12 +72,12 @@ class CollisionController{
     }
   }
   
-  static collision = (event, game, sound) => {
+  static collision = (event, game, sound, img) => {
     for (const pair of event.pairs) {
 
       if(CollisionController.isInCollision(pair, "bullet")) {
-        CollisionController.findAndDamageWorm(pair, game, sound);
-        CollisionController.createExplosion(pair,game)
+        CollisionController.findAndDamageWorm(pair, game, sound); 
+        CollisionController.createExplosion(pair, game, img)
       }
       else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava"))
       {CollisionController.lavaCollision(pair,game)}

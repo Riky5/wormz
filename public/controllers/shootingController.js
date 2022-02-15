@@ -1,6 +1,4 @@
 const Matter = require("matter-js")
-const TimerController = require("./timerController");
-const Bullet = require('../entities/bullet');
 
 class ShootingController {
   constructor() {
@@ -18,10 +16,9 @@ class ShootingController {
 
     sound.play(); 
     Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*this.bullet.velocity, y:-(p.sin(angleDeg))*this.bullet.velocity});
-    game.changePlayerTurn();
+    setTimeout(function(){game.changePlayerTurn();},1000)
     game.timer.resetTimer();
   }
-
 }
 
 module.exports = ShootingController;

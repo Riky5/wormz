@@ -72247,11 +72247,11 @@ geometric ideas.`,
           this.world = this.engine.world;
           this.bullets = [];
           this.explosions = [];
-          this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 180, world: this.world, matter });
+          this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 180, world: this.world, matter, img: imgs });
           this.worm = new worm({ x: p.windowWidth / 10 * 1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           this.worm2 = new worm({ x: p.windowWidth / 10 * 6.5, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           matter.World.add(this.world, [this.worm.body, this.worm2.body]);
-          this.terrain = new terrain().createTerrain(p, this.world, matter);
+          this.terrain = new terrain().createTerrain(p, this.world, matter, imgs);
           this.mode = "start";
           this.player1Turn = true;
           this.moveLimit = MAXMOVES;
@@ -72279,9 +72279,9 @@ geometric ideas.`,
         };
         getWormPos = (worm) => {
           if (worm.direction === "right") {
-            return { x: worm.body.position.x + worm.w / 2, y: worm.body.position.y - worm.h / 2 };
+            return { x: worm.body.position.x + worm.w / 2 + 10, y: worm.body.position.y - worm.h };
           } else {
-            return { x: worm.body.position.x - worm.w / 2, y: worm.body.position.y - worm.h / 2 };
+            return { x: worm.body.position.x - worm.w / 2 - 10, y: worm.body.position.y - worm.h };
           }
         };
         isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
@@ -72411,8 +72411,9 @@ geometric ideas.`,
           p.text("Use LEFT \u25C0\uFE0F and RIGHT \u25B6\uFE0F to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
           p.text("Use UP \u{1F53C} to jump.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 110);
           p.text("Aim and CLICK to shoot target \u{1F4A5}.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40);
+          p.text("Use 1\uFE0F\u20E3 2\uFE0F\u20E3 3\uFE0F\u20E3 to change between weapons", p.windowWidth / 2 - 310, p.windowHeight / 2 + 20);
           p.textSize(29);
-          p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
+          p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 90);
         }
         static musicSoundScreen(p) {
           p.resizeCanvas(0, 0);
@@ -72555,11 +72556,12 @@ geometric ideas.`,
     "public/entities/explosion.js"(exports, module) {
       var Matter = require_matter();
       var Explosion = class {
-        constructor({ x, y, r, game }) {
+        constructor({ x, y, r, game, img }) {
           this.body = Matter.Bodies.circle(x, y, r, { label: "explosion" });
           Matter.World.add(game.world, this.body);
           this.r = r;
           this.body.isStatic = true;
+          this.explosionEffect = img;
         }
         show(p) {
           const pos = this.body.position;
@@ -72567,9 +72569,8 @@ geometric ideas.`,
           this.body.mass = 0;
           p.push();
           p.translate(pos.x, pos.y);
-          p.fill(255, 0, 0);
-          p.rectMode(p.CENTER);
-          p.circle(0, 0, this.r);
+          p.imageMode(p.CENTER);
+          p.image(this.explosionEffect, 0, 0, this.r);
           p.pop();
         }
       };
@@ -72615,9 +72616,9 @@ geometric ideas.`,
           }
         }
       });
-      __publicField(CollisionController, "createExplosion", (pair, game) => {
+      __publicField(CollisionController, "createExplosion", (pair, game, img) => {
         if (pair.bodyA.label === "bullet") {
-          _CollisionController.explosion = new Explosion({ x: pair.bodyA.position.x, y: pair.bodyA.position.y, r: 40, game });
+          _CollisionController.explosion = new Explosion({ x: pair.bodyA.position.x, y: pair.bodyA.position.y, r: 120, game, img });
           game.explosions.push(_CollisionController.explosion);
           _CollisionController.destroyTerrain(_CollisionController.explosion, game);
           _CollisionController.findAndDestroyBullet(pair, game);
@@ -72626,7 +72627,7 @@ geometric ideas.`,
             game.explosions.pop();
           }, 500);
         } else if (pair.bodyB.label === "bullet") {
-          _CollisionController.explosion = new Explosion({ x: pair.bodyB.position.x, y: pair.bodyB.position.y, r: 40, game });
+          _CollisionController.explosion = new Explosion({ x: pair.bodyB.position.x, y: pair.bodyB.position.y, r: 120, game, img });
           game.explosions.push(_CollisionController.explosion);
           _CollisionController.destroyTerrain(_CollisionController.explosion, game);
           _CollisionController.findAndDestroyBullet(pair, game);
@@ -72657,11 +72658,11 @@ geometric ideas.`,
           }
         }
       });
-      __publicField(CollisionController, "collision", (event, game, sound) => {
+      __publicField(CollisionController, "collision", (event, game, sound, img) => {
         for (const pair of event.pairs) {
           if (_CollisionController.isInCollision(pair, "bullet")) {
             _CollisionController.findAndDamageWorm(pair, game, sound);
-            _CollisionController.createExplosion(pair, game);
+            _CollisionController.createExplosion(pair, game, img);
           } else if (_CollisionController.isInCollision(pair, "bullet"), _CollisionController.isInCollision(pair, "lava")) {
             _CollisionController.lavaCollision(pair, game);
           }
@@ -72671,51 +72672,10 @@ geometric ideas.`,
     }
   });
 
-  // public/controllers/timerController.js
-  var require_timerController = __commonJS({
-    "public/controllers/timerController.js"(exports, module) {
-      var TimerController = class {
-        constructor() {
-          this.interval = 0;
-          this.timer = 0;
-          this.timeLimit = 20;
-        }
-        resetTimer = () => {
-          this.timer = 0;
-        };
-        clearTimer = () => {
-          clearInterval(this.interval);
-        };
-        increaseTimer = () => {
-          this.timer++;
-        };
-        startTimer = () => {
-          this.interval = setInterval(this.increaseTimer, 1e3);
-        };
-        timeLeftOnTurn = () => {
-          return this.timeLimit - this.timer;
-        };
-        timerForTurn = (p, game) => {
-          if (this.timeLeftOnTurn() <= 0) {
-            game.changePlayerTurn();
-            this.resetTimer();
-            game.resetMoveCount();
-          } else if (this.timeLeftOnTurn() <= 5) {
-            p.fill(220, 0, 0);
-          }
-          return this.timeLeftOnTurn();
-        };
-      };
-      module.exports = TimerController;
-    }
-  });
-
   // public/controllers/shootingController.js
   var require_shootingController = __commonJS({
     "public/controllers/shootingController.js"(exports, module) {
       var Matter = require_matter();
-      var TimerController = require_timerController();
-      var Bullet = require_bullet();
       var ShootingController = class {
         constructor() {
           this.bullet;
@@ -72729,7 +72689,9 @@ geometric ideas.`,
           game.bullets.push(this.bullet);
           sound.play();
           Matter.Body.setVelocity(this.bullet.body, { x: -p.cos(angleDeg) * this.bullet.velocity, y: -p.sin(angleDeg) * this.bullet.velocity });
-          game.changePlayerTurn();
+          setTimeout(function() {
+            game.changePlayerTurn();
+          }, 1e3);
           game.timer.resetTimer();
         }
       };
@@ -72867,9 +72829,6 @@ geometric ideas.`,
           this.body.mass = mass;
           return this.body.position;
         }
-        stopWorm = () => {
-          this.matter.Body.setVelocity(this.body, { x: 0, y: this.body.velocity.y });
-        };
         reduceHP(damageValue) {
           if (this.hp > 0) {
             this.hp -= damageValue;
@@ -72892,22 +72851,22 @@ geometric ideas.`,
   var require_ground = __commonJS({
     "public/entities/ground.js"(exports, module) {
       var Lava = class {
-        constructor({ x, y, w, h, world, matter }) {
+        constructor({ x, y, w, h, world, matter, img: imgs }) {
           this.body = matter.Bodies.rectangle(x, y, w, h, { label: "lava" });
           matter.World.add(world, this.body);
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
           this.body.restitution = 1;
+          this.img = imgs[4];
         }
         show(p) {
           const pos = this.body.position;
           const angle = this.body.angle;
           p.push();
           p.translate(pos.x, pos.y);
-          p.fill(255, 0, 0);
-          p.rectMode(p.CENTER);
-          p.rect(0, 0, this.w, this.h);
+          p.imageMode(p.CENTER);
+          p.image(this.img, 0, 0, this.w, this.h);
           p.pop();
         }
       };
@@ -72919,22 +72878,22 @@ geometric ideas.`,
   var require_obstacle = __commonJS({
     "public/entities/obstacle.js"(exports, module) {
       var Obstacle = class {
-        constructor({ x, y, w, h, world, matter }) {
+        constructor({ x, y, w, h, world, matter, imgs: img }) {
           this.body = matter.Bodies.rectangle(x, y, w, h, { label: "ground" });
           matter.World.add(world, this.body);
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
           this.body.friction = 1;
+          this.img = img;
         }
         show(p) {
           const pos = this.body.position;
           const angle = this.body.angle;
           p.push();
           p.translate(pos.x, pos.y);
-          p.fill(0, 179, 0);
-          p.rectMode(p.CENTER);
-          p.rect(0, 0, this.w, this.h);
+          p.imageMode(p.CENTER);
+          p.image(this.img, 0, 0, this.w, this.h);
           p.pop();
         }
       };
@@ -72947,7 +72906,7 @@ geometric ideas.`,
     "public/entities/terrain.js"(exports, module) {
       var Obstacle = require_obstacle();
       var Terrain = class {
-        createTerrain(p, world, matter) {
+        createTerrain(p, world, matter, imgs) {
           let terrain_generated = [];
           let ground_piece;
           let left_border = new Obstacle({ x: p.windowWidth + 20, y: 0, w: 100, h: p.windowHeight * 2, world, matter });
@@ -72968,11 +72927,11 @@ geometric ideas.`,
           ];
           platforms.forEach((platform_location) => {
             for (var i = 0; i < 15; i++) {
-              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0], w: 10, h: block_height, world, matter });
+              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0], w: 10, h: block_height, world, matter, imgs: imgs[5] });
               terrain_generated.push(ground_piece);
-              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0] + 10, w: 10, h: block_height, world, matter });
+              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0] + 10, w: 10, h: block_height, world, matter, imgs: imgs[5] });
               terrain_generated.push(ground_piece);
-              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0] + 20, w: 10, h: block_height, world, matter });
+              ground_piece = new Obstacle({ x: platform_location[1] + i * 10, y: platform_location[0] + 20, w: 10, h: block_height, world, matter, imgs: imgs[5] });
               terrain_generated.push(ground_piece);
             }
           });
@@ -72980,6 +72939,45 @@ geometric ideas.`,
         }
       };
       module.exports = Terrain;
+    }
+  });
+
+  // public/controllers/timerController.js
+  var require_timerController = __commonJS({
+    "public/controllers/timerController.js"(exports, module) {
+      var TimerController = class {
+        constructor() {
+          this.interval = 0;
+          this.timer = 0;
+          this.timeLimit = 20;
+        }
+        resetTimer = () => {
+          this.timer = 0;
+        };
+        clearTimer = () => {
+          clearInterval(this.interval);
+        };
+        increaseTimer = () => {
+          this.timer++;
+        };
+        startTimer = () => {
+          this.interval = setInterval(this.increaseTimer, 1e3);
+        };
+        timeLeftOnTurn = () => {
+          return this.timeLimit - this.timer;
+        };
+        timerForTurn = (p, game) => {
+          if (this.timeLeftOnTurn() <= 0) {
+            game.changePlayerTurn();
+            this.resetTimer();
+            game.resetMoveCount();
+          } else if (this.timeLeftOnTurn() <= 5) {
+            p.fill(220, 0, 0);
+          }
+          return this.timeLeftOnTurn();
+        };
+      };
+      module.exports = TimerController;
     }
   });
 
@@ -73013,6 +73011,8 @@ geometric ideas.`,
           let backgroundImg;
           let wormImg1;
           let wormImg2;
+          let lavaImg;
+          let rockImg;
           let music;
           let explosionSound;
           let jumpSound;
@@ -73025,6 +73025,7 @@ geometric ideas.`,
           let game;
           let mx;
           let my;
+          let explosionEffect;
           const sketch2 = new p5(function(p) {
             p.preload = () => {
               wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
@@ -73039,11 +73040,14 @@ geometric ideas.`,
               grenade = p.loadImage("images/grenade.png");
               gameOver = p.loadImage("images/game-over.jpg");
               clockTimer = p.loadImage("images/clock_timer.png");
+              lavaImg = p.loadImage("images/lava.png");
+              rockImg = p.loadImage("images/rock.png");
+              explosionEffect = p.loadImage("images/explosion.png");
             };
             p.setup = () => {
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
-              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
               MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
             };
@@ -73051,8 +73055,8 @@ geometric ideas.`,
               MusicController.changeToHidden(p);
               p.loop();
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
-              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
             };
             p.draw = () => {
