@@ -72420,8 +72420,9 @@ geometric ideas.`,
           p.text("Use LEFT \u25C0\uFE0F and RIGHT \u25B6\uFE0F to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
           p.text("Use UP \u{1F53C} to jump.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 110);
           p.text("Aim and CLICK to shoot target \u{1F4A5}.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40);
+          p.text("Use 1\uFE0F\u20E3 2\uFE0F\u20E3 3\uFE0F\u20E3 to change between weapons", p.windowWidth / 2 - 310, p.windowHeight / 2 + 20);
           p.textSize(29);
-          p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
+          p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 90);
         }
         static musicSoundScreen(p) {
           p.resizeCanvas(0, 0);
@@ -72564,11 +72565,12 @@ geometric ideas.`,
     "public/entities/explosion.js"(exports, module) {
       var Matter = require_matter();
       var Explosion = class {
-        constructor({ x, y, r, game }) {
+        constructor({ x, y, r, game, img }) {
           this.body = Matter.Bodies.circle(x, y, r, { label: "explosion" });
           Matter.World.add(game.world, this.body);
           this.r = r;
           this.body.isStatic = true;
+          this.explosionEffect = img;
         }
         show(p) {
           const pos = this.body.position;
@@ -72576,9 +72578,8 @@ geometric ideas.`,
           this.body.mass = 0;
           p.push();
           p.translate(pos.x, pos.y);
-          p.fill(255, 0, 0);
-          p.rectMode(p.CENTER);
-          p.circle(0, 0, this.r);
+          p.imageMode(p.CENTER);
+          p.image(this.explosionEffect, 0, 0, this.r);
           p.pop();
         }
       };
@@ -72624,9 +72625,9 @@ geometric ideas.`,
           }
         }
       });
-      __publicField(CollisionController, "createExplosion", (pair, game) => {
+      __publicField(CollisionController, "createExplosion", (pair, game, img) => {
         if (pair.bodyA.label === "bullet") {
-          _CollisionController.explosion = new Explosion({ x: pair.bodyA.position.x, y: pair.bodyA.position.y, r: 40, game });
+          _CollisionController.explosion = new Explosion({ x: pair.bodyA.position.x, y: pair.bodyA.position.y, r: 120, game, img });
           game.explosions.push(_CollisionController.explosion);
           _CollisionController.destroyTerrain(_CollisionController.explosion, game);
           _CollisionController.findAndDestroyBullet(pair, game);
@@ -72635,7 +72636,7 @@ geometric ideas.`,
             game.explosions.pop();
           }, 500);
         } else if (pair.bodyB.label === "bullet") {
-          _CollisionController.explosion = new Explosion({ x: pair.bodyB.position.x, y: pair.bodyB.position.y, r: 40, game });
+          _CollisionController.explosion = new Explosion({ x: pair.bodyB.position.x, y: pair.bodyB.position.y, r: 120, game, img });
           game.explosions.push(_CollisionController.explosion);
           _CollisionController.destroyTerrain(_CollisionController.explosion, game);
           _CollisionController.findAndDestroyBullet(pair, game);
@@ -72666,11 +72667,11 @@ geometric ideas.`,
           }
         }
       });
-      __publicField(CollisionController, "collision", (event, game, sound) => {
+      __publicField(CollisionController, "collision", (event, game, sound, img) => {
         for (const pair of event.pairs) {
           if (_CollisionController.isInCollision(pair, "bullet")) {
+            _CollisionController.createExplosion(pair, game, img);
             _CollisionController.findAndDamageWorm(pair, game, sound);
-            _CollisionController.createExplosion(pair, game);
           } else if (_CollisionController.isInCollision(pair, "bullet"), _CollisionController.isInCollision(pair, "lava")) {
             _CollisionController.lavaCollision(pair, game);
           }
@@ -72697,7 +72698,9 @@ geometric ideas.`,
           game.bullets.push(this.bullet);
           sound.play();
           Matter.Body.setVelocity(this.bullet.body, { x: -p.cos(angleDeg) * this.bullet.velocity, y: -p.sin(angleDeg) * this.bullet.velocity });
-          game.changePlayerTurn();
+          setTimeout(function() {
+            game.changePlayerTurn();
+          }, 1e3);
           game.timer.resetTimer();
         }
       };
@@ -73029,6 +73032,7 @@ geometric ideas.`,
           let game;
           let mx;
           let my;
+          let explosionEffect;
           const sketch2 = new p5(function(p) {
             p.preload = () => {
               wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
@@ -73045,11 +73049,12 @@ geometric ideas.`,
               clockTimer = p.loadImage("images/clock_timer.png");
               lavaImg = p.loadImage("images/lava.png");
               rockImg = p.loadImage("images/rock.png");
+              explosionEffect = p.loadImage("images/explosion.png");
             };
             p.setup = () => {
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
               game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
-              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
+              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
               MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
             };
@@ -73058,7 +73063,7 @@ geometric ideas.`,
               p.loop();
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
               game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
-              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
+              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
             };
             p.draw = () => {

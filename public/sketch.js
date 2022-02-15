@@ -42,6 +42,7 @@ class Sketch {
     let game;
     let mx; // mouse coords
     let my; // mouse coords
+    let explosionEffect;
   
 
     const sketch = new p5(function (p) {
@@ -63,12 +64,13 @@ class Sketch {
         clockTimer = p.loadImage("images/clock_timer.png");
         lavaImg = p.loadImage('images/lava.png');
         rockImg = p.loadImage('images/rock.png');
+        explosionEffect = p.loadImage("images/explosion.png")
       }
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
         game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
-        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
       }
@@ -78,7 +80,7 @@ class Sketch {
         p.loop();
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
         game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
-        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
       }
 

@@ -39,8 +39,9 @@ class ScreenController{
     p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
     p.text("Use UP 🔼 to jump.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 110);
     p.text("Aim and CLICK to shoot target 💥.",  p.windowWidth / 2 - 310, p.windowHeight / 2 - 40);
+    p.text("Use 1️⃣ 2️⃣ 3️⃣ to change between weapons", p.windowWidth / 2 - 310, p.windowHeight / 2 + 20) 
     p.textSize(29);
-    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
+    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 90);
   }
 
   static musicSoundScreen(p) {
