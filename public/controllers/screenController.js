@@ -57,7 +57,7 @@ class ScreenController{
     else if (game.mode === 'instructions') {
       ScreenController.instructionsScreen(p);
     }
-    else if (game.mode === 'music-sound-settings') {
+    else if (game.mode === 'musicSoundSettings') {
       MusicController.changeToVisible(p);
       p.noLoop();
       ScreenController.musicSoundScreen(p);
@@ -76,10 +76,10 @@ class ScreenController{
        game.switchToMode('instructions');
       }
       else if(p.keyCode === p.OPTION) {
-        game.mode = 'music-sound-settings';
+        game.mode = 'musicSoundSettings';
       }
     } 
-    else if(game.mode === 'gameOver' || game.mode === 'instructions' || game.mode === 'music-sound-settings') {
+    else if(game.mode === 'gameOver' || game.mode === 'instructions' || game.mode === 'musicSoundSettings') {
       if(p.keyCode === p.ENTER) {
         p.loop();
         p.resetMain();
