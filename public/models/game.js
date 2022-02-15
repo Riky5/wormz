@@ -6,8 +6,8 @@ class Game {
     this.world = this.engine.world;
     this.bullets = [];
     this.ground = new ground({x: p.width/2, y: p.height-20, w: p.width, h: 180, world: this.world, matter: matter})
-    this.worm = new worm({x: (p.windowWidth/10)*2, y: p.windowHeight - 100, options: "wormOne", img: imgs[0], matter: matter});
-    this.worm2 = new worm({x: (p.windowWidth/10)*8, y: p.windowHeight - 100, options: "wormTwo", img: imgs[1], matter: matter});
+    this.worm = new worm({x: (p.windowWidth/10)*2, y: p.windowHeight - 100, options: "wormOne", img: imgs[0], matter: matter, direction: "right"});
+    this.worm2 = new worm({x: (p.windowWidth/10)*8, y: p.windowHeight - 100, options: "wormTwo", img: imgs[1], matter: matter, direction: "left"});
     matter.World.add(this.world, [this.worm.body,this.worm2.body]);
     this.mode = "start";
     this.player1Turn = true;
@@ -33,6 +33,22 @@ class Game {
   isWormDead = () => this.worm.hp === 0 || this.worm2.hp === 0;
   
   setGameOver = () => this.mode = 'gameOver';
+
+  setActiveWormDirection = (p) => {
+    if(this.player1Turn === true) {
+      if (p.mouseX < this.worm.body.position.x) {
+        this.worm.setDirection("left");
+      } else {
+        this.worm.setDirection("right");
+      }
+    } else {
+      if (p.mouseX < this.worm2.body.position.x) {
+        this.worm2.setDirection("left");
+      } else {
+        this.worm2.setDirection("right");
+      }
+    }
+  }
 }
 
 module.exports = Game;

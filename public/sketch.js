@@ -50,6 +50,7 @@ class Sketch {
 
       p.draw = () => {
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver]);
+        game.setActiveWormDirection(p);
       }
 
       p.windowResized = () => {
@@ -58,6 +59,7 @@ class Sketch {
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
+          console.log("mouse click")
           ShootingController.fireBullet(p, game, grenade); 
         }
       }
