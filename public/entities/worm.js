@@ -24,11 +24,7 @@ class Worm {
       p.rotate(angle);
       p.fill(255);
 
-      // SQUARE - uncomment here
-      // p.rectMode(p.CENTER); 
-      // p.rect(0, 0, this.w, this.h)
-
-      // WORM IMAGE - uncomment here
+      // WORM IMAGE 
       p.imageMode(p.CENTER);
       p.image(img, 0, 0, this.w, this.h);
 
@@ -40,18 +36,12 @@ class Worm {
       p.rotate(angle);
       p.fill(255);
 
-      // SQUARE - uncomment here
-      // p.rectMode(p.CENTER); 
-      // p.rect(0, 0, this.w, this.h)
-
-      // WORM IMAGE - uncomment here
+      // WORM IMAGE 
       p.imageMode(p.CENTER);
       p.image(img, 0, 0, this.w, this.h);
-      p.pop();
-      
+      p.pop();  
     }
     
-
     // p.rect(this.x, this.y, this.w, this.h);
     // HP above the element
     if (this.hp > 70) {
