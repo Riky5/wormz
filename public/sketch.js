@@ -69,9 +69,11 @@ class Sketch {
         }  else {
           let input = p.keyCode
           let worm = game.getActiveWorm()
-          MoveController.moveWorm(worm, input, p, game);
-          } 
-        }
+          if (MoveController.isValidInput(input)) {
+            MoveController.moveWorm(worm, input, p, game);
+          }
+        } 
+      }
     }, "sketch")
   } 
 }
