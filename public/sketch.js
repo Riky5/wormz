@@ -5,6 +5,7 @@ const ScreenController = require('./controllers/screenController')
 const MoveController = require('./controllers/moveController')
 const CollisionController = require('./controllers/collisionController')
 const ShootingController = require('./controllers/shootingController')
+const WeaponController = require('./controllers/weaponController')
 const Worm = require('./entities/worm');
 const Ground = require('./entities/ground');
 const Bullet = require('./entities/bullet');
@@ -71,6 +72,8 @@ class Sketch {
           let worm = game.getActiveWorm()
           if (MoveController.isValidInput(input)) {
             MoveController.moveWorm(worm, input, p, game);
+          } else if (WeaponController.isValidInput(input)) {
+            WeaponController.activeWormChangeWeapon(worm, input)
           }
         } 
       }
