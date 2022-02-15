@@ -55,8 +55,7 @@ class Game {
   createWeapons = (weaponModel, bulletModel, imgs) => {
     const grenade = new weaponModel({name: 'Grenade', velocity: 30, image: imgs[3], damage: 10, bulletModel: bulletModel})
     const clock = new weaponModel({name: 'Clock', velocity: 15, image: imgs[2], damage: 15, bulletModel: bulletModel})
-    const worm = new weaponModel({name: 'Worm', velocity: 40, image: imgs[1], damage: 5, bulletModel: bulletModel})
-    return [grenade,clock, worm]
+    return [grenade,clock]
   }
 }
 
