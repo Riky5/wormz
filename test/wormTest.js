@@ -7,7 +7,7 @@ const expect = require('chai').expect;
 describe('Worm', () => {
   let worm;
   beforeEach(() => {
-    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter});
+    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter, direction: "right"});
   })
 
   it('initialized with correct parameters', function(done) {
@@ -16,8 +16,9 @@ describe('Worm', () => {
     expect(worm.w).to.eq(90);
     expect(worm.h).to.eq(90);
     expect(worm.hp).to.eq(100);
-    expect(worm.worm).to.eq('testIMG');
+    expect(worm.img).to.eq('testIMG');
     expect(worm.matter).to.eq(Matter);
+    expect(worm.direction).to.eq("right");
     done();
   });
 
@@ -50,5 +51,11 @@ describe('Worm', () => {
       expect(worm.body.mass).to.eq(10)
       done();
     });
+
+    it('changes the worm direction to left', function(done) {
+      worm.setDirection("left");
+      expect(worm.direction).to.eq("left");
+      done();
+    })
   });
 });

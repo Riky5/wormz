@@ -8,23 +8,42 @@ class ShootingController {
 
   static fireBullet(p, game, img, sound) {
     let angleDeg;
-    if (game.player1Turn === true) {
-      let wormPos = { x: game.worm.body.position.x, y: game.worm.body.position.y }
-      angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-      this.bullet = new Bullet({ x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game, img: img, matter: Matter });
+    if(game.player1Turn === true) {
+      angleDeg = ShootingController.fire(p, game.worm, game, img);
+      console.log(angleDeg)
+    } else {
+      angleDeg = ShootingController.fire(p, game.worm2, game, img);
     }
-    else {
-      let wormPos = { x: game.worm2.body.position.x, y: game.worm2.body.position.y }
-      angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
-      this.bullet = new Bullet({ x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game: game, img: img, matter: Matter });
-    }
-
     game.bullets.push(this.bullet);
-    sound.play();
-    Matter.Body.setVelocity(this.bullet.body, { x: (-p.cos(angleDeg)) * 30, y: -(p.sin(angleDeg)) * 30 });
+
+    sound.play(); 
+    Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*30, y:-(p.sin(angleDeg))*30});
+
 
     game.changePlayerTurn();
     game.timer.resetTimer();
+  }
+
+  static fire(p, worm, game, img) {
+    if(worm.direction === "right") {
+      return ShootingController.fireRight(p, worm, game, img);
+    } else {
+      return ShootingController.fireLeft(p, worm, game, img);
+    }
+  }
+
+  static fireRight(p, worm, game, img) {
+    let wormPos = {x: worm.body.position.x, y: worm.body.position.y }
+    let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
+    this.bullet = new Bullet({x: wormPos.x + 50, y: wormPos.y - 40, r: 15, game: game, img: img});
+    return angleDeg;
+  }
+
+  static fireLeft(p, worm, game, img) {
+    let wormPos = {x: worm.body.position.x, y: worm.body.position.y }
+    let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
+    this.bullet = new Bullet({x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game: game, img: img});
+    return angleDeg;
   }
 }
 
