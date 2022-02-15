@@ -6,7 +6,7 @@ class Lava {
     this.h = h;
     this.body.isStatic = true;
     this.body.restitution = 1;
-    this.lava = imgs[4]
+    this.img = imgs[4]
   }
   show(p) {
     const pos = this.body.position;
@@ -19,7 +19,7 @@ class Lava {
     // p.rect(0,0, this.w, this.h);
 
     p.imageMode(p.CENTER);
-    p.image(this.lava, 0, 0, this.w, this.h);
+    p.image(this.img, 0, 0, this.w, this.h);
 
     p.pop()
   }

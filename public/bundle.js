@@ -72904,7 +72904,7 @@ geometric ideas.`,
           this.h = h;
           this.body.isStatic = true;
           this.body.restitution = 1;
-          this.lava = imgs[4];
+          this.img = imgs[4];
         }
         show(p) {
           const pos = this.body.position;
@@ -72912,7 +72912,7 @@ geometric ideas.`,
           p.push();
           p.translate(pos.x, pos.y);
           p.imageMode(p.CENTER);
-          p.image(this.lava, 0, 0, this.w, this.h);
+          p.image(this.img, 0, 0, this.w, this.h);
           p.pop();
         }
       };
@@ -72924,15 +72924,13 @@ geometric ideas.`,
   var require_obstacle = __commonJS({
     "public/entities/obstacle.js"(exports, module) {
       var Obstacle = class {
-        constructor({ x, y, w, h, world, matter, imgs }) {
-          console.log("at obstacle");
-          console.log(imgs);
+        constructor({ x, y, w, h, world, matter, imgs: img }) {
           this.body = matter.Bodies.rectangle(x, y, w, h, { label: "ground" });
           matter.World.add(world, this.body);
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
-          this.obstacle = imgs;
+          this.img = img;
         }
         show(p) {
           const pos = this.body.position;
@@ -72940,7 +72938,7 @@ geometric ideas.`,
           p.push();
           p.translate(pos.x, pos.y);
           p.imageMode(p.CENTER);
-          p.image(this.obstacle, 0, 0, this.w, this.h);
+          p.image(this.img, 0, 0, this.w, this.h);
           p.pop();
         }
       };
@@ -72954,8 +72952,6 @@ geometric ideas.`,
       var Obstacle = require_obstacle();
       var Terrain = class {
         createTerrain(p, world, matter, imgs) {
-          console.log("at terrain");
-          console.log(imgs);
           let terrain_generated = [];
           let ground_piece;
           let left_border = new Obstacle({ x: p.windowWidth + 20, y: 0, w: 100, h: p.windowHeight * 2, world, matter });

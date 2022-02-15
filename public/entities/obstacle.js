@@ -1,13 +1,11 @@
 class Obstacle {
-  constructor({x: x,y: y, w: w,h: h, world: world, matter: matter, imgs: imgs}) {
-    console.log('at obstacle')
-    console.log(imgs)
+  constructor({x: x,y: y, w: w,h: h, world: world, matter: matter, imgs: img}) {
     this.body = matter.Bodies.rectangle(x,y,w,h,{label: "ground"});
     matter.World.add(world, this.body);
     this.w = w;
     this.h = h;
     this.body.isStatic = true;
-    this.obstacle = imgs;
+    this.img = img;
   }
   show(p) {
     const pos = this.body.position;
@@ -20,7 +18,7 @@ class Obstacle {
     // p.rect(0,0, this.w, this.h);
 
     p.imageMode(p.CENTER);
-    p.image(this.obstacle, 0, 0, this.w, this.h);
+    p.image(this.img, 0, 0, this.w, this.h);
 
     p.pop();
   }
