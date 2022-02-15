@@ -25,10 +25,14 @@ describe('Worm', () => {
 
   it('.reduceHp reduces worm hp by 5', function(done) {
     expect(worm.hp).to.eq(100);
-    worm.reduceHP();
+    worm.reduceHP(5);
     expect(worm.hp).to.eq(95);
-    worm.reduceHP();
-    expect(worm.hp).to.eq(90);
+    done();
+  });
+  it('.reduceHp reduces worm hp by 50', function(done) {
+    expect(worm.hp).to.eq(100);
+    worm.reduceHP(50);
+    expect(worm.hp).to.eq(50);
     done();
   });
 

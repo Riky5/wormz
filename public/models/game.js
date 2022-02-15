@@ -26,8 +26,8 @@ class Game {
     this.moveCount = 0;
   }
 
-  switchToMode(modeChoice) {
-    this.mode = modeChoice;
+  switchToMode = (modeChoice) => {
+    return this.mode = modeChoice;
   }
 
   getActiveWorm = () => {
@@ -40,7 +40,6 @@ class Game {
   }
 
   getActiveWormPos = () => {
-
     if(this.player1Turn) {
       return {x: this.worm.body.position.x + (this.worm.w / 2) , y: this.worm.body.position.y - (this.worm.h / 2)}
     } 

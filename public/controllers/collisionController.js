@@ -1,7 +1,7 @@
-const Bullet = require('../entities/bullet')
+const Bullet = require('../entities/bullet');
+const { gameScreen } = require('./screenController');
 
 class CollisionController{  
-
 
   // Not sure where this should go, maybe in shooting controller?
   static findAndDestroyBullet = (pair, game) => {
@@ -17,12 +17,13 @@ class CollisionController{
   }
   
   static findAndDamageWorm = (pair, game) => {
+    let bulletDamageValue = game.bullets[0].damage
     if (CollisionController.isInCollision(pair, "wormTwo")) {
-      game.worm2.reduceHP();
+      game.worm2.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {game.setGameOver()}
       
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
-      game.worm.reduceHP();
+      game.worm.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {game.setGameOver()}
     }
   }
@@ -30,8 +31,8 @@ class CollisionController{
   static collision = (event, game) => {
     for (const pair of event.pairs) {
       if(CollisionController.isInCollision(pair, "bullet")) {
-        CollisionController.findAndDestroyBullet(pair, game);
         CollisionController.findAndDamageWorm(pair, game);
+        CollisionController.findAndDestroyBullet(pair, game);
       }
     }
   }

@@ -54,9 +54,9 @@ class Worm {
     return this.body.position
   }
 
-  reduceHP() {
+  reduceHP(damageValue) {
     if (this.hp > 0) {
-      this.hp -= 5;
+      this.hp -= damageValue;
     }
   }
   changeWeapon(weaponInput) {
