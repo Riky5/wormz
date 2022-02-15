@@ -8,7 +8,7 @@ class Game {
     this.world = this.engine.world;
     this.bullets = [];
     this.explosions = [];
-    this.lava = new lava({x: p.width/2, y: p.height-20, w: p.width, h: 180, world: this.world, matter: matter})
+    this.lava = new lava({x: p.width/2, y: p.height-20, w: p.width, h: 180, world: this.world, matter: matter, img: imgs})
     this.worm = new worm({x: (p.windowWidth/10)*1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter: matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
     this.worm2 = new worm({x: (p.windowWidth/10)*6, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter: matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
     matter.World.add(this.world, [this.worm.body,this.worm2.body]);
