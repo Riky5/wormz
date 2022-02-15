@@ -4,7 +4,7 @@ class Terrain {
   createTerrain(p,world,matter) {
     let terrain_generated = [];
     let ground_piece;
-    let left_border = new Obstacle({x: 2000 + 20,y: 1000,w: 100,h: 3000,  world: world, matter: matter})
+    let left_border = new Obstacle({x: 2300 + 20,y: 1000,w: 100,h: 3000,  world: world, matter: matter})
     let right_border = new Obstacle({x: -20,y: 1000,w: 100,h: 3000,  world: world, matter: matter})
     let top_border = new Obstacle({x: 1000,y: -400,w: 3000,h: 200,  world: world, matter: matter})
     let block_height = 10

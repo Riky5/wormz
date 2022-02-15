@@ -72244,7 +72244,14 @@ geometric ideas.`,
         static zoom(p, mx, my, scaleFactor) {
           p.translate(mx, my);
           p.scale(scaleFactor);
-          p.translate(-mx, -my);
+          if (mx > 1200 && p.windowWidth < 2e3 && my > p.windowHeight - 100) {
+            p.translate(-mx - 500, -my - 200);
+          } else if (my > p.windowHeight - 100) {
+            p.translate(-mx, -my - 200);
+          } else if (mx > 1200 && p.windowWidth < 2e3) {
+            p.translate(-mx - 500, -my);
+          } else
+            p.translate(-mx, -my);
         }
       };
       __publicField(ZoomController, "sf", 1);
@@ -72958,7 +72965,7 @@ geometric ideas.`,
         createTerrain(p, world, matter) {
           let terrain_generated = [];
           let ground_piece;
-          let left_border = new Obstacle({ x: 2e3 + 20, y: 1e3, w: 100, h: 3e3, world, matter });
+          let left_border = new Obstacle({ x: 2300 + 20, y: 1e3, w: 100, h: 3e3, world, matter });
           let right_border = new Obstacle({ x: -20, y: 1e3, w: 100, h: 3e3, world, matter });
           let top_border = new Obstacle({ x: 1e3, y: -400, w: 3e3, h: 200, world, matter });
           let block_height = 10;
@@ -73091,6 +73098,7 @@ geometric ideas.`,
               MusicController.changeToHidden(p);
               p.loop();
               p.createCanvas(2e3, 2e3);
+              p.resizeCanvas(p.windowWidth, p.windowHeight);
               game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
               p.textSize(40);
