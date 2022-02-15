@@ -5,6 +5,7 @@ const expect = require('chai').expect;
 const Game = require('../public/models/game');
 const Worm = require('../public/entities/worm');
 const Ground = require('../public/entities/ground');
+const TimerController = require('../public/controllers/timerController')
 
 describe('Game', () => {
   let game;
@@ -29,7 +30,7 @@ describe('Game', () => {
 
   beforeEach(() => {
     // struggled to find a way to mock constructor for ground and worm
-    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, ground: Ground, worm: Worm});
+    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, ground: Ground, worm: Worm, timer: TimerController});
   })
 
   it('initialized with correct parameters', function(done) {
@@ -50,10 +51,10 @@ describe('Game', () => {
     expect(game.player1Turn).to.eq(false);
   })
 
-  it ('.resetMoveLimit sets moveCount back to 0', () => {
+  it ('.resetMoveCount sets moveCount back to 0', () => {
     game.moveCount = 5;
     expect(game.moveCount).to.eq(5);
-    game.resetMoveLimit();
+    game.resetMoveCount();
     expect(game.moveCount).to.eq(0);
   })
 

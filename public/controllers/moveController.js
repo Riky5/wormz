@@ -22,6 +22,9 @@ class MoveController {
   static increaseCount = (game) => {
     game.moveCount += 1;
   }
+  static resetCount = (game) => {
+    game.moveCount = 0;
+  }
 }
 
 module.exports = MoveController;

@@ -1,6 +1,5 @@
 const Matter = require("matter-js")
 const MusicController = require("../controllers/musicController");
-const Sketch = require("../sketch");
 
 class ScreenController{
   static startScreen(p, logo) {
@@ -20,10 +19,12 @@ class ScreenController{
     game.worm2.show(p);
   
     game.bullets.forEach(element => element.show(p));
+    this.displayWhichPlayerTurn(p, game);
+    this.displayMovesLeftAndTimer(p, game)
   }
 
-  static gameOverScreen(p) {
-    p.background('pink');
+  static gameOverScreen(p, gameOver) {
+    p.background(gameOver);
     p.textSize(30);
     p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 90);
   }
@@ -43,7 +44,7 @@ class ScreenController{
     p.resizeCanvas(0, 0);
   }
 
-  static setScreen(p, game, imgs, volumeSlider, sound) {
+  static setScreen(p, game, imgs) {
     if(game.mode === 'start') {
       ScreenController.startScreen(p, imgs[0]);
     }
@@ -51,7 +52,7 @@ class ScreenController{
       ScreenController.gameScreen(p, game, imgs[1]);
     }
     else if (game.mode === 'gameOver'){
-      ScreenController.gameOverScreen(p);
+      ScreenController.gameOverScreen(p, imgs[2]);
     }
     else if (game.mode === 'instructions') {
       ScreenController.instructionsScreen(p);
@@ -59,17 +60,20 @@ class ScreenController{
     else if (game.mode === 'music-sound-settings') {
       MusicController.changeToVisible(p);
       p.noLoop();
-      ScreenController.musicSoundScreen(p, volumeSlider, sound);
+      ScreenController.musicSoundScreen(p);
     }
   }
 
   static KeyPressed(p, game) {
     if(game.mode === 'start') {
       if(p.keyCode === p.ENTER) {
-        game.mode = 'game';
+        game.switchToMode('game');
+        game.timer.resetTimer();
+        game.timer.clearTimer();
+        game.timer.startTimer();
       } 
       else if(p.keyCode === 73) {
-        game.mode = 'instructions';
+       game.switchToMode('instructions');
       }
       else if(p.keyCode === p.OPTION) {
         game.mode = 'music-sound-settings';
@@ -81,6 +85,22 @@ class ScreenController{
         p.resetMain();
       }
     }
+  }
+  static displayWhichPlayerTurn(p, game) {
+    p.textSize(30)
+    if(game.player1Turn === true) {
+      p.text("Player 1", p.windowWidth /2 + 200, p.windowHeight / 2 - 320);
+    }
+    else {
+      p.text("Player 2", p.windowWidth /2 + 200, p.windowHeight / 2 - 320);
+    };
+  }
+
+  static displayMovesLeftAndTimer(p, game) {
+    p.textSize(20);
+    p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
+    p.text(game.timer.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
+    p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
   }
 }
 
