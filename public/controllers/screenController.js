@@ -105,5 +105,3 @@ class ScreenController{
 }
 
 module.exports = ScreenController;
-
-
