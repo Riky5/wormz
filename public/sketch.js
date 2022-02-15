@@ -73,7 +73,7 @@ class Sketch {
         MusicController.changeToHidden(p);
         p.loop();
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
       }
