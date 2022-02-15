@@ -24,12 +24,13 @@ class Sketch {
     let wormImg2;
     let music;
     let explosionSound;
-    let startMusicBtn;
-    let stopMusicBtn;
-    let startSoundEffects;
-    let stopSoundEffects;
-    let musicVolumeSlider;
-    let soundVolumeSlider;
+    let slider;
+    // let startMusicBtn;
+    // let stopMusicBtn;
+    // let startSoundEffects;
+    // let stopSoundEffects;
+    // let musicVolumeSlider;
+    // let soundVolumeSlider;
     let gameClass = this.gameClass;
     let game;
 
@@ -52,11 +53,22 @@ class Sketch {
         game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
         p.textSize(40);
-        MusicController.initializeSound(p, [startMusicBtn, stopMusicBtn, startSoundEffects, stopSoundEffects], [musicVolumeSlider, soundVolumeSlider]);
+        MusicController.initializeSound(p, [music, explosionSound]);
+      }
+
+      p.resetMain = () => {
+        MusicController.changeToHidden(p);
+        p.loop();
+        // p.push();
+        p.createCanvas(p.windowWidth, p.windowHeight - 50);
+        game = new gameClass({p: p, imgs: [wormImg1, wormImg2], matter: Matter, ground: Ground, worm: Worm});
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game));
+        p.textSize(40);
+        // p.pop();
       }
 
       p.draw = () => {
-        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg], music);
+        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg], slider, music);
       }
 
       p.windowResized = () => {
@@ -65,7 +77,7 @@ class Sketch {
 
       p.mouseClicked = () => {
         if(game.mode === 'game') {
-          ShootingController.fireBullet(p, game); 
+          ShootingController.fireBullet(p, game, explosionSound); 
         }
       }
 

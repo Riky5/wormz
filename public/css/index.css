@@ -2,16 +2,27 @@ body {
   background-color: #f9ebf9;
 }
 
-div {
+#main-music-div {
   display: flex;
+  flex-direction: column;
   padding: 1rem;
-  justify-content: center;
   align-items: center;
 }
 
+#title {
+  font-size: 2.8rem;
+}
+
+#musicDiv, #soundDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
 p {
   font-size: 2rem;
   margin: 1rem;
+  color: black;
 }
 
 button {
@@ -21,6 +32,7 @@ button {
   margin-right: 1rem;
   background-color: #ffffff;
 }
+
 button:hover {
   background-color: #0099ff;
 }

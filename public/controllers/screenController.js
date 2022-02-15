@@ -1,5 +1,7 @@
 const Matter = require("matter-js")
 const MusicController = require("../controllers/musicController");
+const Sketch = require("../sketch");
+
 class ScreenController{
   static startScreen(p, logo) {
     p.background(logo);
@@ -7,7 +9,7 @@ class ScreenController{
     p.fill("#000000");
     p.text("Press ENTER to start game", p.windowWidth / 2 - 175, p.windowHeight / 2 + 110);
     p.text("Press I for instructions", p.windowWidth / 2 - 142, p.windowHeight / 2 + 160);
-    p.text("Press OPTION for Music/Sound settings", p.windowWidth / 2 - 252, p.windowHeight / 2 + 190);
+    p.text("Press OPTION for Music/Sound settings", p.windowWidth / 2 - 252, p.windowHeight / 2 + 210);
   }
 
   static gameScreen(p, game, img) {
@@ -37,22 +39,21 @@ class ScreenController{
     p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
   }
 
-  static musicSoundScreen(p, buttons, sliders, sound) {
-    // sound.play();
+  //drawing
+  static musicSoundScreen(p) {
     p.resizeCanvas(0, 0);
+    // volumeSlider = p.createSlider(0, 1, 0.5, 0.01);
+    // volumeSlider.position(100, 300)
+    // sound.loop();
     // p.setVolume(0.5);
-    let startBtn = p.select('#startBtn');
-    startBtn.mouseOver(sound.play());
+    // let startBtn = p.select('#startBtn');
+    // startBtn.mouseOver(sound.play());
     // sounds[1].setVolume(sliders[1].value());
     // buttons[2].mouseOver(enableSoundEffects);
     // buttons[3].mouseOver(disableSoundEffects);
   }
 
-  static startMusic = (music) => {
-    music.play();
-  }
-
-  static setScreen(p, game, imgs, buttons, sliders, sound) {
+  static setScreen(p, game, imgs, volumeSlider, sound) {
     if(game.mode === 'start') {
       ScreenController.startScreen(p, imgs[0]);
     }
@@ -66,7 +67,9 @@ class ScreenController{
       ScreenController.instructionsScreen(p);
     }
     else if (game.mode === 'music-sound-settings') {
-      ScreenController.musicSoundScreen(p, buttons, sliders, sound);
+      MusicController.changeToVisible(p);
+      p.noLoop();
+      ScreenController.musicSoundScreen(p, volumeSlider, sound);
     }
   }
 
@@ -82,9 +85,10 @@ class ScreenController{
         game.mode = 'music-sound-settings';
       }
     } 
-    else if(game.mode === 'gameOver' || game.mode === 'instructions' || game.mode == 'music-sound-settings') {
+    else if(game.mode === 'gameOver' || game.mode === 'instructions' || game.mode === 'music-sound-settings') {
       if(p.keyCode === p.ENTER) {
-        p.setup();
+        p.loop();
+        p.resetMain();
       }
     }
   }
