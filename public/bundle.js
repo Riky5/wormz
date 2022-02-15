@@ -72826,7 +72826,7 @@ geometric ideas.`,
           this.weapons = weapons;
           this.currentWeapon = this.weapons[0];
           this.direction = direction;
-          matter.Body.setInertia(this.body, 5e8);
+          matter.Body.setInertia(this.body, 15e3);
         }
         show = (p, img = this.img) => {
           const pos = this.body.position;
@@ -72922,7 +72922,6 @@ geometric ideas.`,
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
-          this.body.friction = 0.5;
         }
         show(p) {
           const pos = this.body.position;
