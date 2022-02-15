@@ -65756,6 +65756,7 @@ geometric ideas.`,
               normalArray.constructor === Array;
               return normalArray;
             }
+<<<<<<< HEAD
           };
           p5.FFT.prototype.getEnergy = function(frequency1, frequency2) {
             var nyquist = p5sound.audiocontext.sampleRate / 2;
@@ -65864,6 +65865,116 @@ geometric ideas.`,
             }
             return logAverages;
           };
+=======
+          };
+          p5.FFT.prototype.getEnergy = function(frequency1, frequency2) {
+            var nyquist = p5sound.audiocontext.sampleRate / 2;
+            if (frequency1 === "bass") {
+              frequency1 = this.bass[0];
+              frequency2 = this.bass[1];
+            } else if (frequency1 === "lowMid") {
+              frequency1 = this.lowMid[0];
+              frequency2 = this.lowMid[1];
+            } else if (frequency1 === "mid") {
+              frequency1 = this.mid[0];
+              frequency2 = this.mid[1];
+            } else if (frequency1 === "highMid") {
+              frequency1 = this.highMid[0];
+              frequency2 = this.highMid[1];
+            } else if (frequency1 === "treble") {
+              frequency1 = this.treble[0];
+              frequency2 = this.treble[1];
+            }
+            if (typeof frequency1 !== "number") {
+              throw "invalid input for getEnergy()";
+            } else if (!frequency2) {
+              var index = Math.round(frequency1 / nyquist * this.freqDomain.length);
+              return this.freqDomain[index];
+            } else if (frequency1 && frequency2) {
+              if (frequency1 > frequency2) {
+                var swap = frequency2;
+                frequency2 = frequency1;
+                frequency1 = swap;
+              }
+              var lowIndex = Math.round(frequency1 / nyquist * this.freqDomain.length);
+              var highIndex = Math.round(frequency2 / nyquist * this.freqDomain.length);
+              var total = 0;
+              var numFrequencies = 0;
+              for (var i = lowIndex; i <= highIndex; i++) {
+                total += this.freqDomain[i];
+                numFrequencies += 1;
+              }
+              var toReturn = total / numFrequencies;
+              return toReturn;
+            } else {
+              throw "invalid input for getEnergy()";
+            }
+          };
+          p5.FFT.prototype.getFreq = function(freq1, freq2) {
+            console.log("getFreq() is deprecated. Please use getEnergy() instead.");
+            var x = this.getEnergy(freq1, freq2);
+            return x;
+          };
+          p5.FFT.prototype.getCentroid = function() {
+            var nyquist = p5sound.audiocontext.sampleRate / 2;
+            var cumulative_sum = 0;
+            var centroid_normalization = 0;
+            for (var i = 0; i < this.freqDomain.length; i++) {
+              cumulative_sum += i * this.freqDomain[i];
+              centroid_normalization += this.freqDomain[i];
+            }
+            var mean_freq_index = 0;
+            if (centroid_normalization !== 0) {
+              mean_freq_index = cumulative_sum / centroid_normalization;
+            }
+            var spec_centroid_freq = mean_freq_index * (nyquist / this.freqDomain.length);
+            return spec_centroid_freq;
+          };
+          p5.FFT.prototype.smooth = function(s) {
+            if (typeof s !== "undefined") {
+              this.smoothing = s;
+            }
+            return this.smoothing;
+          };
+          p5.FFT.prototype.dispose = function() {
+            var index = p5sound.soundArray.indexOf(this);
+            p5sound.soundArray.splice(index, 1);
+            if (this.analyser) {
+              this.analyser.disconnect();
+              delete this.analyser;
+            }
+          };
+          p5.FFT.prototype.linAverages = function(N) {
+            var N = N || 16;
+            var spectrum = this.freqDomain;
+            var spectrumLength = spectrum.length;
+            var spectrumStep = Math.floor(spectrumLength / N);
+            var linearAverages = new Array(N);
+            var groupIndex = 0;
+            for (var specIndex = 0; specIndex < spectrumLength; specIndex++) {
+              linearAverages[groupIndex] = linearAverages[groupIndex] !== void 0 ? (linearAverages[groupIndex] + spectrum[specIndex]) / 2 : spectrum[specIndex];
+              if (specIndex % spectrumStep === spectrumStep - 1) {
+                groupIndex++;
+              }
+            }
+            return linearAverages;
+          };
+          p5.FFT.prototype.logAverages = function(octaveBands) {
+            var nyquist = p5sound.audiocontext.sampleRate / 2;
+            var spectrum = this.freqDomain;
+            var spectrumLength = spectrum.length;
+            var logAverages = new Array(octaveBands.length);
+            var octaveIndex = 0;
+            for (var specIndex = 0; specIndex < spectrumLength; specIndex++) {
+              var specIndexFrequency = Math.round(specIndex * nyquist / this.freqDomain.length);
+              if (specIndexFrequency > octaveBands[octaveIndex].hi) {
+                octaveIndex++;
+              }
+              logAverages[octaveIndex] = logAverages[octaveIndex] !== void 0 ? (logAverages[octaveIndex] + spectrum[specIndex]) / 2 : spectrum[specIndex];
+            }
+            return logAverages;
+          };
+>>>>>>> origin/main
           p5.FFT.prototype.getOctaveBands = function(N, fCtr0) {
             var N = N || 3;
             var fCtr0 = fCtr0 || 15.625;
@@ -66273,6 +66384,7 @@ geometric ideas.`,
           };
           Tone.TimeBase.prototype._timeSignature = function() {
             return Tone.Transport.timeSignature;
+<<<<<<< HEAD
           };
           Tone.TimeBase.prototype._pushExpr = function(val, name2, units) {
             if (!(val instanceof Tone.TimeBase)) {
@@ -66293,6 +66405,28 @@ geometric ideas.`,
           Tone.TimeBase.prototype.div = function(val, units) {
             return this._pushExpr(val, "/", units);
           };
+=======
+          };
+          Tone.TimeBase.prototype._pushExpr = function(val, name2, units) {
+            if (!(val instanceof Tone.TimeBase)) {
+              val = new this.constructor(val, units);
+            }
+            this._expr = this._binaryExpressions[name2].method.bind(this, this._expr, val._expr);
+            return this;
+          };
+          Tone.TimeBase.prototype.add = function(val, units) {
+            return this._pushExpr(val, "+", units);
+          };
+          Tone.TimeBase.prototype.sub = function(val, units) {
+            return this._pushExpr(val, "-", units);
+          };
+          Tone.TimeBase.prototype.mult = function(val, units) {
+            return this._pushExpr(val, "*", units);
+          };
+          Tone.TimeBase.prototype.div = function(val, units) {
+            return this._pushExpr(val, "/", units);
+          };
+>>>>>>> origin/main
           Tone.TimeBase.prototype.valueOf = function() {
             return this._expr();
           };
@@ -66411,6 +66545,8 @@ geometric ideas.`,
                   retNotation += " + ";
                 }
               }
+<<<<<<< HEAD
+=======
             }
             if (retNotation === "") {
               retNotation = "0";
@@ -66430,8 +66566,301 @@ geometric ideas.`,
               if (match) {
                 return expr.method.call(this, match[1]);
               }
+>>>>>>> origin/main
+            }
+            if (retNotation === "") {
+              retNotation = "0";
+            }
+            return retNotation;
+          };
+<<<<<<< HEAD
+          Tone.Time.prototype._notationToUnits = function(notation) {
+            var primaryExprs = this._primaryExpressions;
+            var notationExprs = [
+              primaryExprs.n,
+              primaryExprs.t,
+              primaryExprs.m
+            ];
+            for (var i = 0; i < notationExprs.length; i++) {
+              var expr = notationExprs[i];
+              var match = notation.match(expr.regexp);
+              if (match) {
+                return expr.method.call(this, match[1]);
+              }
             }
           };
+          Tone.Time.prototype.toBarsBeatsSixteenths = function() {
+            var quarterTime = this._beatsToUnits(1);
+            var quarters = this.toSeconds() / quarterTime;
+            var measures = Math.floor(quarters / this._timeSignature());
+            var sixteenths = quarters % 1 * 4;
+            quarters = Math.floor(quarters) % this._timeSignature();
+            sixteenths = sixteenths.toString();
+            if (sixteenths.length > 3) {
+              sixteenths = parseFloat(sixteenths).toFixed(3);
+            }
+            var progress = [
+              measures,
+              quarters,
+              sixteenths
+            ];
+            return progress.join(":");
+          };
+          Tone.Time.prototype.toTicks = function() {
+            var quarterTime = this._beatsToUnits(1);
+            var quarters = this.valueOf() / quarterTime;
+            return Math.floor(quarters * Tone.Transport.PPQ);
+          };
+          Tone.Time.prototype.toSamples = function() {
+            return this.toSeconds() * this.context.sampleRate;
+          };
+          Tone.Time.prototype.toFrequency = function() {
+            return 1 / this.toSeconds();
+          };
+          Tone.Time.prototype.toSeconds = function() {
+            return this.valueOf();
+          };
+          Tone.Time.prototype.toMilliseconds = function() {
+            return this.toSeconds() * 1e3;
+          };
+          Tone.Time.prototype.valueOf = function() {
+            var val = this._expr();
+            return val + (this._plusNow ? this.now() : 0);
+          };
+          return Tone.Time;
+        }(Tone_core_Tone);
+        var Tone_type_Frequency;
+        Tone_type_Frequency = function(Tone) {
+          Tone.Frequency = function(val, units) {
+            if (this instanceof Tone.Frequency) {
+              Tone.TimeBase.call(this, val, units);
+            } else {
+              return new Tone.Frequency(val, units);
+            }
+          };
+          Tone.extend(Tone.Frequency, Tone.TimeBase);
+          Tone.Frequency.prototype._primaryExpressions = Object.create(Tone.TimeBase.prototype._primaryExpressions);
+          Tone.Frequency.prototype._primaryExpressions.midi = {
+            regexp: /^(\d+(?:\.\d+)?midi)/,
+            method: function(value) {
+              return this.midiToFrequency(value);
+            }
+          };
+          Tone.Frequency.prototype._primaryExpressions.note = {
+            regexp: /^([a-g]{1}(?:b|#|x|bb)?)(-?[0-9]+)/i,
+            method: function(pitch, octave) {
+              var index = noteToScaleIndex[pitch.toLowerCase()];
+              var noteNumber = index + (parseInt(octave) + 1) * 12;
+              return this.midiToFrequency(noteNumber);
+            }
+          };
+          Tone.Frequency.prototype._primaryExpressions.tr = {
+            regexp: /^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?):?(\d+(?:\.\d+)?)?/,
+            method: function(m, q, s) {
+              var total = 1;
+              if (m && m !== "0") {
+                total *= this._beatsToUnits(this._timeSignature() * parseFloat(m));
+              }
+              if (q && q !== "0") {
+                total *= this._beatsToUnits(parseFloat(q));
+              }
+              if (s && s !== "0") {
+                total *= this._beatsToUnits(parseFloat(s) / 4);
+              }
+              return total;
+            }
+          };
+          Tone.Frequency.prototype.transpose = function(interval) {
+            this._expr = function(expr, interval2) {
+              var val = expr();
+              return val * this.intervalToFrequencyRatio(interval2);
+            }.bind(this, this._expr, interval);
+            return this;
+          };
+          Tone.Frequency.prototype.harmonize = function(intervals) {
+            this._expr = function(expr, intervals2) {
+              var val = expr();
+              var ret = [];
+              for (var i = 0; i < intervals2.length; i++) {
+                ret[i] = val * this.intervalToFrequencyRatio(intervals2[i]);
+              }
+              return ret;
+            }.bind(this, this._expr, intervals);
+            return this;
+          };
+          Tone.Frequency.prototype.toMidi = function() {
+            return this.frequencyToMidi(this.valueOf());
+          };
+          Tone.Frequency.prototype.toNote = function() {
+            var freq = this.valueOf();
+            var log = Math.log(freq / Tone.Frequency.A4) / Math.LN2;
+            var noteNumber = Math.round(12 * log) + 57;
+            var octave = Math.floor(noteNumber / 12);
+            if (octave < 0) {
+              noteNumber += -12 * octave;
+            }
+            var noteName = scaleIndexToNote[noteNumber % 12];
+            return noteName + octave.toString();
+          };
+          Tone.Frequency.prototype.toSeconds = function() {
+            return 1 / this.valueOf();
+          };
+          Tone.Frequency.prototype.toFrequency = function() {
+            return this.valueOf();
+          };
+          Tone.Frequency.prototype.toTicks = function() {
+            var quarterTime = this._beatsToUnits(1);
+            var quarters = this.valueOf() / quarterTime;
+            return Math.floor(quarters * Tone.Transport.PPQ);
+          };
+          Tone.Frequency.prototype._frequencyToUnits = function(freq) {
+            return freq;
+          };
+          Tone.Frequency.prototype._ticksToUnits = function(ticks) {
+            return 1 / (ticks * 60 / (Tone.Transport.bpm.value * Tone.Transport.PPQ));
+          };
+          Tone.Frequency.prototype._beatsToUnits = function(beats) {
+            return 1 / Tone.TimeBase.prototype._beatsToUnits.call(this, beats);
+          };
+          Tone.Frequency.prototype._secondsToUnits = function(seconds) {
+            return 1 / seconds;
+          };
+          Tone.Frequency.prototype._defaultUnits = "hz";
+          var noteToScaleIndex = {
+            "cbb": -2,
+            "cb": -1,
+            "c": 0,
+            "c#": 1,
+            "cx": 2,
+            "dbb": 0,
+            "db": 1,
+            "d": 2,
+            "d#": 3,
+            "dx": 4,
+            "ebb": 2,
+            "eb": 3,
+            "e": 4,
+            "e#": 5,
+            "ex": 6,
+            "fbb": 3,
+            "fb": 4,
+            "f": 5,
+            "f#": 6,
+            "fx": 7,
+            "gbb": 5,
+            "gb": 6,
+            "g": 7,
+            "g#": 8,
+            "gx": 9,
+            "abb": 7,
+            "ab": 8,
+            "a": 9,
+            "a#": 10,
+            "ax": 11,
+            "bbb": 9,
+            "bb": 10,
+            "b": 11,
+            "b#": 12,
+            "bx": 13
+          };
+          var scaleIndexToNote = [
+            "C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#",
+            "A",
+            "A#",
+            "B"
+          ];
+          Tone.Frequency.A4 = 440;
+          Tone.Frequency.prototype.midiToFrequency = function(midi) {
+            return Tone.Frequency.A4 * Math.pow(2, (midi - 69) / 12);
+          };
+          Tone.Frequency.prototype.frequencyToMidi = function(frequency) {
+            return 69 + 12 * Math.log(frequency / Tone.Frequency.A4) / Math.LN2;
+          };
+          return Tone.Frequency;
+        }(Tone_core_Tone);
+        var Tone_type_TransportTime;
+        Tone_type_TransportTime = function(Tone) {
+          Tone.TransportTime = function(val, units) {
+            if (this instanceof Tone.TransportTime) {
+              Tone.Time.call(this, val, units);
+            } else {
+              return new Tone.TransportTime(val, units);
+            }
+          };
+          Tone.extend(Tone.TransportTime, Tone.Time);
+          Tone.TransportTime.prototype._unaryExpressions = Object.create(Tone.Time.prototype._unaryExpressions);
+          Tone.TransportTime.prototype._unaryExpressions.quantize = {
+            regexp: /^@/,
+            method: function(rh) {
+              var subdivision = this._secondsToTicks(rh());
+              var multiple = Math.ceil(Tone.Transport.ticks / subdivision);
+              return this._ticksToUnits(multiple * subdivision);
+            }
+          };
+          Tone.TransportTime.prototype._secondsToTicks = function(seconds) {
+            var quarterTime = this._beatsToUnits(1);
+            var quarters = seconds / quarterTime;
+            return Math.round(quarters * Tone.Transport.PPQ);
+          };
+          Tone.TransportTime.prototype.valueOf = function() {
+            var val = this._secondsToTicks(this._expr());
+            return val + (this._plusNow ? Tone.Transport.ticks : 0);
+          };
+          Tone.TransportTime.prototype.toTicks = function() {
+            return this.valueOf();
+          };
+          Tone.TransportTime.prototype.toSeconds = function() {
+            var val = this._expr();
+            return val + (this._plusNow ? Tone.Transport.seconds : 0);
+          };
+          Tone.TransportTime.prototype.toFrequency = function() {
+            return 1 / this.toSeconds();
+          };
+          return Tone.TransportTime;
+        }(Tone_core_Tone);
+        var Tone_type_Type;
+        Tone_type_Type = function(Tone) {
+          Tone.Type = {
+            Default: "number",
+            Time: "time",
+            Frequency: "frequency",
+            TransportTime: "transportTime",
+            Ticks: "ticks",
+            NormalRange: "normalRange",
+            AudioRange: "audioRange",
+            Decibels: "db",
+            Interval: "interval",
+            BPM: "bpm",
+            Positive: "positive",
+            Cents: "cents",
+            Degrees: "degrees",
+            MIDI: "midi",
+            BarsBeatsSixteenths: "barsBeatsSixteenths",
+            Samples: "samples",
+            Hertz: "hertz",
+            Note: "note",
+            Milliseconds: "milliseconds",
+            Seconds: "seconds",
+            Notation: "notation"
+          };
+          Tone.prototype.toSeconds = function(time) {
+            if (this.isNumber(time)) {
+              return time;
+            } else if (this.isUndef(time)) {
+              return this.now();
+            } else if (this.isString(time)) {
+              return new Tone.Time(time).toSeconds();
+            } else if (time instanceof Tone.TimeBase) {
+              return time.toSeconds();
+=======
           Tone.Time.prototype.toBarsBeatsSixteenths = function() {
             var quarterTime = this._beatsToUnits(1);
             var quarters = this.toSeconds() / quarterTime;
@@ -66873,6 +67302,179 @@ geometric ideas.`,
               this.exponentialRampToValue(value, rampTime, startTime);
             } else {
               this.linearRampToValue(value, rampTime, startTime);
+>>>>>>> origin/main
+            }
+            return this;
+          };
+<<<<<<< HEAD
+          Tone.prototype.toFrequency = function(freq) {
+            if (this.isNumber(freq)) {
+              return freq;
+            } else if (this.isString(freq) || this.isUndef(freq)) {
+              return new Tone.Frequency(freq).valueOf();
+            } else if (freq instanceof Tone.TimeBase) {
+              return freq.toFrequency();
+            }
+          };
+          Tone.prototype.toTicks = function(time) {
+            if (this.isNumber(time) || this.isString(time)) {
+              return new Tone.TransportTime(time).toTicks();
+            } else if (this.isUndef(time)) {
+              return Tone.Transport.ticks;
+            } else if (time instanceof Tone.TimeBase) {
+              return time.toTicks();
+            }
+          };
+          return Tone;
+        }(Tone_core_Tone, Tone_type_Time, Tone_type_Frequency, Tone_type_TransportTime);
+        var Tone_core_Param;
+        Tone_core_Param = function(Tone) {
+          "use strict";
+          Tone.Param = function() {
+            var options = this.optionsObject(arguments, [
+              "param",
+              "units",
+              "convert"
+            ], Tone.Param.defaults);
+            this._param = this.input = options.param;
+            this.units = options.units;
+            this.convert = options.convert;
+            this.overridden = false;
+            this._lfo = null;
+            if (this.isObject(options.lfo)) {
+              this.value = options.lfo;
+            } else if (!this.isUndef(options.value)) {
+              this.value = options.value;
+            }
+          };
+          Tone.extend(Tone.Param);
+          Tone.Param.defaults = {
+            "units": Tone.Type.Default,
+            "convert": true,
+            "param": void 0
+          };
+          Object.defineProperty(Tone.Param.prototype, "value", {
+            get: function() {
+              return this._toUnits(this._param.value);
+            },
+            set: function(value) {
+              if (this.isObject(value)) {
+                if (this.isUndef(Tone.LFO)) {
+                  throw new Error("Include 'Tone.LFO' to use an LFO as a Param value.");
+                }
+                if (this._lfo) {
+                  this._lfo.dispose();
+                }
+                this._lfo = new Tone.LFO(value).start();
+                this._lfo.connect(this.input);
+              } else {
+                var convertedVal = this._fromUnits(value);
+                this._param.cancelScheduledValues(0);
+                this._param.value = convertedVal;
+              }
+            }
+          });
+          Tone.Param.prototype._fromUnits = function(val) {
+            if (this.convert || this.isUndef(this.convert)) {
+              switch (this.units) {
+                case Tone.Type.Time:
+                  return this.toSeconds(val);
+                case Tone.Type.Frequency:
+                  return this.toFrequency(val);
+                case Tone.Type.Decibels:
+                  return this.dbToGain(val);
+                case Tone.Type.NormalRange:
+                  return Math.min(Math.max(val, 0), 1);
+                case Tone.Type.AudioRange:
+                  return Math.min(Math.max(val, -1), 1);
+                case Tone.Type.Positive:
+                  return Math.max(val, 0);
+                default:
+                  return val;
+              }
+            } else {
+              return val;
+            }
+          };
+          Tone.Param.prototype._toUnits = function(val) {
+            if (this.convert || this.isUndef(this.convert)) {
+              switch (this.units) {
+                case Tone.Type.Decibels:
+                  return this.gainToDb(val);
+                default:
+                  return val;
+              }
+            } else {
+              return val;
+            }
+          };
+          Tone.Param.prototype._minOutput = 1e-5;
+          Tone.Param.prototype.setValueAtTime = function(value, time) {
+            value = this._fromUnits(value);
+            time = this.toSeconds(time);
+            if (time <= this.now() + this.blockTime) {
+              this._param.value = value;
+            } else {
+              this._param.setValueAtTime(value, time);
+            }
+            return this;
+          };
+          Tone.Param.prototype.setRampPoint = function(now) {
+            now = this.defaultArg(now, this.now());
+            var currentVal = this._param.value;
+            if (currentVal === 0) {
+              currentVal = this._minOutput;
+            }
+            this._param.setValueAtTime(currentVal, now);
+            return this;
+          };
+          Tone.Param.prototype.linearRampToValueAtTime = function(value, endTime) {
+            value = this._fromUnits(value);
+            this._param.linearRampToValueAtTime(value, this.toSeconds(endTime));
+            return this;
+          };
+          Tone.Param.prototype.exponentialRampToValueAtTime = function(value, endTime) {
+            value = this._fromUnits(value);
+            value = Math.max(this._minOutput, value);
+            this._param.exponentialRampToValueAtTime(value, this.toSeconds(endTime));
+            return this;
+          };
+          Tone.Param.prototype.exponentialRampToValue = function(value, rampTime, startTime) {
+            startTime = this.toSeconds(startTime);
+            this.setRampPoint(startTime);
+            this.exponentialRampToValueAtTime(value, startTime + this.toSeconds(rampTime));
+            return this;
+          };
+          Tone.Param.prototype.linearRampToValue = function(value, rampTime, startTime) {
+            startTime = this.toSeconds(startTime);
+            this.setRampPoint(startTime);
+            this.linearRampToValueAtTime(value, startTime + this.toSeconds(rampTime));
+            return this;
+          };
+          Tone.Param.prototype.setTargetAtTime = function(value, startTime, timeConstant) {
+            value = this._fromUnits(value);
+            value = Math.max(this._minOutput, value);
+            timeConstant = Math.max(this._minOutput, timeConstant);
+            this._param.setTargetAtTime(value, this.toSeconds(startTime), timeConstant);
+            return this;
+          };
+          Tone.Param.prototype.setValueCurveAtTime = function(values, startTime, duration) {
+            for (var i = 0; i < values.length; i++) {
+              values[i] = this._fromUnits(values[i]);
+            }
+            this._param.setValueCurveAtTime(values, this.toSeconds(startTime), this.toSeconds(duration));
+            return this;
+          };
+          Tone.Param.prototype.cancelScheduledValues = function(startTime) {
+            this._param.cancelScheduledValues(this.toSeconds(startTime));
+            return this;
+          };
+          Tone.Param.prototype.rampTo = function(value, rampTime, startTime) {
+            rampTime = this.defaultArg(rampTime, 0);
+            if (this.units === Tone.Type.Frequency || this.units === Tone.Type.BPM || this.units === Tone.Type.Decibels) {
+              this.exponentialRampToValue(value, rampTime, startTime);
+            } else {
+              this.linearRampToValue(value, rampTime, startTime);
             }
             return this;
           };
@@ -66888,6 +67490,20 @@ geometric ideas.`,
               this._lfo.dispose();
               this._lfo = null;
             }
+=======
+          Object.defineProperty(Tone.Param.prototype, "lfo", {
+            get: function() {
+              return this._lfo;
+            }
+          });
+          Tone.Param.prototype.dispose = function() {
+            Tone.prototype.dispose.call(this);
+            this._param = null;
+            if (this._lfo) {
+              this._lfo.dispose();
+              this._lfo = null;
+            }
+>>>>>>> origin/main
             return this;
           };
           return Tone.Param;
@@ -66971,6 +67587,7 @@ geometric ideas.`,
         }(Tone_core_Tone, Tone_signal_WaveShaper, Tone_type_Type, Tone_core_Param);
         var Tone_signal_Add;
         Tone_signal_Add = function(Tone) {
+<<<<<<< HEAD
           "use strict";
           Tone.Add = function(value) {
             this.createInsOuts(2, 0);
@@ -67011,6 +67628,48 @@ geometric ideas.`,
         var Tone_signal_Scale;
         Tone_signal_Scale = function(Tone) {
           "use strict";
+=======
+          "use strict";
+          Tone.Add = function(value) {
+            this.createInsOuts(2, 0);
+            this._sum = this.input[0] = this.input[1] = this.output = new Tone.Gain();
+            this._param = this.input[1] = new Tone.Signal(value);
+            this._param.connect(this._sum);
+          };
+          Tone.extend(Tone.Add, Tone.Signal);
+          Tone.Add.prototype.dispose = function() {
+            Tone.prototype.dispose.call(this);
+            this._sum.dispose();
+            this._sum = null;
+            this._param.dispose();
+            this._param = null;
+            return this;
+          };
+          return Tone.Add;
+        }(Tone_core_Tone, Tone_signal_Signal);
+        var Tone_signal_Multiply;
+        Tone_signal_Multiply = function(Tone) {
+          "use strict";
+          Tone.Multiply = function(value) {
+            this.createInsOuts(2, 0);
+            this._mult = this.input[0] = this.output = new Tone.Gain();
+            this._param = this.input[1] = this.output.gain;
+            this._param.value = this.defaultArg(value, 0);
+          };
+          Tone.extend(Tone.Multiply, Tone.Signal);
+          Tone.Multiply.prototype.dispose = function() {
+            Tone.prototype.dispose.call(this);
+            this._mult.dispose();
+            this._mult = null;
+            this._param = null;
+            return this;
+          };
+          return Tone.Multiply;
+        }(Tone_core_Tone, Tone_signal_Signal);
+        var Tone_signal_Scale;
+        Tone_signal_Scale = function(Tone) {
+          "use strict";
+>>>>>>> origin/main
           Tone.Scale = function(outputMin, outputMax) {
             this._outputMin = this.defaultArg(outputMin, 0);
             this._outputMax = this.defaultArg(outputMax, 1);
@@ -67027,6 +67686,189 @@ geometric ideas.`,
             set: function(min) {
               this._outputMin = min;
               this._setRange();
+<<<<<<< HEAD
+            }
+          });
+          Object.defineProperty(Tone.Scale.prototype, "max", {
+            get: function() {
+              return this._outputMax;
+            },
+            set: function(max) {
+              this._outputMax = max;
+              this._setRange();
+            }
+          });
+          Tone.Scale.prototype._setRange = function() {
+            this._add.value = this._outputMin;
+            this._scale.value = this._outputMax - this._outputMin;
+          };
+          Tone.Scale.prototype.dispose = function() {
+            Tone.prototype.dispose.call(this);
+            this._add.dispose();
+            this._add = null;
+            this._scale.dispose();
+            this._scale = null;
+            return this;
+          };
+          return Tone.Scale;
+        }(Tone_core_Tone, Tone_signal_Add, Tone_signal_Multiply);
+        var signal;
+        "use strict";
+        signal = function() {
+          var Signal = Tone_signal_Signal;
+          var Add = Tone_signal_Add;
+          var Mult = Tone_signal_Multiply;
+          var Scale = Tone_signal_Scale;
+          p5.Signal = function(value) {
+            var s = new Signal(value);
+            return s;
+          };
+          Signal.prototype.fade = Signal.prototype.linearRampToValueAtTime;
+          Mult.prototype.fade = Signal.prototype.fade;
+          Add.prototype.fade = Signal.prototype.fade;
+          Scale.prototype.fade = Signal.prototype.fade;
+          Signal.prototype.setInput = function(_input) {
+            _input.connect(this);
+          };
+          Mult.prototype.setInput = Signal.prototype.setInput;
+          Add.prototype.setInput = Signal.prototype.setInput;
+          Scale.prototype.setInput = Signal.prototype.setInput;
+          Signal.prototype.add = function(num) {
+            var add = new Add(num);
+            this.connect(add);
+            return add;
+          };
+          Mult.prototype.add = Signal.prototype.add;
+          Add.prototype.add = Signal.prototype.add;
+          Scale.prototype.add = Signal.prototype.add;
+          Signal.prototype.mult = function(num) {
+            var mult = new Mult(num);
+            this.connect(mult);
+            return mult;
+          };
+          Mult.prototype.mult = Signal.prototype.mult;
+          Add.prototype.mult = Signal.prototype.mult;
+          Scale.prototype.mult = Signal.prototype.mult;
+          Signal.prototype.scale = function(inMin, inMax, outMin, outMax) {
+            var mapOutMin, mapOutMax;
+            if (arguments.length === 4) {
+              mapOutMin = p5.prototype.map(outMin, inMin, inMax, 0, 1) - 0.5;
+              mapOutMax = p5.prototype.map(outMax, inMin, inMax, 0, 1) - 0.5;
+            } else {
+              mapOutMin = arguments[0];
+              mapOutMax = arguments[1];
+            }
+            var scale = new Scale(mapOutMin, mapOutMax);
+            this.connect(scale);
+            return scale;
+          };
+          Mult.prototype.scale = Signal.prototype.scale;
+          Add.prototype.scale = Signal.prototype.scale;
+          Scale.prototype.scale = Signal.prototype.scale;
+        }(Tone_signal_Signal, Tone_signal_Add, Tone_signal_Multiply, Tone_signal_Scale);
+        var oscillator;
+        "use strict";
+        oscillator = function() {
+          var p5sound = master;
+          var Add = Tone_signal_Add;
+          var Mult = Tone_signal_Multiply;
+          var Scale = Tone_signal_Scale;
+          p5.Oscillator = function(freq, type) {
+            if (typeof freq === "string") {
+              var f = type;
+              type = freq;
+              freq = f;
+            }
+            if (typeof type === "number") {
+              var f = type;
+              type = freq;
+              freq = f;
+            }
+            this.started = false;
+            this.phaseAmount = void 0;
+            this.oscillator = p5sound.audiocontext.createOscillator();
+            this.f = freq || 440;
+            this.oscillator.type = type || "sine";
+            this.oscillator.frequency.setValueAtTime(this.f, p5sound.audiocontext.currentTime);
+            this.output = p5sound.audiocontext.createGain();
+            this._freqMods = [];
+            this.output.gain.value = 0.5;
+            this.output.gain.setValueAtTime(0.5, p5sound.audiocontext.currentTime);
+            this.oscillator.connect(this.output);
+            this.panPosition = 0;
+            this.connection = p5sound.input;
+            this.panner = new p5.Panner(this.output, this.connection, 1);
+            this.mathOps = [this.output];
+            p5sound.soundArray.push(this);
+          };
+          p5.Oscillator.prototype.start = function(time, f) {
+            if (this.started) {
+              var now = p5sound.audiocontext.currentTime;
+              this.stop(now);
+            }
+            if (!this.started) {
+              var freq = f || this.f;
+              var type = this.oscillator.type;
+              if (this.oscillator) {
+                this.oscillator.disconnect();
+                delete this.oscillator;
+              }
+              this.oscillator = p5sound.audiocontext.createOscillator();
+              this.oscillator.frequency.value = Math.abs(freq);
+              this.oscillator.type = type;
+              this.oscillator.connect(this.output);
+              time = time || 0;
+              this.oscillator.start(time + p5sound.audiocontext.currentTime);
+              this.freqNode = this.oscillator.frequency;
+              for (var i in this._freqMods) {
+                if (typeof this._freqMods[i].connect !== "undefined") {
+                  this._freqMods[i].connect(this.oscillator.frequency);
+                }
+              }
+              this.started = true;
+            }
+          };
+          p5.Oscillator.prototype.stop = function(time) {
+            if (this.started) {
+              var t = time || 0;
+              var now = p5sound.audiocontext.currentTime;
+              this.oscillator.stop(t + now);
+              this.started = false;
+            }
+          };
+          p5.Oscillator.prototype.amp = function(vol, rampTime, tFromNow) {
+            var self2 = this;
+            if (typeof vol === "number") {
+              var rampTime = rampTime || 0;
+              var tFromNow = tFromNow || 0;
+              var now = p5sound.audiocontext.currentTime;
+              this.output.gain.linearRampToValueAtTime(vol, now + tFromNow + rampTime);
+            } else if (vol) {
+              vol.connect(self2.output.gain);
+            } else {
+              return this.output.gain;
+            }
+          };
+          p5.Oscillator.prototype.fade = p5.Oscillator.prototype.amp;
+          p5.Oscillator.prototype.getAmp = function() {
+            return this.output.gain.value;
+          };
+          p5.Oscillator.prototype.freq = function(val, rampTime, tFromNow) {
+            if (typeof val === "number" && !isNaN(val)) {
+              this.f = val;
+              var now = p5sound.audiocontext.currentTime;
+              var rampTime = rampTime || 0;
+              var tFromNow = tFromNow || 0;
+              var t = now + tFromNow + rampTime;
+              if (rampTime === 0) {
+                this.oscillator.frequency.setValueAtTime(val, tFromNow + now);
+              } else {
+                if (val > 0) {
+                  this.oscillator.frequency.exponentialRampToValueAtTime(val, tFromNow + rampTime + now);
+                } else {
+                  this.oscillator.frequency.linearRampToValueAtTime(val, tFromNow + rampTime + now);
+                }
+=======
             }
           });
           Object.defineProperty(Tone.Scale.prototype, "max", {
@@ -67297,6 +68139,97 @@ geometric ideas.`,
                 if (thisChain < o.mathOps.length - 2) {
                   nextChain = o.mathOps[i + 1];
                 }
+>>>>>>> origin/main
+              }
+              if (this.phaseAmount) {
+                this.phase(this.phaseAmount);
+              }
+            } else if (val) {
+              if (val.output) {
+                val = val.output;
+              }
+              val.connect(this.oscillator.frequency);
+              this._freqMods.push(val);
+            } else {
+              return this.oscillator.frequency;
+            }
+<<<<<<< HEAD
+          };
+          p5.Oscillator.prototype.getFreq = function() {
+            return this.oscillator.frequency.value;
+          };
+          p5.Oscillator.prototype.setType = function(type) {
+            this.oscillator.type = type;
+          };
+          p5.Oscillator.prototype.getType = function() {
+            return this.oscillator.type;
+          };
+          p5.Oscillator.prototype.connect = function(unit) {
+            if (!unit) {
+              this.panner.connect(p5sound.input);
+            } else if (unit.hasOwnProperty("input")) {
+              this.panner.connect(unit.input);
+              this.connection = unit.input;
+            } else {
+              this.panner.connect(unit);
+              this.connection = unit;
+            }
+          };
+          p5.Oscillator.prototype.disconnect = function() {
+            if (this.output) {
+              this.output.disconnect();
+            }
+            if (this.panner) {
+              this.panner.disconnect();
+              if (this.output) {
+                this.output.connect(this.panner);
+              }
+            }
+            this.oscMods = [];
+          };
+          p5.Oscillator.prototype.pan = function(pval, tFromNow) {
+            this.panPosition = pval;
+            this.panner.pan(pval, tFromNow);
+          };
+          p5.Oscillator.prototype.getPan = function() {
+            return this.panPosition;
+          };
+          p5.Oscillator.prototype.dispose = function() {
+            var index = p5sound.soundArray.indexOf(this);
+            p5sound.soundArray.splice(index, 1);
+            if (this.oscillator) {
+              var now = p5sound.audiocontext.currentTime;
+              this.stop(now);
+              this.disconnect();
+              this.panner = null;
+              this.oscillator = null;
+            }
+            if (this.osc2) {
+              this.osc2.dispose();
+            }
+          };
+          p5.Oscillator.prototype.phase = function(p) {
+            var delayAmt = p5.prototype.map(p, 0, 1, 0, 1 / this.f);
+            var now = p5sound.audiocontext.currentTime;
+            this.phaseAmount = p;
+            if (!this.dNode) {
+              this.dNode = p5sound.audiocontext.createDelay();
+              this.oscillator.disconnect();
+              this.oscillator.connect(this.dNode);
+              this.dNode.connect(this.output);
+            }
+            this.dNode.delayTime.setValueAtTime(delayAmt, now);
+          };
+          var sigChain = function(o, mathObj, thisChain, nextChain, type) {
+            var chainSource = o.oscillator;
+            for (var i in o.mathOps) {
+              if (o.mathOps[i] instanceof type) {
+                chainSource.disconnect();
+                o.mathOps[i].dispose();
+                thisChain = i;
+                if (thisChain < o.mathOps.length - 2) {
+                  nextChain = o.mathOps[i + 1];
+                }
               }
             }
             if (thisChain === o.mathOps.length - 1) {
@@ -67396,6 +68329,105 @@ geometric ideas.`,
                 this._timeline.splice(index, 1);
               }
             }
+=======
+            if (thisChain === o.mathOps.length - 1) {
+              o.mathOps.push(nextChain);
+            }
+            if (i > 0) {
+              chainSource = o.mathOps[i - 1];
+            }
+            chainSource.disconnect();
+            chainSource.connect(mathObj);
+            mathObj.connect(nextChain);
+            o.mathOps[thisChain] = mathObj;
+            return o;
+          };
+          p5.Oscillator.prototype.add = function(num) {
+            var add = new Add(num);
+            var thisChain = this.mathOps.length - 1;
+            var nextChain = this.output;
+            return sigChain(this, add, thisChain, nextChain, Add);
+          };
+          p5.Oscillator.prototype.mult = function(num) {
+            var mult = new Mult(num);
+            var thisChain = this.mathOps.length - 1;
+            var nextChain = this.output;
+            return sigChain(this, mult, thisChain, nextChain, Mult);
+          };
+          p5.Oscillator.prototype.scale = function(inMin, inMax, outMin, outMax) {
+            var mapOutMin, mapOutMax;
+            if (arguments.length === 4) {
+              mapOutMin = p5.prototype.map(outMin, inMin, inMax, 0, 1) - 0.5;
+              mapOutMax = p5.prototype.map(outMax, inMin, inMax, 0, 1) - 0.5;
+            } else {
+              mapOutMin = arguments[0];
+              mapOutMax = arguments[1];
+            }
+            var scale = new Scale(mapOutMin, mapOutMax);
+            var thisChain = this.mathOps.length - 1;
+            var nextChain = this.output;
+            return sigChain(this, scale, thisChain, nextChain, Scale);
+          };
+          p5.SinOsc = function(freq) {
+            p5.Oscillator.call(this, freq, "sine");
+          };
+          p5.SinOsc.prototype = Object.create(p5.Oscillator.prototype);
+          p5.TriOsc = function(freq) {
+            p5.Oscillator.call(this, freq, "triangle");
+          };
+          p5.TriOsc.prototype = Object.create(p5.Oscillator.prototype);
+          p5.SawOsc = function(freq) {
+            p5.Oscillator.call(this, freq, "sawtooth");
+          };
+          p5.SawOsc.prototype = Object.create(p5.Oscillator.prototype);
+          p5.SqrOsc = function(freq) {
+            p5.Oscillator.call(this, freq, "square");
+          };
+          p5.SqrOsc.prototype = Object.create(p5.Oscillator.prototype);
+        }(master, Tone_signal_Add, Tone_signal_Multiply, Tone_signal_Scale);
+        var Tone_core_Timeline;
+        Tone_core_Timeline = function(Tone) {
+          "use strict";
+          Tone.Timeline = function() {
+            var options = this.optionsObject(arguments, ["memory"], Tone.Timeline.defaults);
+            this._timeline = [];
+            this._toRemove = [];
+            this._iterating = false;
+            this.memory = options.memory;
+          };
+          Tone.extend(Tone.Timeline);
+          Tone.Timeline.defaults = { "memory": Infinity };
+          Object.defineProperty(Tone.Timeline.prototype, "length", {
+            get: function() {
+              return this._timeline.length;
+            }
+          });
+          Tone.Timeline.prototype.add = function(event) {
+            if (this.isUndef(event.time)) {
+              throw new Error("Tone.Timeline: events must have a time attribute");
+            }
+            if (this._timeline.length) {
+              var index = this._search(event.time);
+              this._timeline.splice(index + 1, 0, event);
+            } else {
+              this._timeline.push(event);
+            }
+            if (this.length > this.memory) {
+              var diff = this.length - this.memory;
+              this._timeline.splice(0, diff);
+            }
+            return this;
+          };
+          Tone.Timeline.prototype.remove = function(event) {
+            if (this._iterating) {
+              this._toRemove.push(event);
+            } else {
+              var index = this._timeline.indexOf(event);
+              if (index !== -1) {
+                this._timeline.splice(index, 1);
+              }
+            }
+>>>>>>> origin/main
             return this;
           };
           Tone.Timeline.prototype.get = function(time) {
@@ -67771,6 +68803,108 @@ geometric ideas.`,
               } else {
                 return this._linearInterpolate(lowerIndex, lowerVal, upperIndex, upperVal, progress * (len - 1));
               }
+<<<<<<< HEAD
+            }
+          };
+          Tone.TimelineSignal.prototype.dispose = function() {
+            Tone.Signal.prototype.dispose.call(this);
+            Tone.Param.prototype.dispose.call(this);
+            this._events.dispose();
+            this._events = null;
+          };
+          return Tone.TimelineSignal;
+        }(Tone_core_Tone, Tone_signal_Signal);
+        var envelope;
+        "use strict";
+        envelope = function() {
+          var p5sound = master;
+          var Add = Tone_signal_Add;
+          var Mult = Tone_signal_Multiply;
+          var Scale = Tone_signal_Scale;
+          var TimelineSignal = Tone_signal_TimelineSignal;
+          p5.Envelope = function(t1, l1, t2, l2, t3, l3) {
+            this.aTime = t1 || 0.1;
+            this.aLevel = l1 || 1;
+            this.dTime = t2 || 0.5;
+            this.dLevel = l2 || 0;
+            this.rTime = t3 || 0;
+            this.rLevel = l3 || 0;
+            this._rampHighPercentage = 0.98;
+            this._rampLowPercentage = 0.02;
+            this.output = p5sound.audiocontext.createGain();
+            this.control = new TimelineSignal();
+            this._init();
+            this.control.connect(this.output);
+            this.connection = null;
+            this.mathOps = [this.control];
+            this.isExponential = false;
+            this.sourceToClear = null;
+            this.wasTriggered = false;
+            p5sound.soundArray.push(this);
+          };
+          p5.Envelope.prototype._init = function() {
+            var now = p5sound.audiocontext.currentTime;
+            var t = now;
+            this.control.setTargetAtTime(1e-5, t, 1e-3);
+            this._setRampAD(this.aTime, this.dTime);
+          };
+          p5.Envelope.prototype.set = function(t1, l1, t2, l2, t3, l3) {
+            this.aTime = t1;
+            this.aLevel = l1;
+            this.dTime = t2 || 0;
+            this.dLevel = l2 || 0;
+            this.rTime = t3 || 0;
+            this.rLevel = l3 || 0;
+            this._setRampAD(t1, t2);
+          };
+          p5.Envelope.prototype.setADSR = function(aTime, dTime, sPercent, rTime) {
+            this.aTime = aTime;
+            this.dTime = dTime || 0;
+            this.sPercent = sPercent || 0;
+            this.dLevel = typeof sPercent !== "undefined" ? sPercent * (this.aLevel - this.rLevel) + this.rLevel : 0;
+            this.rTime = rTime || 0;
+            this._setRampAD(aTime, dTime);
+          };
+          p5.Envelope.prototype.setRange = function(aLevel, rLevel) {
+            this.aLevel = aLevel || 1;
+            this.rLevel = rLevel || 0;
+          };
+          p5.Envelope.prototype._setRampAD = function(t1, t2) {
+            this._rampAttackTime = this.checkExpInput(t1);
+            this._rampDecayTime = this.checkExpInput(t2);
+            var TCDenominator = 1;
+            TCDenominator = Math.log(1 / this.checkExpInput(1 - this._rampHighPercentage));
+            this._rampAttackTC = t1 / this.checkExpInput(TCDenominator);
+            TCDenominator = Math.log(1 / this._rampLowPercentage);
+            this._rampDecayTC = t2 / this.checkExpInput(TCDenominator);
+          };
+          p5.Envelope.prototype.setRampPercentages = function(p1, p2) {
+            this._rampHighPercentage = this.checkExpInput(p1);
+            this._rampLowPercentage = this.checkExpInput(p2);
+            var TCDenominator = 1;
+            TCDenominator = Math.log(1 / this.checkExpInput(1 - this._rampHighPercentage));
+            this._rampAttackTC = this._rampAttackTime / this.checkExpInput(TCDenominator);
+            TCDenominator = Math.log(1 / this._rampLowPercentage);
+            this._rampDecayTC = this._rampDecayTime / this.checkExpInput(TCDenominator);
+          };
+          p5.Envelope.prototype.setInput = function() {
+            for (var i = 0; i < arguments.length; i++) {
+              this.connect(arguments[i]);
+            }
+          };
+          p5.Envelope.prototype.setExp = function(isExp) {
+            this.isExponential = isExp;
+          };
+          p5.Envelope.prototype.checkExpInput = function(value) {
+            if (value <= 0) {
+              value = 1e-8;
+            }
+            return value;
+          };
+          p5.Envelope.prototype.play = function(unit, secondsFromNow, susTime) {
+            var tFromNow = secondsFromNow || 0;
+            var susTime = susTime || 0;
+=======
             }
           };
           Tone.TimelineSignal.prototype.dispose = function() {
@@ -67928,11 +69062,94 @@ geometric ideas.`,
             var now = p5sound.audiocontext.currentTime;
             var tFromNow = secondsFromNow || 0;
             var t = now + tFromNow;
+>>>>>>> origin/main
             if (unit) {
               if (this.connection !== unit) {
                 this.connect(unit);
               }
             }
+<<<<<<< HEAD
+            this.triggerAttack(unit, tFromNow);
+            this.triggerRelease(unit, tFromNow + this.aTime + this.dTime + susTime);
+          };
+          p5.Envelope.prototype.triggerAttack = function(unit, secondsFromNow) {
+            var now = p5sound.audiocontext.currentTime;
+            var tFromNow = secondsFromNow || 0;
+            var t = now + tFromNow;
+            this.lastAttack = t;
+            this.wasTriggered = true;
+            if (unit) {
+              if (this.connection !== unit) {
+                this.connect(unit);
+              }
+            }
+=======
+>>>>>>> origin/main
+            var valToSet = this.control.getValueAtTime(t);
+            if (this.isExponential === true) {
+              this.control.exponentialRampToValueAtTime(this.checkExpInput(valToSet), t);
+            } else {
+              this.control.linearRampToValueAtTime(valToSet, t);
+            }
+<<<<<<< HEAD
+            t += this.aTime;
+            if (this.isExponential === true) {
+              this.control.exponentialRampToValueAtTime(this.checkExpInput(this.aLevel), t);
+=======
+            t += this.rTime;
+            if (this.isExponential === true) {
+              this.control.exponentialRampToValueAtTime(this.checkExpInput(this.rLevel), t);
+>>>>>>> origin/main
+              valToSet = this.checkExpInput(this.control.getValueAtTime(t));
+              this.control.cancelScheduledValues(t);
+              this.control.exponentialRampToValueAtTime(valToSet, t);
+            } else {
+<<<<<<< HEAD
+              this.control.linearRampToValueAtTime(this.aLevel, t);
+              valToSet = this.control.getValueAtTime(t);
+              this.control.cancelScheduledValues(t);
+              this.control.linearRampToValueAtTime(valToSet, t);
+            }
+            t += this.dTime;
+            if (this.isExponential === true) {
+              this.control.exponentialRampToValueAtTime(this.checkExpInput(this.dLevel), t);
+              valToSet = this.checkExpInput(this.control.getValueAtTime(t));
+              this.control.cancelScheduledValues(t);
+              this.control.exponentialRampToValueAtTime(valToSet, t);
+            } else {
+              this.control.linearRampToValueAtTime(this.dLevel, t);
+=======
+              this.control.linearRampToValueAtTime(this.rLevel, t);
+>>>>>>> origin/main
+              valToSet = this.control.getValueAtTime(t);
+              this.control.cancelScheduledValues(t);
+              this.control.linearRampToValueAtTime(valToSet, t);
+            }
+<<<<<<< HEAD
+          };
+          p5.Envelope.prototype.triggerRelease = function(unit, secondsFromNow) {
+            if (!this.wasTriggered) {
+              return;
+            }
+            var now = p5sound.audiocontext.currentTime;
+            var tFromNow = secondsFromNow || 0;
+            var t = now + tFromNow;
+=======
+            this.wasTriggered = false;
+          };
+          p5.Envelope.prototype.ramp = function(unit, secondsFromNow, v1, v2) {
+            var now = p5sound.audiocontext.currentTime;
+            var tFromNow = secondsFromNow || 0;
+            var t = now + tFromNow;
+            var destination1 = this.checkExpInput(v1);
+            var destination2 = typeof v2 !== "undefined" ? this.checkExpInput(v2) : void 0;
+>>>>>>> origin/main
+            if (unit) {
+              if (this.connection !== unit) {
+                this.connect(unit);
+              }
+            }
+<<<<<<< HEAD
             var valToSet = this.control.getValueAtTime(t);
             if (this.isExponential === true) {
               this.control.exponentialRampToValueAtTime(this.checkExpInput(valToSet), t);
@@ -68121,6 +69338,165 @@ geometric ideas.`,
               this.osc2.started = false;
             }
           };
+=======
+            var currentVal = this.checkExpInput(this.control.getValueAtTime(t));
+            if (destination1 > currentVal) {
+              this.control.setTargetAtTime(destination1, t, this._rampAttackTC);
+              t += this._rampAttackTime;
+            } else if (destination1 < currentVal) {
+              this.control.setTargetAtTime(destination1, t, this._rampDecayTC);
+              t += this._rampDecayTime;
+            }
+            if (destination2 === void 0)
+              return;
+            if (destination2 > destination1) {
+              this.control.setTargetAtTime(destination2, t, this._rampAttackTC);
+            } else if (destination2 < destination1) {
+              this.control.setTargetAtTime(destination2, t, this._rampDecayTC);
+            }
+          };
+          p5.Envelope.prototype.connect = function(unit) {
+            this.connection = unit;
+            if (unit instanceof p5.Oscillator || unit instanceof p5.SoundFile || unit instanceof p5.AudioIn || unit instanceof p5.Reverb || unit instanceof p5.Noise || unit instanceof p5.Filter || unit instanceof p5.Delay) {
+              unit = unit.output.gain;
+            }
+            if (unit instanceof AudioParam) {
+              unit.setValueAtTime(0, p5sound.audiocontext.currentTime);
+            }
+            if (unit instanceof p5.Signal) {
+              unit.setValue(0);
+            }
+            this.output.connect(unit);
+          };
+          p5.Envelope.prototype.disconnect = function() {
+            if (this.output) {
+              this.output.disconnect();
+            }
+          };
+          p5.Envelope.prototype.add = function(num) {
+            var add = new Add(num);
+            var thisChain = this.mathOps.length;
+            var nextChain = this.output;
+            return p5.prototype._mathChain(this, add, thisChain, nextChain, Add);
+          };
+          p5.Envelope.prototype.mult = function(num) {
+            var mult = new Mult(num);
+            var thisChain = this.mathOps.length;
+            var nextChain = this.output;
+            return p5.prototype._mathChain(this, mult, thisChain, nextChain, Mult);
+          };
+          p5.Envelope.prototype.scale = function(inMin, inMax, outMin, outMax) {
+            var scale = new Scale(inMin, inMax, outMin, outMax);
+            var thisChain = this.mathOps.length;
+            var nextChain = this.output;
+            return p5.prototype._mathChain(this, scale, thisChain, nextChain, Scale);
+          };
+          p5.Envelope.prototype.dispose = function() {
+            var index = p5sound.soundArray.indexOf(this);
+            p5sound.soundArray.splice(index, 1);
+            this.disconnect();
+            if (this.control) {
+              this.control.dispose();
+              this.control = null;
+            }
+            for (var i = 1; i < this.mathOps.length; i++) {
+              this.mathOps[i].dispose();
+            }
+          };
+          p5.Env = function(t1, l1, t2, l2, t3, l3) {
+            console.warn("WARNING: p5.Env is now deprecated and may be removed in future versions. Please use the new p5.Envelope instead.");
+            p5.Envelope.call(this, t1, l1, t2, l2, t3, l3);
+          };
+          p5.Env.prototype = Object.create(p5.Envelope.prototype);
+        }(master, Tone_signal_Add, Tone_signal_Multiply, Tone_signal_Scale, Tone_signal_TimelineSignal);
+        var pulse;
+        "use strict";
+        pulse = function() {
+          var p5sound = master;
+          p5.Pulse = function(freq, w) {
+            p5.Oscillator.call(this, freq, "sawtooth");
+            this.w = w || 0;
+            this.osc2 = new p5.SawOsc(freq);
+            this.dNode = p5sound.audiocontext.createDelay();
+            this.dcOffset = createDCOffset();
+            this.dcGain = p5sound.audiocontext.createGain();
+            this.dcOffset.connect(this.dcGain);
+            this.dcGain.connect(this.output);
+            this.f = freq || 440;
+            var mW = this.w / this.oscillator.frequency.value;
+            this.dNode.delayTime.value = mW;
+            this.dcGain.gain.value = 1.7 * (0.5 - this.w);
+            this.osc2.disconnect();
+            this.osc2.panner.disconnect();
+            this.osc2.amp(-1);
+            this.osc2.output.connect(this.dNode);
+            this.dNode.connect(this.output);
+            this.output.gain.value = 1;
+            this.output.connect(this.panner);
+          };
+          p5.Pulse.prototype = Object.create(p5.Oscillator.prototype);
+          p5.Pulse.prototype.width = function(w) {
+            if (typeof w === "number") {
+              if (w <= 1 && w >= 0) {
+                this.w = w;
+                var mW = this.w / this.oscillator.frequency.value;
+                this.dNode.delayTime.value = mW;
+              }
+              this.dcGain.gain.value = 1.7 * (0.5 - this.w);
+            } else {
+              w.connect(this.dNode.delayTime);
+              var sig = new p5.SignalAdd(-0.5);
+              sig.setInput(w);
+              sig = sig.mult(-1);
+              sig = sig.mult(1.7);
+              sig.connect(this.dcGain.gain);
+            }
+          };
+          p5.Pulse.prototype.start = function(f, time) {
+            var now = p5sound.audiocontext.currentTime;
+            var t = time || 0;
+            if (!this.started) {
+              var freq = f || this.f;
+              var type = this.oscillator.type;
+              this.oscillator = p5sound.audiocontext.createOscillator();
+              this.oscillator.frequency.setValueAtTime(freq, now);
+              this.oscillator.type = type;
+              this.oscillator.connect(this.output);
+              this.oscillator.start(t + now);
+              this.osc2.oscillator = p5sound.audiocontext.createOscillator();
+              this.osc2.oscillator.frequency.setValueAtTime(freq, t + now);
+              this.osc2.oscillator.type = type;
+              this.osc2.oscillator.connect(this.osc2.output);
+              this.osc2.start(t + now);
+              this.freqNode = [
+                this.oscillator.frequency,
+                this.osc2.oscillator.frequency
+              ];
+              this.dcOffset = createDCOffset();
+              this.dcOffset.connect(this.dcGain);
+              this.dcOffset.start(t + now);
+              if (this.mods !== void 0 && this.mods.frequency !== void 0) {
+                this.mods.frequency.connect(this.freqNode[0]);
+                this.mods.frequency.connect(this.freqNode[1]);
+              }
+              this.started = true;
+              this.osc2.started = true;
+            }
+          };
+          p5.Pulse.prototype.stop = function(time) {
+            if (this.started) {
+              var t = time || 0;
+              var now = p5sound.audiocontext.currentTime;
+              this.oscillator.stop(t + now);
+              if (this.osc2.oscillator) {
+                this.osc2.oscillator.stop(t + now);
+              }
+              this.dcOffset.stop(t + now);
+              this.started = false;
+              this.osc2.started = false;
+            }
+          };
+>>>>>>> origin/main
           p5.Pulse.prototype.freq = function(val, rampTime, tFromNow) {
             if (typeof val === "number") {
               this.f = val;
@@ -68313,6 +69689,7 @@ geometric ideas.`,
               audio: {
                 sampleRate: p5sound.audiocontext.sampleRate,
                 echoCancellation: false
+<<<<<<< HEAD
               }
             };
             if (p5sound.inputSources[this.currentSource]) {
@@ -68352,6 +69729,47 @@ geometric ideas.`,
               } else {
                 this.output.connect(unit);
               }
+=======
+              }
+            };
+            if (p5sound.inputSources[this.currentSource]) {
+              constraints.audio.deviceId = audioSource.deviceId;
+            }
+            window.navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+              self2.stream = stream;
+              self2.enabled = true;
+              self2.mediaStream = p5sound.audiocontext.createMediaStreamSource(stream);
+              self2.mediaStream.connect(self2.output);
+              self2.amplitude.setInput(self2.output);
+              if (successCallback)
+                successCallback();
+            }).catch(function(err) {
+              if (errorCallback)
+                errorCallback(err);
+              else
+                console.error(err);
+            });
+          };
+          p5.AudioIn.prototype.stop = function() {
+            if (this.stream) {
+              this.stream.getTracks().forEach(function(track) {
+                track.stop();
+              });
+              this.mediaStream.disconnect();
+              delete this.mediaStream;
+              delete this.stream;
+            }
+          };
+          p5.AudioIn.prototype.connect = function(unit) {
+            if (unit) {
+              if (unit.hasOwnProperty("input")) {
+                this.output.connect(unit.input);
+              } else if (unit.hasOwnProperty("analyser")) {
+                this.output.connect(unit.analyser);
+              } else {
+                this.output.connect(unit);
+              }
+>>>>>>> origin/main
             } else {
               this.output.connect(p5sound.input);
             }
@@ -68694,6 +70112,7 @@ geometric ideas.`,
                   var op = new Tone.Modulo(modulus);
                   self2._eval(args[0]).connect(op);
                   return op;
+<<<<<<< HEAD
                 }
               },
               "pow": {
@@ -68737,6 +70156,51 @@ geometric ideas.`,
                 method: applyBinary.bind(this, Tone.Multiply)
               }
             },
+=======
+                }
+              },
+              "pow": {
+                regexp: /^pow/,
+                method: function(args, self2) {
+                  var exp = literalNumber(args[1]);
+                  var op = new Tone.Pow(exp);
+                  self2._eval(args[0]).connect(op);
+                  return op;
+                }
+              },
+              "a2g": {
+                regexp: /^a2g/,
+                method: function(args, self2) {
+                  var op = new Tone.AudioToGain();
+                  self2._eval(args[0]).connect(op);
+                  return op;
+                }
+              }
+            },
+            "binary": {
+              "+": {
+                regexp: /^\+/,
+                precedence: 1,
+                method: applyBinary.bind(this, Tone.Add)
+              },
+              "-": {
+                regexp: /^\-/,
+                precedence: 1,
+                method: function(args, self2) {
+                  if (args.length === 1) {
+                    return applyUnary(Tone.Negate, args, self2);
+                  } else {
+                    return applyBinary(Tone.Subtract, args, self2);
+                  }
+                }
+              },
+              "*": {
+                regexp: /^\*/,
+                precedence: 0,
+                method: applyBinary.bind(this, Tone.Multiply)
+              }
+            },
+>>>>>>> origin/main
             "unary": {
               "-": {
                 regexp: /^\-/,
@@ -69277,6 +70741,981 @@ geometric ideas.`,
               }
             } else {
               console.error("Argument mismatch. .set() should be called with " + this.bands.length * 2 + " arguments. (one frequency and gain value pair for each band of the eq)");
+<<<<<<< HEAD
+            }
+          };
+          p5.EQ.prototype._newBand = function(freq, res) {
+            return new EQFilter(freq, res);
+          };
+          p5.EQ.prototype.dispose = function() {
+            Effect.prototype.dispose.apply(this);
+            if (this.bands) {
+              while (this.bands.length > 0) {
+                delete this.bands.pop().dispose();
+              }
+              delete this.bands;
+            }
+          };
+          return p5.EQ;
+        }(effect, src_eqFilter);
+        var panner3d;
+        "use strict";
+        panner3d = function() {
+          var p5sound = master;
+          var Effect = effect;
+          p5.Panner3D = function() {
+            Effect.call(this);
+            this.panner = this.ac.createPanner();
+            this.panner.panningModel = "HRTF";
+            this.panner.distanceModel = "linear";
+            this.panner.connect(this.output);
+            this.input.connect(this.panner);
+          };
+          p5.Panner3D.prototype = Object.create(Effect.prototype);
+          p5.Panner3D.prototype.process = function(src) {
+            src.connect(this.input);
+          };
+          p5.Panner3D.prototype.set = function(xVal, yVal, zVal, time) {
+            this.positionX(xVal, time);
+            this.positionY(yVal, time);
+            this.positionZ(zVal, time);
+            return [
+              this.panner.positionX.value,
+              this.panner.positionY.value,
+              this.panner.positionZ.value
+            ];
+          };
+          p5.Panner3D.prototype.positionX = function(xVal, time) {
+            var t = time || 0;
+            if (typeof xVal === "number") {
+              this.panner.positionX.value = xVal;
+              this.panner.positionX.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.panner.positionX.linearRampToValueAtTime(xVal, this.ac.currentTime + 0.02 + t);
+            } else if (xVal) {
+              xVal.connect(this.panner.positionX);
+            }
+            return this.panner.positionX.value;
+          };
+          p5.Panner3D.prototype.positionY = function(yVal, time) {
+            var t = time || 0;
+            if (typeof yVal === "number") {
+              this.panner.positionY.value = yVal;
+              this.panner.positionY.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.panner.positionY.linearRampToValueAtTime(yVal, this.ac.currentTime + 0.02 + t);
+            } else if (yVal) {
+              yVal.connect(this.panner.positionY);
+            }
+            return this.panner.positionY.value;
+          };
+          p5.Panner3D.prototype.positionZ = function(zVal, time) {
+            var t = time || 0;
+            if (typeof zVal === "number") {
+              this.panner.positionZ.value = zVal;
+              this.panner.positionZ.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.panner.positionZ.linearRampToValueAtTime(zVal, this.ac.currentTime + 0.02 + t);
+            } else if (zVal) {
+              zVal.connect(this.panner.positionZ);
+            }
+            return this.panner.positionZ.value;
+          };
+          p5.Panner3D.prototype.orient = function(xVal, yVal, zVal, time) {
+            this.orientX(xVal, time);
+            this.orientY(yVal, time);
+            this.orientZ(zVal, time);
+            return [
+              this.panner.orientationX.value,
+              this.panner.orientationY.value,
+              this.panner.orientationZ.value
+            ];
+          };
+          p5.Panner3D.prototype.orientX = function(xVal, time) {
+            var t = time || 0;
+            if (typeof xVal === "number") {
+              this.panner.orientationX.value = xVal;
+              this.panner.orientationX.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.panner.orientationX.linearRampToValueAtTime(xVal, this.ac.currentTime + 0.02 + t);
+            } else if (xVal) {
+              xVal.connect(this.panner.orientationX);
+            }
+            return this.panner.orientationX.value;
+          };
+          p5.Panner3D.prototype.orientY = function(yVal, time) {
+            var t = time || 0;
+            if (typeof yVal === "number") {
+              this.panner.orientationY.value = yVal;
+              this.panner.orientationY.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.panner.orientationY.linearRampToValueAtTime(yVal, this.ac.currentTime + 0.02 + t);
+            } else if (yVal) {
+              yVal.connect(this.panner.orientationY);
+            }
+            return this.panner.orientationY.value;
+          };
+          p5.Panner3D.prototype.orientZ = function(zVal, time) {
+            var t = time || 0;
+            if (typeof zVal === "number") {
+              this.panner.orientationZ.value = zVal;
+              this.panner.orientationZ.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.panner.orientationZ.linearRampToValueAtTime(zVal, this.ac.currentTime + 0.02 + t);
+            } else if (zVal) {
+              zVal.connect(this.panner.orientationZ);
+            }
+            return this.panner.orientationZ.value;
+          };
+          p5.Panner3D.prototype.setFalloff = function(maxDistance, rolloffFactor) {
+            this.maxDist(maxDistance);
+            this.rolloff(rolloffFactor);
+          };
+          p5.Panner3D.prototype.maxDist = function(maxDistance) {
+            if (typeof maxDistance === "number") {
+              this.panner.maxDistance = maxDistance;
+            }
+            return this.panner.maxDistance;
+          };
+          p5.Panner3D.prototype.rolloff = function(rolloffFactor) {
+            if (typeof rolloffFactor === "number") {
+              this.panner.rolloffFactor = rolloffFactor;
+            }
+            return this.panner.rolloffFactor;
+          };
+          p5.Panner3D.dispose = function() {
+            Effect.prototype.dispose.apply(this);
+            if (this.panner) {
+              this.panner.disconnect();
+              delete this.panner;
+            }
+          };
+          return p5.Panner3D;
+        }(master, effect);
+        var listener3d;
+        "use strict";
+        listener3d = function() {
+          var p5sound = master;
+          var Effect = effect;
+          p5.Listener3D = function(type) {
+            this.ac = p5sound.audiocontext;
+            this.listener = this.ac.listener;
+          };
+          p5.Listener3D.prototype.process = function(src) {
+            src.connect(this.input);
+          };
+          p5.Listener3D.prototype.position = function(xVal, yVal, zVal, time) {
+            this.positionX(xVal, time);
+            this.positionY(yVal, time);
+            this.positionZ(zVal, time);
+            return [
+              this.listener.positionX.value,
+              this.listener.positionY.value,
+              this.listener.positionZ.value
+            ];
+          };
+          p5.Listener3D.prototype.positionX = function(xVal, time) {
+            var t = time || 0;
+            if (typeof xVal === "number") {
+              this.listener.positionX.value = xVal;
+              this.listener.positionX.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.positionX.linearRampToValueAtTime(xVal, this.ac.currentTime + 0.02 + t);
+            } else if (xVal) {
+              xVal.connect(this.listener.positionX);
+            }
+            return this.listener.positionX.value;
+          };
+          p5.Listener3D.prototype.positionY = function(yVal, time) {
+            var t = time || 0;
+            if (typeof yVal === "number") {
+              this.listener.positionY.value = yVal;
+              this.listener.positionY.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.positionY.linearRampToValueAtTime(yVal, this.ac.currentTime + 0.02 + t);
+            } else if (yVal) {
+              yVal.connect(this.listener.positionY);
+            }
+            return this.listener.positionY.value;
+          };
+          p5.Listener3D.prototype.positionZ = function(zVal, time) {
+            var t = time || 0;
+            if (typeof zVal === "number") {
+              this.listener.positionZ.value = zVal;
+              this.listener.positionZ.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.positionZ.linearRampToValueAtTime(zVal, this.ac.currentTime + 0.02 + t);
+            } else if (zVal) {
+              zVal.connect(this.listener.positionZ);
+            }
+            return this.listener.positionZ.value;
+          };
+          p5.Listener3D.prototype.orient = function(xValF, yValF, zValF, xValU, yValU, zValU, time) {
+            if (arguments.length === 3 || arguments.length === 4) {
+              time = arguments[3];
+              this.orientForward(xValF, yValF, zValF, time);
+            } else if (arguments.length === 6 || arguments === 7) {
+              this.orientForward(xValF, yValF, zValF);
+              this.orientUp(xValU, yValU, zValU, time);
+            }
+            return [
+              this.listener.forwardX.value,
+              this.listener.forwardY.value,
+              this.listener.forwardZ.value,
+              this.listener.upX.value,
+              this.listener.upY.value,
+              this.listener.upZ.value
+            ];
+          };
+          p5.Listener3D.prototype.orientForward = function(xValF, yValF, zValF, time) {
+            this.forwardX(xValF, time);
+            this.forwardY(yValF, time);
+            this.forwardZ(zValF, time);
+            return [
+              this.listener.forwardX,
+              this.listener.forwardY,
+              this.listener.forwardZ
+            ];
+          };
+          p5.Listener3D.prototype.orientUp = function(xValU, yValU, zValU, time) {
+            this.upX(xValU, time);
+            this.upY(yValU, time);
+            this.upZ(zValU, time);
+            return [
+              this.listener.upX,
+              this.listener.upY,
+              this.listener.upZ
+            ];
+          };
+          p5.Listener3D.prototype.forwardX = function(xVal, time) {
+            var t = time || 0;
+            if (typeof xVal === "number") {
+              this.listener.forwardX.value = xVal;
+              this.listener.forwardX.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.forwardX.linearRampToValueAtTime(xVal, this.ac.currentTime + 0.02 + t);
+            } else if (xVal) {
+              xVal.connect(this.listener.forwardX);
+            }
+            return this.listener.forwardX.value;
+          };
+          p5.Listener3D.prototype.forwardY = function(yVal, time) {
+            var t = time || 0;
+            if (typeof yVal === "number") {
+              this.listener.forwardY.value = yVal;
+              this.listener.forwardY.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.forwardY.linearRampToValueAtTime(yVal, this.ac.currentTime + 0.02 + t);
+            } else if (yVal) {
+              yVal.connect(this.listener.forwardY);
+            }
+            return this.listener.forwardY.value;
+          };
+          p5.Listener3D.prototype.forwardZ = function(zVal, time) {
+            var t = time || 0;
+            if (typeof zVal === "number") {
+              this.listener.forwardZ.value = zVal;
+              this.listener.forwardZ.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.forwardZ.linearRampToValueAtTime(zVal, this.ac.currentTime + 0.02 + t);
+            } else if (zVal) {
+              zVal.connect(this.listener.forwardZ);
+            }
+            return this.listener.forwardZ.value;
+          };
+          p5.Listener3D.prototype.upX = function(xVal, time) {
+            var t = time || 0;
+            if (typeof xVal === "number") {
+              this.listener.upX.value = xVal;
+              this.listener.upX.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.upX.linearRampToValueAtTime(xVal, this.ac.currentTime + 0.02 + t);
+            } else if (xVal) {
+              xVal.connect(this.listener.upX);
+            }
+            return this.listener.upX.value;
+          };
+          p5.Listener3D.prototype.upY = function(yVal, time) {
+            var t = time || 0;
+            if (typeof yVal === "number") {
+              this.listener.upY.value = yVal;
+              this.listener.upY.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.upY.linearRampToValueAtTime(yVal, this.ac.currentTime + 0.02 + t);
+            } else if (yVal) {
+              yVal.connect(this.listener.upY);
+            }
+            return this.listener.upY.value;
+          };
+          p5.Listener3D.prototype.upZ = function(zVal, time) {
+            var t = time || 0;
+            if (typeof zVal === "number") {
+              this.listener.upZ.value = zVal;
+              this.listener.upZ.cancelScheduledValues(this.ac.currentTime + 0.01 + t);
+              this.listener.upZ.linearRampToValueAtTime(zVal, this.ac.currentTime + 0.02 + t);
+            } else if (zVal) {
+              zVal.connect(this.listener.upZ);
+            }
+            return this.listener.upZ.value;
+          };
+          return p5.Listener3D;
+        }(master, effect);
+        var delay;
+        "use strict";
+        delay = function() {
+          var Filter = filter;
+          var Effect = effect;
+          p5.Delay = function() {
+            Effect.call(this);
+            this._split = this.ac.createChannelSplitter(2);
+            this._merge = this.ac.createChannelMerger(2);
+            this._leftGain = this.ac.createGain();
+            this._rightGain = this.ac.createGain();
+            this.leftDelay = this.ac.createDelay();
+            this.rightDelay = this.ac.createDelay();
+            this._leftFilter = new Filter();
+            this._rightFilter = new Filter();
+            this._leftFilter.disconnect();
+            this._rightFilter.disconnect();
+            this._leftFilter.biquad.frequency.setValueAtTime(1200, this.ac.currentTime);
+            this._rightFilter.biquad.frequency.setValueAtTime(1200, this.ac.currentTime);
+            this._leftFilter.biquad.Q.setValueAtTime(0.3, this.ac.currentTime);
+            this._rightFilter.biquad.Q.setValueAtTime(0.3, this.ac.currentTime);
+            this.input.connect(this._split);
+            this.leftDelay.connect(this._leftGain);
+            this.rightDelay.connect(this._rightGain);
+            this._leftGain.connect(this._leftFilter.input);
+            this._rightGain.connect(this._rightFilter.input);
+            this._merge.connect(this.wet);
+            this._leftFilter.biquad.gain.setValueAtTime(1, this.ac.currentTime);
+            this._rightFilter.biquad.gain.setValueAtTime(1, this.ac.currentTime);
+            this.setType(0);
+            this._maxDelay = this.leftDelay.delayTime.maxValue;
+            this.feedback(0.5);
+          };
+          p5.Delay.prototype = Object.create(Effect.prototype);
+          p5.Delay.prototype.process = function(src, _delayTime, _feedback, _filter) {
+            var feedback = _feedback || 0;
+            var delayTime = _delayTime || 0;
+            if (feedback >= 1) {
+              throw new Error("Feedback value will force a positive feedback loop.");
+            }
+            if (delayTime >= this._maxDelay) {
+              throw new Error("Delay Time exceeds maximum delay time of " + this._maxDelay + " second.");
+            }
+            src.connect(this.input);
+            this.leftDelay.delayTime.setValueAtTime(delayTime, this.ac.currentTime);
+            this.rightDelay.delayTime.setValueAtTime(delayTime, this.ac.currentTime);
+            this._leftGain.gain.value = feedback;
+            this._rightGain.gain.value = feedback;
+            if (_filter) {
+              this._leftFilter.freq(_filter);
+              this._rightFilter.freq(_filter);
+            }
+          };
+          p5.Delay.prototype.delayTime = function(t) {
+            if (typeof t !== "number") {
+              t.connect(this.leftDelay.delayTime);
+              t.connect(this.rightDelay.delayTime);
+            } else {
+              this.leftDelay.delayTime.cancelScheduledValues(this.ac.currentTime);
+              this.rightDelay.delayTime.cancelScheduledValues(this.ac.currentTime);
+              this.leftDelay.delayTime.linearRampToValueAtTime(t, this.ac.currentTime);
+              this.rightDelay.delayTime.linearRampToValueAtTime(t, this.ac.currentTime);
+            }
+          };
+          p5.Delay.prototype.feedback = function(f) {
+            if (f && typeof f !== "number") {
+              f.connect(this._leftGain.gain);
+              f.connect(this._rightGain.gain);
+            } else if (f >= 1) {
+              throw new Error("Feedback value will force a positive feedback loop.");
+            } else if (typeof f === "number") {
+              this._leftGain.gain.value = f;
+              this._rightGain.gain.value = f;
+            }
+            return this._leftGain.gain.value;
+          };
+          p5.Delay.prototype.filter = function(freq, q) {
+            this._leftFilter.set(freq, q);
+            this._rightFilter.set(freq, q);
+          };
+          p5.Delay.prototype.setType = function(t) {
+            if (t === 1) {
+              t = "pingPong";
+            }
+            this._split.disconnect();
+            this._leftFilter.disconnect();
+            this._rightFilter.disconnect();
+            this._split.connect(this.leftDelay, 0);
+            this._split.connect(this.rightDelay, 1);
+            switch (t) {
+              case "pingPong":
+                this._rightFilter.setType(this._leftFilter.biquad.type);
+                this._leftFilter.output.connect(this._merge, 0, 0);
+                this._rightFilter.output.connect(this._merge, 0, 1);
+                this._leftFilter.output.connect(this.rightDelay);
+                this._rightFilter.output.connect(this.leftDelay);
+                break;
+              default:
+                this._leftFilter.output.connect(this._merge, 0, 0);
+                this._rightFilter.output.connect(this._merge, 0, 1);
+                this._leftFilter.output.connect(this.leftDelay);
+                this._rightFilter.output.connect(this.rightDelay);
+            }
+          };
+          p5.Delay.prototype.dispose = function() {
+            Effect.prototype.dispose.apply(this);
+            this._split.disconnect();
+            this._leftFilter.dispose();
+            this._rightFilter.dispose();
+            this._merge.disconnect();
+            this._leftGain.disconnect();
+            this._rightGain.disconnect();
+            this.leftDelay.disconnect();
+            this.rightDelay.disconnect();
+            this._split = void 0;
+            this._leftFilter = void 0;
+            this._rightFilter = void 0;
+            this._merge = void 0;
+            this._leftGain = void 0;
+            this._rightGain = void 0;
+            this.leftDelay = void 0;
+            this.rightDelay = void 0;
+          };
+        }(filter, effect);
+        var reverb;
+        "use strict";
+        reverb = function() {
+          var CustomError = errorHandler;
+          var Effect = effect;
+          p5.Reverb = function() {
+            Effect.call(this);
+            this._initConvolverNode();
+            this.input.gain.value = 0.5;
+            this._seconds = 3;
+            this._decay = 2;
+            this._reverse = false;
+            this._buildImpulse();
+          };
+          p5.Reverb.prototype = Object.create(Effect.prototype);
+          p5.Reverb.prototype._initConvolverNode = function() {
+            this.convolverNode = this.ac.createConvolver();
+            this.input.connect(this.convolverNode);
+            this.convolverNode.connect(this.wet);
+          };
+          p5.Reverb.prototype._teardownConvolverNode = function() {
+            if (this.convolverNode) {
+              this.convolverNode.disconnect();
+              delete this.convolverNode;
+            }
+          };
+          p5.Reverb.prototype._setBuffer = function(audioBuffer) {
+            this._teardownConvolverNode();
+            this._initConvolverNode();
+            this.convolverNode.buffer = audioBuffer;
+          };
+          p5.Reverb.prototype.process = function(src, seconds, decayRate, reverse) {
+            src.connect(this.input);
+            var rebuild = false;
+            if (seconds) {
+              this._seconds = seconds;
+              rebuild = true;
+            }
+            if (decayRate) {
+              this._decay = decayRate;
+            }
+            if (reverse) {
+              this._reverse = reverse;
+            }
+            if (rebuild) {
+              this._buildImpulse();
+            }
+          };
+          p5.Reverb.prototype.set = function(seconds, decayRate, reverse) {
+            var rebuild = false;
+            if (seconds) {
+              this._seconds = seconds;
+              rebuild = true;
+            }
+            if (decayRate) {
+              this._decay = decayRate;
+            }
+            if (reverse) {
+              this._reverse = reverse;
+            }
+            if (rebuild) {
+              this._buildImpulse();
+            }
+          };
+          p5.Reverb.prototype._buildImpulse = function() {
+            var rate = this.ac.sampleRate;
+            var length = rate * this._seconds;
+            var decay = this._decay;
+            var impulse = this.ac.createBuffer(2, length, rate);
+            var impulseL = impulse.getChannelData(0);
+            var impulseR = impulse.getChannelData(1);
+            var n, i;
+            for (i = 0; i < length; i++) {
+              n = this._reverse ? length - i : i;
+              impulseL[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+              impulseR[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+            }
+            this._setBuffer(impulse);
+          };
+          p5.Reverb.prototype.dispose = function() {
+            Effect.prototype.dispose.apply(this);
+            this._teardownConvolverNode();
+          };
+          p5.Convolver = function(path, callback, errorCallback) {
+            p5.Reverb.call(this);
+            this._initConvolverNode();
+            this.input.gain.value = 0.5;
+            if (path) {
+              this.impulses = [];
+              this._loadBuffer(path, callback, errorCallback);
+            } else {
+              this._seconds = 3;
+              this._decay = 2;
+              this._reverse = false;
+              this._buildImpulse();
+            }
+          };
+          p5.Convolver.prototype = Object.create(p5.Reverb.prototype);
+          p5.prototype.registerPreloadMethod("createConvolver", p5.prototype);
+          p5.prototype.createConvolver = function(path, callback, errorCallback) {
+            if (window.location.origin.indexOf("file://") > -1 && window.cordova === "undefined") {
+              alert("This sketch may require a server to load external files. Please see http://bit.ly/1qcInwS");
+            }
+            var self2 = this;
+            var cReverb = new p5.Convolver(path, function(buffer) {
+              if (typeof callback === "function") {
+                callback(buffer);
+              }
+              if (typeof self2._decrementPreload === "function") {
+                self2._decrementPreload();
+              }
+            }, errorCallback);
+            cReverb.impulses = [];
+            return cReverb;
+          };
+          p5.Convolver.prototype._loadBuffer = function(path, callback, errorCallback) {
+            var path = p5.prototype._checkFileFormats(path);
+            var self2 = this;
+            var errorTrace = new Error().stack;
+            var ac = p5.prototype.getAudioContext();
+            var request = new XMLHttpRequest();
+            request.open("GET", path, true);
+            request.responseType = "arraybuffer";
+            request.onload = function() {
+              if (request.status === 200) {
+                ac.decodeAudioData(request.response, function(buff) {
+                  var buffer = {};
+                  var chunks = path.split("/");
+                  buffer.name = chunks[chunks.length - 1];
+                  buffer.audioBuffer = buff;
+                  self2.impulses.push(buffer);
+                  self2._setBuffer(buffer.audioBuffer);
+                  if (callback) {
+                    callback(buffer);
+                  }
+                }, function() {
+                  var err2 = new CustomError("decodeAudioData", errorTrace, self2.url);
+                  var msg2 = "AudioContext error at decodeAudioData for " + self2.url;
+                  if (errorCallback) {
+                    err2.msg = msg2;
+                    errorCallback(err2);
+                  } else {
+                    console.error(msg2 + "\n The error stack trace includes: \n" + err2.stack);
+                  }
+                });
+              } else {
+                var err = new CustomError("loadConvolver", errorTrace, self2.url);
+                var msg = "Unable to load " + self2.url + ". The request status was: " + request.status + " (" + request.statusText + ")";
+                if (errorCallback) {
+                  err.message = msg;
+                  errorCallback(err);
+                } else {
+                  console.error(msg + "\n The error stack trace includes: \n" + err.stack);
+                }
+              }
+            };
+            request.onerror = function() {
+              var err = new CustomError("loadConvolver", errorTrace, self2.url);
+              var msg = "There was no response from the server at " + self2.url + ". Check the url and internet connectivity.";
+              if (errorCallback) {
+                err.message = msg;
+                errorCallback(err);
+              } else {
+                console.error(msg + "\n The error stack trace includes: \n" + err.stack);
+              }
+            };
+            request.send();
+          };
+          p5.Convolver.prototype.set = null;
+          p5.Convolver.prototype.process = function(src) {
+            src.connect(this.input);
+          };
+          p5.Convolver.prototype.impulses = [];
+          p5.Convolver.prototype.addImpulse = function(path, callback, errorCallback) {
+            if (window.location.origin.indexOf("file://") > -1 && window.cordova === "undefined") {
+              alert("This sketch may require a server to load external files. Please see http://bit.ly/1qcInwS");
+            }
+            this._loadBuffer(path, callback, errorCallback);
+          };
+          p5.Convolver.prototype.resetImpulse = function(path, callback, errorCallback) {
+            if (window.location.origin.indexOf("file://") > -1 && window.cordova === "undefined") {
+              alert("This sketch may require a server to load external files. Please see http://bit.ly/1qcInwS");
+            }
+            this.impulses = [];
+            this._loadBuffer(path, callback, errorCallback);
+          };
+          p5.Convolver.prototype.toggleImpulse = function(id) {
+            if (typeof id === "number" && id < this.impulses.length) {
+              this._setBuffer(this.impulses[id].audioBuffer);
+            }
+            if (typeof id === "string") {
+              for (var i = 0; i < this.impulses.length; i++) {
+                if (this.impulses[i].name === id) {
+                  this._setBuffer(this.impulses[i].audioBuffer);
+                  break;
+                }
+              }
+            }
+          };
+          p5.Convolver.prototype.dispose = function() {
+            p5.Reverb.prototype.dispose.apply(this);
+            for (var i in this.impulses) {
+              if (this.impulses[i]) {
+                this.impulses[i] = null;
+              }
+            }
+          };
+        }(errorHandler, effect);
+        var Tone_core_TimelineState;
+        Tone_core_TimelineState = function(Tone) {
+          "use strict";
+          Tone.TimelineState = function(initial) {
+            Tone.Timeline.call(this);
+            this._initial = initial;
+          };
+          Tone.extend(Tone.TimelineState, Tone.Timeline);
+          Tone.TimelineState.prototype.getValueAtTime = function(time) {
+            var event = this.get(time);
+            if (event !== null) {
+              return event.state;
+            } else {
+              return this._initial;
+            }
+          };
+          Tone.TimelineState.prototype.setStateAtTime = function(state, time) {
+            this.add({
+              "state": state,
+              "time": time
+            });
+          };
+          return Tone.TimelineState;
+        }(Tone_core_Tone, Tone_core_Timeline);
+        var Tone_core_Clock;
+        Tone_core_Clock = function(Tone) {
+          "use strict";
+          Tone.Clock = function() {
+            Tone.Emitter.call(this);
+            var options = this.optionsObject(arguments, [
+              "callback",
+              "frequency"
+            ], Tone.Clock.defaults);
+            this.callback = options.callback;
+            this._nextTick = 0;
+            this._lastState = Tone.State.Stopped;
+            this.frequency = new Tone.TimelineSignal(options.frequency, Tone.Type.Frequency);
+            this._readOnly("frequency");
+            this.ticks = 0;
+            this._state = new Tone.TimelineState(Tone.State.Stopped);
+            this._boundLoop = this._loop.bind(this);
+            this.context.on("tick", this._boundLoop);
+          };
+          Tone.extend(Tone.Clock, Tone.Emitter);
+          Tone.Clock.defaults = {
+            "callback": Tone.noOp,
+            "frequency": 1,
+            "lookAhead": "auto"
+          };
+          Object.defineProperty(Tone.Clock.prototype, "state", {
+            get: function() {
+              return this._state.getValueAtTime(this.now());
+            }
+          });
+          Tone.Clock.prototype.start = function(time, offset) {
+            time = this.toSeconds(time);
+            if (this._state.getValueAtTime(time) !== Tone.State.Started) {
+              this._state.add({
+                "state": Tone.State.Started,
+                "time": time,
+                "offset": offset
+              });
+            }
+            return this;
+          };
+          Tone.Clock.prototype.stop = function(time) {
+            time = this.toSeconds(time);
+            this._state.cancel(time);
+            this._state.setStateAtTime(Tone.State.Stopped, time);
+            return this;
+          };
+          Tone.Clock.prototype.pause = function(time) {
+            time = this.toSeconds(time);
+            if (this._state.getValueAtTime(time) === Tone.State.Started) {
+              this._state.setStateAtTime(Tone.State.Paused, time);
+            }
+            return this;
+          };
+          Tone.Clock.prototype._loop = function() {
+            var now = this.now();
+            var lookAhead = this.context.lookAhead;
+            var updateInterval = this.context.updateInterval;
+            var lagCompensation = this.context.lag * 2;
+            var loopInterval = now + lookAhead + updateInterval + lagCompensation;
+            while (loopInterval > this._nextTick && this._state) {
+              var currentState = this._state.getValueAtTime(this._nextTick);
+              if (currentState !== this._lastState) {
+                this._lastState = currentState;
+                var event = this._state.get(this._nextTick);
+                if (currentState === Tone.State.Started) {
+                  this._nextTick = event.time;
+                  if (!this.isUndef(event.offset)) {
+                    this.ticks = event.offset;
+                  }
+                  this.emit("start", event.time, this.ticks);
+                } else if (currentState === Tone.State.Stopped) {
+                  this.ticks = 0;
+                  this.emit("stop", event.time);
+                } else if (currentState === Tone.State.Paused) {
+                  this.emit("pause", event.time);
+                }
+              }
+              var tickTime = this._nextTick;
+              if (this.frequency) {
+                this._nextTick += 1 / this.frequency.getValueAtTime(this._nextTick);
+                if (currentState === Tone.State.Started) {
+                  this.callback(tickTime);
+                  this.ticks++;
+                }
+              }
+            }
+          };
+          Tone.Clock.prototype.getStateAtTime = function(time) {
+            time = this.toSeconds(time);
+            return this._state.getValueAtTime(time);
+          };
+          Tone.Clock.prototype.dispose = function() {
+            Tone.Emitter.prototype.dispose.call(this);
+            this.context.off("tick", this._boundLoop);
+            this._writable("frequency");
+            this.frequency.dispose();
+            this.frequency = null;
+            this._boundLoop = null;
+            this._nextTick = Infinity;
+            this.callback = null;
+            this._state.dispose();
+            this._state = null;
+          };
+          return Tone.Clock;
+        }(Tone_core_Tone, Tone_signal_TimelineSignal, Tone_core_TimelineState, Tone_core_Emitter);
+        var metro;
+        "use strict";
+        metro = function() {
+          var p5sound = master;
+          var Clock = Tone_core_Clock;
+          p5.Metro = function() {
+            this.clock = new Clock({ "callback": this.ontick.bind(this) });
+            this.syncedParts = [];
+            this.bpm = 120;
+            this._init();
+            this.prevTick = 0;
+            this.tatumTime = 0;
+            this.tickCallback = function() {
+            };
+          };
+          p5.Metro.prototype.ontick = function(tickTime) {
+            var elapsedTime = tickTime - this.prevTick;
+            var secondsFromNow = tickTime - p5sound.audiocontext.currentTime;
+            if (elapsedTime - this.tatumTime <= -0.02) {
+              return;
+            } else {
+              this.prevTick = tickTime;
+              var self2 = this;
+              this.syncedParts.forEach(function(thisPart) {
+                if (!thisPart.isPlaying)
+                  return;
+                thisPart.incrementStep(secondsFromNow);
+                thisPart.phrases.forEach(function(thisPhrase) {
+                  var phraseArray = thisPhrase.sequence;
+                  var bNum = self2.metroTicks % phraseArray.length;
+                  if (phraseArray[bNum] !== 0 && (self2.metroTicks < phraseArray.length || !thisPhrase.looping)) {
+                    thisPhrase.callback(secondsFromNow, phraseArray[bNum]);
+                  }
+                });
+              });
+              this.metroTicks += 1;
+              this.tickCallback(secondsFromNow);
+            }
+          };
+          p5.Metro.prototype.setBPM = function(bpm, rampTime) {
+            var beatTime = 60 / (bpm * this.tatums);
+            var now = p5sound.audiocontext.currentTime;
+            this.tatumTime = beatTime;
+            var rampTime = rampTime || 0;
+            this.clock.frequency.setValueAtTime(this.clock.frequency.value, now);
+            this.clock.frequency.linearRampToValueAtTime(bpm, now + rampTime);
+            this.bpm = bpm;
+          };
+          p5.Metro.prototype.getBPM = function() {
+            return this.clock.getRate() / this.tatums * 60;
+          };
+          p5.Metro.prototype._init = function() {
+            this.metroTicks = 0;
+          };
+          p5.Metro.prototype.resetSync = function(part) {
+            this.syncedParts = [part];
+          };
+          p5.Metro.prototype.pushSync = function(part) {
+            this.syncedParts.push(part);
+          };
+          p5.Metro.prototype.start = function(timeFromNow) {
+            var t = timeFromNow || 0;
+            var now = p5sound.audiocontext.currentTime;
+            this.clock.start(now + t);
+            this.setBPM(this.bpm);
+          };
+          p5.Metro.prototype.stop = function(timeFromNow) {
+            var t = timeFromNow || 0;
+            var now = p5sound.audiocontext.currentTime;
+            this.clock.stop(now + t);
+          };
+          p5.Metro.prototype.beatLength = function(tatums) {
+            this.tatums = 1 / tatums / 4;
+          };
+        }(master, Tone_core_Clock);
+        var looper;
+        "use strict";
+        looper = function() {
+          var p5sound = master;
+          var BPM = 120;
+          p5.prototype.setBPM = function(bpm, rampTime) {
+            BPM = bpm;
+            for (var i in p5sound.parts) {
+              if (p5sound.parts[i]) {
+                p5sound.parts[i].setBPM(bpm, rampTime);
+              }
+            }
+          };
+          p5.Phrase = function(name2, callback, sequence) {
+            this.phraseStep = 0;
+            this.name = name2;
+            this.callback = callback;
+            this.sequence = sequence;
+          };
+          p5.Part = function(steps, bLength) {
+            this.length = steps || 0;
+            this.partStep = 0;
+            this.phrases = [];
+            this.isPlaying = false;
+            this.noLoop();
+            this.tatums = bLength || 0.0625;
+            this.metro = new p5.Metro();
+            this.metro._init();
+            this.metro.beatLength(this.tatums);
+            this.metro.setBPM(BPM);
+            p5sound.parts.push(this);
+            this.callback = function() {
+            };
+          };
+          p5.Part.prototype.setBPM = function(tempo, rampTime) {
+            this.metro.setBPM(tempo, rampTime);
+          };
+          p5.Part.prototype.getBPM = function() {
+            return this.metro.getBPM();
+          };
+          p5.Part.prototype.start = function(time) {
+            if (!this.isPlaying) {
+              this.isPlaying = true;
+              this.metro.resetSync(this);
+              var t = time || 0;
+              this.metro.start(t);
+            }
+          };
+          p5.Part.prototype.loop = function(time) {
+            this.looping = true;
+            this.onended = function() {
+              this.partStep = 0;
+            };
+            var t = time || 0;
+            this.start(t);
+          };
+          p5.Part.prototype.noLoop = function() {
+            this.looping = false;
+            this.onended = function() {
+              this.stop();
+            };
+          };
+          p5.Part.prototype.stop = function(time) {
+            this.partStep = 0;
+            this.pause(time);
+          };
+          p5.Part.prototype.pause = function(time) {
+            this.isPlaying = false;
+            var t = time || 0;
+            this.metro.stop(t);
+          };
+          p5.Part.prototype.addPhrase = function(name2, callback, array) {
+            var p;
+            if (arguments.length === 3) {
+              p = new p5.Phrase(name2, callback, array);
+            } else if (arguments[0] instanceof p5.Phrase) {
+              p = arguments[0];
+            } else {
+              throw "invalid input. addPhrase accepts name, callback, array or a p5.Phrase";
+            }
+            this.phrases.push(p);
+            if (p.sequence.length > this.length) {
+              this.length = p.sequence.length;
+            }
+          };
+          p5.Part.prototype.removePhrase = function(name2) {
+            for (var i in this.phrases) {
+              if (this.phrases[i].name === name2) {
+                this.phrases.splice(i, 1);
+              }
+            }
+          };
+          p5.Part.prototype.getPhrase = function(name2) {
+            for (var i in this.phrases) {
+              if (this.phrases[i].name === name2) {
+                return this.phrases[i];
+              }
+            }
+          };
+          p5.Part.prototype.replaceSequence = function(name2, array) {
+            for (var i in this.phrases) {
+              if (this.phrases[i].name === name2) {
+                this.phrases[i].sequence = array;
+              }
+            }
+          };
+          p5.Part.prototype.incrementStep = function(time) {
+            if (this.partStep < this.length - 1) {
+              this.callback(time);
+              this.partStep += 1;
+            } else {
+              if (!this.looping && this.partStep === this.length - 1) {
+                console.log("done");
+                this.onended();
+              }
+            }
+          };
+          p5.Part.prototype.onStep = function(callback) {
+            this.callback = callback;
+          };
+          p5.Score = function() {
+            this.parts = [];
+            this.currentPart = 0;
+            var thisScore = this;
+            for (var i in arguments) {
+              if (arguments[i] && this.parts[i]) {
+                this.parts[i] = arguments[i];
+                this.parts[i].nextPart = this.parts[i + 1];
+                this.parts[i].onended = function() {
+                  thisScore.resetPart(i);
+                  playNextPart(thisScore);
+                };
+=======
             }
           };
           p5.EQ.prototype._newBand = function(freq, res) {
@@ -70303,9 +72742,66 @@ geometric ideas.`,
             for (var i in this.parts) {
               if (this.parts[i]) {
                 this.parts[i].setBPM(bpm, rampTime);
+>>>>>>> origin/main
+              }
+            }
+            this.looping = false;
+          };
+<<<<<<< HEAD
+          p5.Score.prototype.onended = function() {
+            if (this.looping) {
+              this.parts[0].start();
+            } else {
+              this.parts[this.parts.length - 1].onended = function() {
+                this.stop();
+                this.resetParts();
+              };
+            }
+            this.currentPart = 0;
+          };
+          p5.Score.prototype.start = function() {
+            this.parts[this.currentPart].start();
+            this.scoreStep = 0;
+          };
+          p5.Score.prototype.stop = function() {
+            this.parts[this.currentPart].stop();
+            this.currentPart = 0;
+            this.scoreStep = 0;
+          };
+          p5.Score.prototype.pause = function() {
+            this.parts[this.currentPart].stop();
+          };
+          p5.Score.prototype.loop = function() {
+            this.looping = true;
+            this.start();
+          };
+          p5.Score.prototype.noLoop = function() {
+            this.looping = false;
+          };
+          p5.Score.prototype.resetParts = function() {
+            var self2 = this;
+            this.parts.forEach(function(part) {
+              self2.resetParts[part];
+            });
+          };
+          p5.Score.prototype.resetPart = function(i) {
+            this.parts[i].stop();
+            this.parts[i].partStep = 0;
+            for (var p in this.parts[i].phrases) {
+              if (this.parts[i]) {
+                this.parts[i].phrases[p].phraseStep = 0;
               }
             }
           };
+          p5.Score.prototype.setBPM = function(bpm, rampTime) {
+            for (var i in this.parts) {
+              if (this.parts[i]) {
+                this.parts[i].setBPM(bpm, rampTime);
+              }
+            }
+          };
+=======
+>>>>>>> origin/main
           function playNextPart(aScore) {
             aScore.currentPart++;
             if (aScore.currentPart >= aScore.parts.length) {
@@ -70583,6 +73079,798 @@ geometric ideas.`,
               unit.connect(this.input);
             } else {
               p5.soundOut.output.connect(this.input);
+<<<<<<< HEAD
+            }
+          };
+          p5.SoundRecorder.prototype.record = function(sFile, duration, callback) {
+            this.recording = true;
+            if (duration) {
+              this.sampleLimit = Math.round(duration * ac.sampleRate);
+            }
+            if (sFile && callback) {
+              this._callback = function() {
+                this.buffer = this._getBuffer();
+                sFile.setBuffer(this.buffer);
+                callback();
+              };
+            } else if (sFile) {
+              this._callback = function() {
+                this.buffer = this._getBuffer();
+                sFile.setBuffer(this.buffer);
+              };
+            }
+          };
+          p5.SoundRecorder.prototype.stop = function() {
+            this.recording = false;
+            this._callback();
+            this._clear();
+          };
+          p5.SoundRecorder.prototype._clear = function() {
+            this._leftBuffers = [];
+            this._rightBuffers = [];
+            this.recordedSamples = 0;
+            this.sampleLimit = null;
+          };
+          p5.SoundRecorder.prototype._audioprocess = function(event) {
+            if (this.recording === false) {
+              return;
+            } else if (this.recording === true) {
+              if (this.sampleLimit && this.recordedSamples >= this.sampleLimit) {
+                this.stop();
+              } else {
+                var left = event.inputBuffer.getChannelData(0);
+                var right = event.inputBuffer.getChannelData(1);
+                this._leftBuffers.push(new Float32Array(left));
+                this._rightBuffers.push(new Float32Array(right));
+                this.recordedSamples += this.bufferSize;
+              }
+            }
+          };
+          p5.SoundRecorder.prototype._getBuffer = function() {
+            var buffers = [];
+            buffers.push(this._mergeBuffers(this._leftBuffers));
+            buffers.push(this._mergeBuffers(this._rightBuffers));
+            return buffers;
+          };
+          p5.SoundRecorder.prototype._mergeBuffers = function(channelBuffer) {
+            var result = new Float32Array(this.recordedSamples);
+            var offset = 0;
+            var lng = channelBuffer.length;
+            for (var i = 0; i < lng; i++) {
+              var buffer = channelBuffer[i];
+              result.set(buffer, offset);
+              offset += buffer.length;
+            }
+            return result;
+          };
+          p5.SoundRecorder.prototype.dispose = function() {
+            this._clear();
+            var index = p5sound.soundArray.indexOf(this);
+            p5sound.soundArray.splice(index, 1);
+            this._callback = function() {
+            };
+            if (this.input) {
+              this.input.disconnect();
+            }
+            this.input = null;
+            this._jsNode = null;
+          };
+          p5.prototype.saveSound = function(soundFile, fileName) {
+            const dataView = convertToWav(soundFile.buffer);
+            p5.prototype.writeFile([dataView], fileName, "wav");
+          };
+        }(master, helpers);
+        var peakdetect;
+        "use strict";
+        peakdetect = function() {
+          p5.PeakDetect = function(freq1, freq2, threshold, _framesPerPeak) {
+            this.framesPerPeak = _framesPerPeak || 20;
+            this.framesSinceLastPeak = 0;
+            this.decayRate = 0.95;
+            this.threshold = threshold || 0.35;
+            this.cutoff = 0;
+            this.cutoffMult = 1.5;
+            this.energy = 0;
+            this.penergy = 0;
+            this.currentValue = 0;
+            this.isDetected = false;
+            this.f1 = freq1 || 40;
+            this.f2 = freq2 || 2e4;
+            this._onPeak = function() {
+            };
+          };
+          p5.PeakDetect.prototype.update = function(fftObject) {
+            var nrg = this.energy = fftObject.getEnergy(this.f1, this.f2) / 255;
+            if (nrg > this.cutoff && nrg > this.threshold && nrg - this.penergy > 0) {
+              this._onPeak();
+              this.isDetected = true;
+              this.cutoff = nrg * this.cutoffMult;
+              this.framesSinceLastPeak = 0;
+            } else {
+              this.isDetected = false;
+              if (this.framesSinceLastPeak <= this.framesPerPeak) {
+                this.framesSinceLastPeak++;
+              } else {
+                this.cutoff *= this.decayRate;
+                this.cutoff = Math.max(this.cutoff, this.threshold);
+              }
+            }
+            this.currentValue = nrg;
+            this.penergy = nrg;
+          };
+          p5.PeakDetect.prototype.onPeak = function(callback, val) {
+            var self2 = this;
+            self2._onPeak = function() {
+              callback(self2.energy, val);
+            };
+          };
+        }();
+        var gain;
+        "use strict";
+        gain = function() {
+          var p5sound = master;
+          p5.Gain = function() {
+            this.ac = p5sound.audiocontext;
+            this.input = this.ac.createGain();
+            this.output = this.ac.createGain();
+            this.input.gain.value = 0.5;
+            this.input.connect(this.output);
+            p5sound.soundArray.push(this);
+          };
+          p5.Gain.prototype.setInput = function(src) {
+            src.connect(this.input);
+          };
+          p5.Gain.prototype.connect = function(unit) {
+            var u = unit || p5.soundOut.input;
+            this.output.connect(u.input ? u.input : u);
+          };
+          p5.Gain.prototype.disconnect = function() {
+            if (this.output) {
+              this.output.disconnect();
+            }
+          };
+          p5.Gain.prototype.amp = function(vol, rampTime, tFromNow) {
+            var rampTime = rampTime || 0;
+            var tFromNow = tFromNow || 0;
+            var now = p5sound.audiocontext.currentTime;
+            var currentVol = this.output.gain.value;
+            this.output.gain.cancelScheduledValues(now);
+            this.output.gain.linearRampToValueAtTime(currentVol, now + tFromNow);
+            this.output.gain.linearRampToValueAtTime(vol, now + tFromNow + rampTime);
+          };
+          p5.Gain.prototype.dispose = function() {
+            var index = p5sound.soundArray.indexOf(this);
+            p5sound.soundArray.splice(index, 1);
+            if (this.output) {
+              this.output.disconnect();
+              delete this.output;
+            }
+            if (this.input) {
+              this.input.disconnect();
+              delete this.input;
+            }
+          };
+        }(master);
+        var audioVoice;
+        "use strict";
+        audioVoice = function() {
+          var p5sound = master;
+          p5.AudioVoice = function() {
+            this.ac = p5sound.audiocontext;
+            this.output = this.ac.createGain();
+            this.connect();
+            p5sound.soundArray.push(this);
+          };
+          p5.AudioVoice.prototype.play = function(note, velocity, secondsFromNow, sustime) {
+          };
+          p5.AudioVoice.prototype.triggerAttack = function(note, velocity, secondsFromNow) {
+          };
+          p5.AudioVoice.prototype.triggerRelease = function(secondsFromNow) {
+          };
+          p5.AudioVoice.prototype.amp = function(vol, rampTime) {
+          };
+          p5.AudioVoice.prototype.connect = function(unit) {
+            var u = unit || p5sound.input;
+            this.output.connect(u.input ? u.input : u);
+          };
+          p5.AudioVoice.prototype.disconnect = function() {
+            this.output.disconnect();
+          };
+          p5.AudioVoice.prototype.dispose = function() {
+            if (this.output) {
+              this.output.disconnect();
+              delete this.output;
+            }
+          };
+          return p5.AudioVoice;
+        }(master);
+        var monosynth;
+        "use strict";
+        monosynth = function() {
+          var p5sound = master;
+          var AudioVoice = audioVoice;
+          var noteToFreq = helpers.noteToFreq;
+          var DEFAULT_SUSTAIN = 0.15;
+          p5.MonoSynth = function() {
+            AudioVoice.call(this);
+            this.oscillator = new p5.Oscillator();
+            this.env = new p5.Envelope();
+            this.env.setRange(1, 0);
+            this.env.setExp(true);
+            this.setADSR(0.02, 0.25, 0.05, 0.35);
+            this.oscillator.disconnect();
+            this.oscillator.connect(this.output);
+            this.env.disconnect();
+            this.env.setInput(this.output.gain);
+            this.oscillator.output.gain.value = 1;
+            this.oscillator.start();
+            this.connect();
+            p5sound.soundArray.push(this);
+          };
+          p5.MonoSynth.prototype = Object.create(p5.AudioVoice.prototype);
+          p5.MonoSynth.prototype.play = function(note, velocity, secondsFromNow, susTime) {
+            this.triggerAttack(note, velocity, ~~secondsFromNow);
+            this.triggerRelease(~~secondsFromNow + (susTime || DEFAULT_SUSTAIN));
+          };
+          p5.MonoSynth.prototype.triggerAttack = function(note, velocity, secondsFromNow) {
+            var secondsFromNow = ~~secondsFromNow;
+            var freq = noteToFreq(note);
+            var vel = velocity || 0.1;
+            this.oscillator.freq(freq, 0, secondsFromNow);
+            this.env.ramp(this.output.gain, secondsFromNow, vel);
+          };
+          p5.MonoSynth.prototype.triggerRelease = function(secondsFromNow) {
+            var secondsFromNow = secondsFromNow || 0;
+            this.env.ramp(this.output.gain, secondsFromNow, 0);
+          };
+          p5.MonoSynth.prototype.setADSR = function(attack, decay, sustain, release) {
+            this.env.setADSR(attack, decay, sustain, release);
+          };
+          Object.defineProperties(p5.MonoSynth.prototype, {
+            "attack": {
+              get: function() {
+                return this.env.aTime;
+              },
+              set: function(attack) {
+                this.env.setADSR(attack, this.env.dTime, this.env.sPercent, this.env.rTime);
+              }
+            },
+            "decay": {
+              get: function() {
+                return this.env.dTime;
+              },
+              set: function(decay) {
+                this.env.setADSR(this.env.aTime, decay, this.env.sPercent, this.env.rTime);
+              }
+            },
+            "sustain": {
+              get: function() {
+                return this.env.sPercent;
+              },
+              set: function(sustain) {
+                this.env.setADSR(this.env.aTime, this.env.dTime, sustain, this.env.rTime);
+              }
+            },
+            "release": {
+              get: function() {
+                return this.env.rTime;
+              },
+              set: function(release) {
+                this.env.setADSR(this.env.aTime, this.env.dTime, this.env.sPercent, release);
+              }
+            }
+          });
+          p5.MonoSynth.prototype.amp = function(vol, rampTime) {
+            var t = rampTime || 0;
+            if (typeof vol !== "undefined") {
+              this.oscillator.amp(vol, t);
+            }
+            return this.oscillator.amp().value;
+          };
+          p5.MonoSynth.prototype.connect = function(unit) {
+            var u = unit || p5sound.input;
+            this.output.connect(u.input ? u.input : u);
+          };
+          p5.MonoSynth.prototype.disconnect = function() {
+            if (this.output) {
+              this.output.disconnect();
+            }
+          };
+          p5.MonoSynth.prototype.dispose = function() {
+            AudioVoice.prototype.dispose.apply(this);
+            if (this.env) {
+              this.env.dispose();
+            }
+            if (this.oscillator) {
+              this.oscillator.dispose();
+            }
+          };
+        }(master, audioVoice, helpers);
+        var polysynth;
+        "use strict";
+        polysynth = function() {
+          var p5sound = master;
+          var TimelineSignal = Tone_signal_TimelineSignal;
+          var noteToFreq = helpers.noteToFreq;
+          p5.PolySynth = function(audioVoice2, maxVoices) {
+            this.audiovoices = [];
+            this.notes = {};
+            this._newest = 0;
+            this._oldest = 0;
+            this.maxVoices = maxVoices || 8;
+            this.AudioVoice = audioVoice2 === void 0 ? p5.MonoSynth : audioVoice2;
+            this._voicesInUse = new TimelineSignal(0);
+            this.output = p5sound.audiocontext.createGain();
+            this.connect();
+            this._allocateVoices();
+            p5sound.soundArray.push(this);
+          };
+          p5.PolySynth.prototype._allocateVoices = function() {
+            for (var i = 0; i < this.maxVoices; i++) {
+              this.audiovoices.push(new this.AudioVoice());
+              this.audiovoices[i].disconnect();
+              this.audiovoices[i].connect(this.output);
+            }
+          };
+          p5.PolySynth.prototype.play = function(note, velocity, secondsFromNow, susTime) {
+            var susTime = susTime || 1;
+            this.noteAttack(note, velocity, secondsFromNow);
+            this.noteRelease(note, secondsFromNow + susTime);
+          };
+          p5.PolySynth.prototype.noteADSR = function(note, a, d, s, r, timeFromNow) {
+            var now = p5sound.audiocontext.currentTime;
+            var timeFromNow = timeFromNow || 0;
+            var t = now + timeFromNow;
+            this.audiovoices[this.notes[note].getValueAtTime(t)].setADSR(a, d, s, r);
+          };
+          p5.PolySynth.prototype.setADSR = function(a, d, s, r) {
+            this.audiovoices.forEach(function(voice) {
+              voice.setADSR(a, d, s, r);
+            });
+          };
+          p5.PolySynth.prototype.noteAttack = function(_note, _velocity, secondsFromNow) {
+            var secondsFromNow = ~~secondsFromNow;
+            var acTime = p5sound.audiocontext.currentTime + secondsFromNow;
+            var note = noteToFreq(_note);
+            var velocity = _velocity || 0.1;
+            var currentVoice;
+            if (this.notes[note] && this.notes[note].getValueAtTime(acTime) !== null) {
+              this.noteRelease(note, 0);
+            }
+            if (this._voicesInUse.getValueAtTime(acTime) < this.maxVoices) {
+              currentVoice = Math.max(~~this._voicesInUse.getValueAtTime(acTime), 0);
+            } else {
+              currentVoice = this._oldest;
+              var oldestNote = p5.prototype.freqToMidi(this.audiovoices[this._oldest].oscillator.freq().value);
+              this.noteRelease(oldestNote);
+              this._oldest = (this._oldest + 1) % (this.maxVoices - 1);
+            }
+            this.notes[note] = new TimelineSignal();
+            this.notes[note].setValueAtTime(currentVoice, acTime);
+            var previousVal = this._voicesInUse._searchBefore(acTime) === null ? 0 : this._voicesInUse._searchBefore(acTime).value;
+            this._voicesInUse.setValueAtTime(previousVal + 1, acTime);
+            this._updateAfter(acTime, 1);
+            this._newest = currentVoice;
+            if (typeof velocity === "number") {
+              var maxRange = 1 / this._voicesInUse.getValueAtTime(acTime) * 2;
+              velocity = velocity > maxRange ? maxRange : velocity;
+            }
+            this.audiovoices[currentVoice].triggerAttack(note, velocity, secondsFromNow);
+          };
+          p5.PolySynth.prototype._updateAfter = function(time, value) {
+            if (this._voicesInUse._searchAfter(time) === null) {
+              return;
+            } else {
+              this._voicesInUse._searchAfter(time).value += value;
+              var nextTime = this._voicesInUse._searchAfter(time).time;
+              this._updateAfter(nextTime, value);
+            }
+          };
+          p5.PolySynth.prototype.noteRelease = function(_note, secondsFromNow) {
+            var now = p5sound.audiocontext.currentTime;
+            var tFromNow = secondsFromNow || 0;
+            var t = now + tFromNow;
+            if (!_note) {
+              this.audiovoices.forEach(function(voice) {
+                voice.triggerRelease(tFromNow);
+              });
+              this._voicesInUse.setValueAtTime(0, t);
+              for (var n in this.notes) {
+                this.notes[n].dispose();
+                delete this.notes[n];
+              }
+              return;
+            }
+            var note = noteToFreq(_note);
+            if (!this.notes[note] || this.notes[note].getValueAtTime(t) === null) {
+              console.warn("Cannot release a note that is not already playing");
+            } else {
+              var previousVal = Math.max(~~this._voicesInUse.getValueAtTime(t).value, 1);
+              this._voicesInUse.setValueAtTime(previousVal - 1, t);
+              if (previousVal > 0) {
+                this._updateAfter(t, -1);
+              }
+              this.audiovoices[this.notes[note].getValueAtTime(t)].triggerRelease(tFromNow);
+              this.notes[note].dispose();
+              delete this.notes[note];
+              this._newest = this._newest === 0 ? 0 : (this._newest - 1) % (this.maxVoices - 1);
+            }
+          };
+          p5.PolySynth.prototype.connect = function(unit) {
+            var u = unit || p5sound.input;
+            this.output.connect(u.input ? u.input : u);
+          };
+          p5.PolySynth.prototype.disconnect = function() {
+            if (this.output) {
+              this.output.disconnect();
+            }
+          };
+          p5.PolySynth.prototype.dispose = function() {
+            this.audiovoices.forEach(function(voice) {
+              voice.dispose();
+            });
+            if (this.output) {
+              this.output.disconnect();
+              delete this.output;
+            }
+          };
+        }(master, Tone_signal_TimelineSignal, helpers);
+        var distortion;
+        "use strict";
+        distortion = function() {
+          var Effect = effect;
+          function makeDistortionCurve(amount) {
+            var k = typeof amount === "number" ? amount : 50;
+            var numSamples = 44100;
+            var curve = new Float32Array(numSamples);
+            var deg = Math.PI / 180;
+            var i = 0;
+            var x;
+            for (; i < numSamples; ++i) {
+              x = i * 2 / numSamples - 1;
+              curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+            }
+            return curve;
+          }
+          p5.Distortion = function(amount, oversample) {
+            Effect.call(this);
+            if (typeof amount === "undefined") {
+              amount = 0.25;
+            }
+            if (typeof amount !== "number") {
+              throw new Error("amount must be a number");
+            }
+            if (typeof oversample === "undefined") {
+              oversample = "2x";
+            }
+            if (typeof oversample !== "string") {
+              throw new Error("oversample must be a String");
+            }
+            var curveAmount = p5.prototype.map(amount, 0, 1, 0, 2e3);
+            this.waveShaperNode = this.ac.createWaveShaper();
+            this.amount = curveAmount;
+            this.waveShaperNode.curve = makeDistortionCurve(curveAmount);
+            this.waveShaperNode.oversample = oversample;
+            this.input.connect(this.waveShaperNode);
+            this.waveShaperNode.connect(this.wet);
+          };
+          p5.Distortion.prototype = Object.create(Effect.prototype);
+          p5.Distortion.prototype.process = function(src, amount, oversample) {
+            src.connect(this.input);
+            this.set(amount, oversample);
+          };
+          p5.Distortion.prototype.set = function(amount, oversample) {
+            if (amount) {
+              var curveAmount = p5.prototype.map(amount, 0, 1, 0, 2e3);
+              this.amount = curveAmount;
+              this.waveShaperNode.curve = makeDistortionCurve(curveAmount);
+            }
+            if (oversample) {
+              this.waveShaperNode.oversample = oversample;
+            }
+          };
+          p5.Distortion.prototype.getAmount = function() {
+            return this.amount;
+          };
+          p5.Distortion.prototype.getOversample = function() {
+            return this.waveShaperNode.oversample;
+          };
+          p5.Distortion.prototype.dispose = function() {
+            Effect.prototype.dispose.apply(this);
+            if (this.waveShaperNode) {
+              this.waveShaperNode.disconnect();
+              this.waveShaperNode = null;
+            }
+          };
+        }(effect);
+        var src_app;
+        "use strict";
+        src_app = function() {
+          var p5SOUND = master;
+          return p5SOUND;
+        }(shims, audiocontext, master, helpers, errorHandler, panner, soundfile, amplitude, fft, signal, oscillator, envelope, pulse, noise, audioin, filter, eq, panner3d, listener3d, delay, reverb, metro, looper, soundloop, compressor, soundRecorder, peakdetect, gain, monosynth, polysynth, distortion, audioVoice, monosynth, polysynth);
+      });
+    }
+  });
+
+  // node_modules/p5/lib/addons/p5.dom.js
+  var require_p5_dom = __commonJS({
+    "node_modules/p5/lib/addons/p5.dom.js"(exports) {
+      (function(root, factory) {
+        if (typeof define === "function" && define.amd)
+          define("p5.dom", ["p5"], function(p5) {
+            factory(p5);
+          });
+        else if (typeof exports === "object")
+          factory(require_p5());
+        else
+          factory(root["p5"]);
+      })(exports, function(p5) {
+        p5.prototype.select = function(e, p) {
+          p5._validateParameters("select", arguments);
+          var res = null;
+          var container = getContainer(p);
+          if (e[0] === ".") {
+            e = e.slice(1);
+            res = container.getElementsByClassName(e);
+            if (res.length) {
+              res = res[0];
+            } else {
+              res = null;
+            }
+          } else if (e[0] === "#") {
+            e = e.slice(1);
+            res = container.getElementById(e);
+          } else {
+            res = container.getElementsByTagName(e);
+            if (res.length) {
+              res = res[0];
+            } else {
+              res = null;
+            }
+          }
+          if (res) {
+            return this._wrapElement(res);
+          } else {
+            return null;
+          }
+        };
+        p5.prototype.selectAll = function(e, p) {
+          p5._validateParameters("selectAll", arguments);
+          var arr = [];
+          var res;
+          var container = getContainer(p);
+          if (e[0] === ".") {
+            e = e.slice(1);
+            res = container.getElementsByClassName(e);
+          } else {
+            res = container.getElementsByTagName(e);
+          }
+          if (res) {
+            for (var j = 0; j < res.length; j++) {
+              var obj = this._wrapElement(res[j]);
+              arr.push(obj);
+            }
+          }
+          return arr;
+        };
+        function getContainer(p) {
+          var container = document;
+          if (typeof p === "string" && p[0] === "#") {
+            p = p.slice(1);
+            container = document.getElementById(p) || document;
+          } else if (p instanceof p5.Element) {
+            container = p.elt;
+          } else if (p instanceof HTMLElement) {
+            container = p;
+          }
+          return container;
+        }
+        p5.prototype._wrapElement = function(elt) {
+          var children = Array.prototype.slice.call(elt.children);
+          if (elt.tagName === "INPUT" && elt.type === "checkbox") {
+            var converted = new p5.Element(elt, this);
+            converted.checked = function() {
+              if (arguments.length === 0) {
+                return this.elt.checked;
+              } else if (arguments[0]) {
+                this.elt.checked = true;
+              } else {
+                this.elt.checked = false;
+              }
+              return this;
+            };
+            return converted;
+          } else if (elt.tagName === "VIDEO" || elt.tagName === "AUDIO") {
+            return new p5.MediaElement(elt, this);
+          } else if (elt.tagName === "SELECT") {
+            return this.createSelect(new p5.Element(elt, this));
+          } else if (children.length > 0 && children.every(function(c) {
+            return c.tagName === "INPUT" || c.tagName === "LABEL";
+          })) {
+            return this.createRadio(new p5.Element(elt, this));
+          } else {
+            return new p5.Element(elt, this);
+          }
+        };
+        p5.prototype.removeElements = function(e) {
+          p5._validateParameters("removeElements", arguments);
+          for (var i = 0; i < this._elements.length; i++) {
+            if (!(this._elements[i].elt instanceof HTMLCanvasElement)) {
+              this._elements[i].remove();
+            }
+          }
+        };
+        p5.Element.prototype.changed = function(fxn) {
+          p5.Element._adjustListener("change", fxn, this);
+          return this;
+        };
+        p5.Element.prototype.input = function(fxn) {
+          p5.Element._adjustListener("input", fxn, this);
+          return this;
+        };
+        function addElement(elt, pInst, media) {
+          var node = pInst._userNode ? pInst._userNode : document.body;
+          node.appendChild(elt);
+          var c = media ? new p5.MediaElement(elt, pInst) : new p5.Element(elt, pInst);
+          pInst._elements.push(c);
+          return c;
+        }
+        var tags = ["div", "p", "span"];
+        tags.forEach(function(tag) {
+          var method = "create" + tag.charAt(0).toUpperCase() + tag.slice(1);
+          p5.prototype[method] = function(html) {
+            var elt = document.createElement(tag);
+            elt.innerHTML = typeof html === "undefined" ? "" : html;
+            return addElement(elt, this);
+          };
+        });
+        p5.prototype.createImg = function() {
+          p5._validateParameters("createImg", arguments);
+          var elt = document.createElement("img");
+          elt.crossOrigin = "Anonymous";
+          var args = arguments;
+          var self2;
+          var setAttrs = function() {
+            self2.width = elt.offsetWidth || elt.width;
+            self2.height = elt.offsetHeight || elt.height;
+            if (args.length > 1 && typeof args[1] === "function") {
+              self2.fn = args[1];
+              self2.fn();
+            } else if (args.length > 1 && typeof args[2] === "function") {
+              self2.fn = args[2];
+              self2.fn();
+            }
+          };
+          elt.src = args[0];
+          if (args.length > 1 && typeof args[1] === "string") {
+            elt.alt = args[1];
+          }
+          elt.onload = function() {
+            setAttrs();
+          };
+          self2 = addElement(elt, this);
+          return self2;
+        };
+        p5.prototype.createA = function(href, html, target) {
+          p5._validateParameters("createA", arguments);
+          var elt = document.createElement("a");
+          elt.href = href;
+          elt.innerHTML = html;
+          if (target)
+            elt.target = target;
+          return addElement(elt, this);
+        };
+        p5.prototype.createSlider = function(min, max, value, step) {
+          p5._validateParameters("createSlider", arguments);
+          var elt = document.createElement("input");
+          elt.type = "range";
+          elt.min = min;
+          elt.max = max;
+          if (step === 0) {
+            elt.step = 1e-18;
+          } else if (step) {
+            elt.step = step;
+          }
+          if (typeof value === "number")
+            elt.value = value;
+          return addElement(elt, this);
+        };
+        p5.prototype.createButton = function(label, value) {
+          p5._validateParameters("createButton", arguments);
+          var elt = document.createElement("button");
+          elt.innerHTML = label;
+          if (value)
+            elt.value = value;
+          return addElement(elt, this);
+        };
+        p5.prototype.createCheckbox = function() {
+          p5._validateParameters("createCheckbox", arguments);
+          var elt = document.createElement("div");
+          var checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          elt.appendChild(checkbox);
+          var self2 = addElement(elt, this);
+          self2.checked = function() {
+            var cb = self2.elt.getElementsByTagName("input")[0];
+            if (cb) {
+              if (arguments.length === 0) {
+                return cb.checked;
+              } else if (arguments[0]) {
+                cb.checked = true;
+              } else {
+                cb.checked = false;
+              }
+            }
+            return self2;
+          };
+          this.value = function(val) {
+            self2.value = val;
+            return this;
+          };
+          if (arguments[0]) {
+            var ran = Math.random().toString(36).slice(2);
+            var label = document.createElement("label");
+            checkbox.setAttribute("id", ran);
+            label.htmlFor = ran;
+            self2.value(arguments[0]);
+            label.appendChild(document.createTextNode(arguments[0]));
+            elt.appendChild(label);
+          }
+          if (arguments[1]) {
+            checkbox.checked = true;
+          }
+          return self2;
+        };
+        p5.prototype.createSelect = function() {
+          p5._validateParameters("createSelect", arguments);
+          var elt, self2;
+          var arg = arguments[0];
+          if (typeof arg === "object" && arg.elt.nodeName === "SELECT") {
+            self2 = arg;
+            elt = this.elt = arg.elt;
+          } else {
+            elt = document.createElement("select");
+            if (arg && typeof arg === "boolean") {
+              elt.setAttribute("multiple", "true");
+            }
+            self2 = addElement(elt, this);
+          }
+          self2.option = function(name2, value) {
+            var index;
+            for (var i = 0; i < this.elt.length; i++) {
+              if (this.elt[i].innerHTML === name2) {
+                index = i;
+                break;
+              }
+            }
+            if (index !== void 0) {
+              if (value === false) {
+                this.elt.remove(index);
+              } else {
+                if (this.elt[index].innerHTML === this.elt[index].value) {
+                  this.elt[index].innerHTML = this.elt[index].value = value;
+                } else {
+                  this.elt[index].value = value;
+                }
+              }
+            } else {
+              var opt = document.createElement("option");
+              opt.innerHTML = name2;
+              if (arguments.length > 1)
+                opt.value = value;
+              else
+                opt.value = name2;
+              elt.appendChild(opt);
+            }
+          };
+          self2.selected = function(value) {
+            var arr = [], i;
+            if (arguments.length > 0) {
+              for (i = 0; i < this.elt.length; i++) {
+                if (value.toString() === this.elt[i].value) {
+                  this.elt.selectedIndex = i;
+=======
             }
           };
           p5.SoundRecorder.prototype.record = function(sFile, duration, callback) {
@@ -71891,6 +75179,540 @@ geometric ideas.`,
                 this._pInst.scale(this._pInst._pixelDensity, this._pInst._pixelDensity);
                 for (prop in j) {
                   this.elt.getContext("2d")[prop] = j[prop];
+>>>>>>> origin/main
+                }
+              } else {
+                this.elt.style.width = aW + "px";
+                this.elt.style.height = aH + "px";
+                this.elt.width = aW;
+                this.elt.height = aH;
+              }
+<<<<<<< HEAD
+              return this;
+            } else {
+              if (this.elt.getAttribute("multiple")) {
+                for (i = 0; i < this.elt.selectedOptions.length; i++) {
+                  arr.push(this.elt.selectedOptions[i].value);
+=======
+              this.width = this.elt.offsetWidth;
+              this.height = this.elt.offsetHeight;
+              if (this._pInst && this._pInst._curElement) {
+                if (this._pInst._curElement.elt === this.elt) {
+                  this._pInst._setProperty("width", this.elt.offsetWidth);
+                  this._pInst._setProperty("height", this.elt.offsetHeight);
+>>>>>>> origin/main
+                }
+                return arr;
+              } else {
+                return this.elt.value;
+              }
+            }
+<<<<<<< HEAD
+          };
+          return self2;
+        };
+        p5.prototype.createRadio = function(existing_radios) {
+          p5._validateParameters("createRadio", arguments);
+          var radios = document.querySelectorAll("input[type=radio]");
+          var count = 0;
+          if (radios.length > 1) {
+            var length = radios.length;
+            var prev = radios[0].name;
+            var current = radios[1].name;
+            count = 1;
+            for (var i = 1; i < length; i++) {
+              current = radios[i].name;
+              if (prev !== current) {
+                count++;
+              }
+              prev = current;
+            }
+          } else if (radios.length === 1) {
+            count = 1;
+          }
+          var elt, self2;
+          if (typeof existing_radios === "object") {
+            self2 = existing_radios;
+            elt = this.elt = existing_radios.elt;
+          } else {
+            elt = document.createElement("div");
+            self2 = addElement(elt, this);
+          }
+          self2._getInputChildrenArray = function() {
+            return Array.prototype.slice.call(this.elt.children).filter(function(c) {
+              return c.tagName === "INPUT";
+            });
+          };
+          var times = -1;
+          self2.option = function(name2, value) {
+            var opt = document.createElement("input");
+            opt.type = "radio";
+            opt.innerHTML = name2;
+            if (value)
+              opt.value = value;
+            else
+              opt.value = name2;
+            opt.setAttribute("name", "defaultradio" + count);
+            elt.appendChild(opt);
+            if (name2) {
+              times++;
+              var label = document.createElement("label");
+              opt.setAttribute("id", "defaultradio" + count + "-" + times);
+              label.htmlFor = "defaultradio" + count + "-" + times;
+              label.appendChild(document.createTextNode(name2));
+              elt.appendChild(label);
+            }
+            return opt;
+          };
+          self2.selected = function(value) {
+            var i2;
+            var inputChildren = self2._getInputChildrenArray();
+            if (value) {
+              for (i2 = 0; i2 < inputChildren.length; i2++) {
+                if (inputChildren[i2].value === value)
+                  inputChildren[i2].checked = true;
+              }
+              return this;
+            } else {
+              for (i2 = 0; i2 < inputChildren.length; i2++) {
+                if (inputChildren[i2].checked === true)
+                  return inputChildren[i2].value;
+              }
+            }
+          };
+          self2.value = function(value) {
+            var i2;
+            var inputChildren = self2._getInputChildrenArray();
+            if (value) {
+              for (i2 = 0; i2 < inputChildren.length; i2++) {
+                if (inputChildren[i2].value === value)
+                  inputChildren[i2].checked = true;
+              }
+              return this;
+            } else {
+              for (i2 = 0; i2 < inputChildren.length; i2++) {
+                if (inputChildren[i2].checked === true)
+                  return inputChildren[i2].value;
+              }
+              return "";
+            }
+          };
+          return self2;
+        };
+        p5.prototype.createColorPicker = function(value) {
+          p5._validateParameters("createColorPicker", arguments);
+          var elt = document.createElement("input");
+          var self2;
+          elt.type = "color";
+          if (value) {
+            if (value instanceof p5.Color) {
+              elt.value = value.toString("#rrggbb");
+            } else {
+              p5.prototype._colorMode = "rgb";
+              p5.prototype._colorMaxes = {
+                rgb: [255, 255, 255, 255],
+                hsb: [360, 100, 100, 1],
+                hsl: [360, 100, 100, 1]
+              };
+              elt.value = p5.prototype.color(value).toString("#rrggbb");
+            }
+          } else {
+            elt.value = "#000000";
+          }
+          self2 = addElement(elt, this);
+          self2.color = function() {
+            if (value.mode) {
+              p5.prototype._colorMode = value.mode;
+            }
+            if (value.maxes) {
+              p5.prototype._colorMaxes = value.maxes;
+            }
+            return p5.prototype.color(this.elt.value);
+          };
+          return self2;
+        };
+        p5.prototype.createInput = function(value, type) {
+          p5._validateParameters("createInput", arguments);
+          var elt = document.createElement("input");
+          elt.type = type ? type : "text";
+          if (value)
+            elt.value = value;
+          return addElement(elt, this);
+        };
+        p5.prototype.createFileInput = function(callback, multiple) {
+          p5._validateParameters("createFileInput", arguments);
+          function handleFileSelect(evt) {
+            var files = evt.target.files;
+            for (var i = 0; i < files.length; i++) {
+              var f = files[i];
+              p5.File._load(f, callback);
+            }
+          }
+          if (window.File && window.FileReader && window.FileList && window.Blob) {
+            var elt = document.createElement("input");
+            elt.type = "file";
+            if (multiple) {
+              elt.multiple = "multiple";
+            }
+            elt.addEventListener("change", handleFileSelect, false);
+            return addElement(elt, this);
+          } else {
+            console.log("The File APIs are not fully supported in this browser. Cannot create element.");
+          }
+        };
+        function createMedia(pInst, type, src, callback) {
+          var elt = document.createElement(type);
+          src = src || "";
+          if (typeof src === "string") {
+            src = [src];
+          }
+          for (var i = 0; i < src.length; i++) {
+            var source = document.createElement("source");
+            source.src = src[i];
+            elt.appendChild(source);
+          }
+          if (typeof callback !== "undefined") {
+            var callbackHandler = function() {
+              callback();
+              elt.removeEventListener("canplaythrough", callbackHandler);
+            };
+            elt.addEventListener("canplaythrough", callbackHandler);
+          }
+          var c = addElement(elt, pInst, true);
+          c.loadedmetadata = false;
+          elt.addEventListener("loadedmetadata", function() {
+            c.width = elt.videoWidth;
+            c.height = elt.videoHeight;
+            if (c.elt.width === 0)
+              c.elt.width = elt.videoWidth;
+            if (c.elt.height === 0)
+              c.elt.height = elt.videoHeight;
+            if (c.presetPlaybackRate) {
+              c.elt.playbackRate = c.presetPlaybackRate;
+              delete c.presetPlaybackRate;
+            }
+            c.loadedmetadata = true;
+          });
+          return c;
+        }
+        p5.prototype.createVideo = function(src, callback) {
+          p5._validateParameters("createVideo", arguments);
+          return createMedia(this, "video", src, callback);
+        };
+        p5.prototype.createAudio = function(src, callback) {
+          p5._validateParameters("createAudio", arguments);
+          return createMedia(this, "audio", src, callback);
+        };
+        p5.prototype.VIDEO = "video";
+        p5.prototype.AUDIO = "audio";
+        if (navigator.mediaDevices === void 0) {
+          navigator.mediaDevices = {};
+        }
+        if (navigator.mediaDevices.getUserMedia === void 0) {
+          navigator.mediaDevices.getUserMedia = function(constraints) {
+            var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            if (!getUserMedia) {
+              return Promise.reject(new Error("getUserMedia is not implemented in this browser"));
+            }
+            return new Promise(function(resolve, reject) {
+              getUserMedia.call(navigator, constraints, resolve, reject);
+            });
+          };
+        }
+        p5.prototype.createCapture = function() {
+          p5._validateParameters("createCapture", arguments);
+          var useVideo = true;
+          var useAudio = true;
+          var constraints;
+          var cb;
+          for (var i = 0; i < arguments.length; i++) {
+            if (arguments[i] === p5.prototype.VIDEO) {
+              useAudio = false;
+            } else if (arguments[i] === p5.prototype.AUDIO) {
+              useVideo = false;
+            } else if (typeof arguments[i] === "object") {
+              constraints = arguments[i];
+            } else if (typeof arguments[i] === "function") {
+              cb = arguments[i];
+            }
+          }
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            var elt = document.createElement("video");
+            elt.setAttribute("playsinline", "");
+            if (!constraints) {
+              constraints = { video: useVideo, audio: useAudio };
+            }
+            navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+              try {
+                if ("srcObject" in elt) {
+                  elt.srcObject = stream;
+                } else {
+                  elt.src = window.URL.createObjectURL(stream);
+                }
+              } catch (err) {
+                elt.src = stream;
+              }
+            }, function(e) {
+              console.log(e);
+            });
+          } else {
+            throw "getUserMedia not supported in this browser";
+          }
+          var c = addElement(elt, this, true);
+          c.loadedmetadata = false;
+          elt.addEventListener("loadedmetadata", function() {
+            elt.play();
+            if (elt.width) {
+              c.width = elt.videoWidth = elt.width;
+              c.height = elt.videoHeight = elt.height;
+            } else {
+              c.width = c.elt.width = elt.videoWidth;
+              c.height = c.elt.height = elt.videoHeight;
+            }
+            c.loadedmetadata = true;
+            if (cb) {
+              cb(elt.srcObject);
+            }
+          });
+          return c;
+        };
+        p5.prototype.createElement = function(tag, content) {
+          p5._validateParameters("createElement", arguments);
+          var elt = document.createElement(tag);
+          if (typeof content !== "undefined") {
+            elt.innerHTML = content;
+          }
+          return addElement(elt, this);
+        };
+        p5.Element.prototype.addClass = function(c) {
+          if (this.elt.className) {
+            if (!this.hasClass(c)) {
+              this.elt.className = this.elt.className + " " + c;
+            }
+          } else {
+            this.elt.className = c;
+          }
+          return this;
+        };
+        p5.Element.prototype.removeClass = function(c) {
+          this.elt.classList.remove(c);
+          return this;
+        };
+        p5.Element.prototype.hasClass = function(c) {
+          return this.elt.classList.contains(c);
+        };
+        p5.Element.prototype.toggleClass = function(c) {
+          if (this.elt.classList.contains(c)) {
+            this.elt.classList.remove(c);
+          } else {
+            this.elt.classList.add(c);
+          }
+          return this;
+        };
+        p5.Element.prototype.child = function(c) {
+          if (typeof c === "undefined") {
+            return this.elt.childNodes;
+          }
+          if (typeof c === "string") {
+            if (c[0] === "#") {
+              c = c.substring(1);
+            }
+            c = document.getElementById(c);
+          } else if (c instanceof p5.Element) {
+            c = c.elt;
+          }
+          this.elt.appendChild(c);
+          return this;
+        };
+        p5.Element.prototype.center = function(align) {
+          var style = this.elt.style.display;
+          var hidden = this.elt.style.display === "none";
+          var parentHidden = this.parent().style.display === "none";
+          var pos = { x: this.elt.offsetLeft, y: this.elt.offsetTop };
+          if (hidden)
+            this.show();
+          this.elt.style.display = "block";
+          this.position(0, 0);
+          if (parentHidden)
+            this.parent().style.display = "block";
+          var wOffset = Math.abs(this.parent().offsetWidth - this.elt.offsetWidth);
+          var hOffset = Math.abs(this.parent().offsetHeight - this.elt.offsetHeight);
+          var y = pos.y;
+          var x = pos.x;
+          if (align === "both" || align === void 0) {
+            this.position(wOffset / 2, hOffset / 2);
+          } else if (align === "horizontal") {
+            this.position(wOffset / 2, y);
+          } else if (align === "vertical") {
+            this.position(x, hOffset / 2);
+          }
+          this.style("display", style);
+          if (hidden)
+            this.hide();
+          if (parentHidden)
+            this.parent().style.display = "none";
+          return this;
+        };
+        p5.Element.prototype.html = function() {
+          if (arguments.length === 0) {
+            return this.elt.innerHTML;
+          } else if (arguments[1]) {
+            this.elt.innerHTML += arguments[0];
+            return this;
+          } else {
+            this.elt.innerHTML = arguments[0];
+            return this;
+          }
+        };
+        p5.Element.prototype.position = function() {
+          if (arguments.length === 0) {
+            return { x: this.elt.offsetLeft, y: this.elt.offsetTop };
+          } else {
+            this.elt.style.position = "absolute";
+            this.elt.style.left = arguments[0] + "px";
+            this.elt.style.top = arguments[1] + "px";
+            this.x = arguments[0];
+            this.y = arguments[1];
+            return this;
+          }
+        };
+        p5.Element.prototype._translate = function() {
+          this.elt.style.position = "absolute";
+          var transform = "";
+          if (this.elt.style.transform) {
+            transform = this.elt.style.transform.replace(/translate3d\(.*\)/g, "");
+            transform = transform.replace(/translate[X-Z]?\(.*\)/g, "");
+          }
+          if (arguments.length === 2) {
+            this.elt.style.transform = "translate(" + arguments[0] + "px, " + arguments[1] + "px)";
+          } else if (arguments.length > 2) {
+            this.elt.style.transform = "translate3d(" + arguments[0] + "px," + arguments[1] + "px," + arguments[2] + "px)";
+            if (arguments.length === 3) {
+              this.elt.parentElement.style.perspective = "1000px";
+            } else {
+              this.elt.parentElement.style.perspective = arguments[3] + "px";
+            }
+          }
+          this.elt.style.transform += transform;
+          return this;
+        };
+        p5.Element.prototype._rotate = function() {
+          var transform = "";
+          if (this.elt.style.transform) {
+            transform = this.elt.style.transform.replace(/rotate3d\(.*\)/g, "");
+            transform = transform.replace(/rotate[X-Z]?\(.*\)/g, "");
+          }
+          if (arguments.length === 1) {
+            this.elt.style.transform = "rotate(" + arguments[0] + "deg)";
+          } else if (arguments.length === 2) {
+            this.elt.style.transform = "rotate(" + arguments[0] + "deg, " + arguments[1] + "deg)";
+          } else if (arguments.length === 3) {
+            this.elt.style.transform = "rotateX(" + arguments[0] + "deg)";
+            this.elt.style.transform += "rotateY(" + arguments[1] + "deg)";
+            this.elt.style.transform += "rotateZ(" + arguments[2] + "deg)";
+          }
+          this.elt.style.transform += transform;
+          return this;
+        };
+        p5.Element.prototype.style = function(prop, val) {
+          var self2 = this;
+          if (val instanceof p5.Color) {
+            val = "rgba(" + val.levels[0] + "," + val.levels[1] + "," + val.levels[2] + "," + val.levels[3] / 255 + ")";
+          }
+          if (typeof val === "undefined") {
+            if (prop.indexOf(":") === -1) {
+              var styles = window.getComputedStyle(self2.elt);
+              var style = styles.getPropertyValue(prop);
+              return style;
+            } else {
+              var attrs = prop.split(";");
+              for (var i = 0; i < attrs.length; i++) {
+                var parts = attrs[i].split(":");
+                if (parts[0] && parts[1]) {
+                  this.elt.style[parts[0].trim()] = parts[1].trim();
+                }
+              }
+            }
+          } else {
+            this.elt.style[prop] = val;
+            if (prop === "width" || prop === "height" || prop === "left" || prop === "top") {
+              var numVal = val.replace(/\D+/g, "");
+              this[prop] = parseInt(numVal, 10);
+            }
+          }
+          return this;
+        };
+        p5.Element.prototype.attribute = function(attr, value) {
+          if (this.elt.firstChild != null && (this.elt.firstChild.type === "checkbox" || this.elt.firstChild.type === "radio")) {
+            if (typeof value === "undefined") {
+              return this.elt.firstChild.getAttribute(attr);
+            } else {
+              for (var i = 0; i < this.elt.childNodes.length; i++) {
+                this.elt.childNodes[i].setAttribute(attr, value);
+              }
+            }
+          } else if (typeof value === "undefined") {
+            return this.elt.getAttribute(attr);
+          } else {
+            this.elt.setAttribute(attr, value);
+            return this;
+          }
+        };
+        p5.Element.prototype.removeAttribute = function(attr) {
+          if (this.elt.firstChild != null && (this.elt.firstChild.type === "checkbox" || this.elt.firstChild.type === "radio")) {
+            for (var i = 0; i < this.elt.childNodes.length; i++) {
+              this.elt.childNodes[i].removeAttribute(attr);
+            }
+          }
+          this.elt.removeAttribute(attr);
+          return this;
+        };
+        p5.Element.prototype.value = function() {
+          if (arguments.length > 0) {
+            this.elt.value = arguments[0];
+            return this;
+          } else {
+            if (this.elt.type === "range") {
+              return parseFloat(this.elt.value);
+            } else
+              return this.elt.value;
+          }
+        };
+        p5.Element.prototype.show = function() {
+          this.elt.style.display = "block";
+          return this;
+        };
+        p5.Element.prototype.hide = function() {
+          this.elt.style.display = "none";
+          return this;
+        };
+        p5.Element.prototype.size = function(w, h) {
+          if (arguments.length === 0) {
+            return { width: this.elt.offsetWidth, height: this.elt.offsetHeight };
+          } else {
+            var aW = w;
+            var aH = h;
+            var AUTO = p5.prototype.AUTO;
+            if (aW !== AUTO || aH !== AUTO) {
+              if (aW === AUTO) {
+                aW = h * this.width / this.height;
+              } else if (aH === AUTO) {
+                aH = w * this.height / this.width;
+              }
+              if (this.elt instanceof HTMLCanvasElement) {
+                var j = {};
+                var k = this.elt.getContext("2d");
+                var prop;
+                for (prop in k) {
+                  j[prop] = k[prop];
+                }
+                this.elt.setAttribute("width", aW * this._pInst._pixelDensity);
+                this.elt.setAttribute("height", aH * this._pInst._pixelDensity);
+                this.elt.style.width = aW + "px";
+                this.elt.style.height = aH + "px";
+                this._pInst.scale(this._pInst._pixelDensity, this._pInst._pixelDensity);
+                for (prop in j) {
+                  this.elt.getContext("2d")[prop] = j[prop];
                 }
               } else {
                 this.elt.style.width = aW + "px";
@@ -72187,6 +76009,288 @@ geometric ideas.`,
           if (this._cues.length === 0) {
             this.elt.ontimeupdate = null;
           }
+=======
+            return this;
+          }
+        };
+        p5.Element.prototype.remove = function() {
+          for (var ev in this._events) {
+            this.elt.removeEventListener(ev, this._events[ev]);
+          }
+          if (this.elt.parentNode) {
+            this.elt.parentNode.removeChild(this.elt);
+          }
+          delete this;
+        };
+        p5.Element.prototype.drop = function(callback, fxn) {
+          if (window.File && window.FileReader && window.FileList && window.Blob) {
+            if (!this._dragDisabled) {
+              this._dragDisabled = true;
+              var preventDefault = function(evt) {
+                evt.preventDefault();
+              };
+              this.elt.addEventListener("dragover", preventDefault);
+              this.elt.addEventListener("dragleave", preventDefault);
+            }
+            p5.Element._attachListener("drop", function(evt) {
+              evt.preventDefault();
+              if (typeof fxn === "function") {
+                fxn.call(this, evt);
+              }
+              var files = evt.dataTransfer.files;
+              for (var i = 0; i < files.length; i++) {
+                var f = files[i];
+                p5.File._load(f, callback);
+              }
+            }, this);
+          } else {
+            console.log("The File APIs are not fully supported in this browser.");
+          }
+          return this;
+        };
+        p5.MediaElement = function(elt, pInst) {
+          p5.Element.call(this, elt, pInst);
+          var self2 = this;
+          this.elt.crossOrigin = "anonymous";
+          this._prevTime = 0;
+          this._cueIDCounter = 0;
+          this._cues = [];
+          this._pixelsState = this;
+          this._pixelDensity = 1;
+          this._modified = false;
+          this._pixelsDirty = true;
+          this._pixelsTime = -1;
+          Object.defineProperty(self2, "src", {
+            get: function() {
+              var firstChildSrc = self2.elt.children[0].src;
+              var srcVal = self2.elt.src === window.location.href ? "" : self2.elt.src;
+              var ret = firstChildSrc === window.location.href ? srcVal : firstChildSrc;
+              return ret;
+            },
+            set: function(newValue) {
+              for (var i = 0; i < self2.elt.children.length; i++) {
+                self2.elt.removeChild(self2.elt.children[i]);
+              }
+              var source = document.createElement("source");
+              source.src = newValue;
+              elt.appendChild(source);
+              self2.elt.src = newValue;
+              self2.modified = true;
+            }
+          });
+          self2._onended = function() {
+          };
+          self2.elt.onended = function() {
+            self2._onended(self2);
+          };
+        };
+        p5.MediaElement.prototype = Object.create(p5.Element.prototype);
+        p5.MediaElement.prototype.play = function() {
+          if (this.elt.currentTime === this.elt.duration) {
+            this.elt.currentTime = 0;
+          }
+          var promise;
+          if (this.elt.readyState > 1) {
+            promise = this.elt.play();
+          } else {
+            this.elt.load();
+            promise = this.elt.play();
+          }
+          if (promise && promise.catch) {
+            promise.catch(function(e) {
+              console.log("WARN: Element play method raised an error asynchronously", e);
+            });
+          }
+          return this;
+        };
+        p5.MediaElement.prototype.stop = function() {
+          this.elt.pause();
+          this.elt.currentTime = 0;
+          return this;
+        };
+        p5.MediaElement.prototype.pause = function() {
+          this.elt.pause();
+          return this;
+        };
+        p5.MediaElement.prototype.loop = function() {
+          this.elt.setAttribute("loop", true);
+          this.play();
+          return this;
+        };
+        p5.MediaElement.prototype.noLoop = function() {
+          this.elt.setAttribute("loop", false);
+          return this;
+        };
+        p5.MediaElement.prototype.autoplay = function(val) {
+          this.elt.setAttribute("autoplay", val);
+          return this;
+        };
+        p5.MediaElement.prototype.volume = function(val) {
+          if (typeof val === "undefined") {
+            return this.elt.volume;
+          } else {
+            this.elt.volume = val;
+          }
+        };
+        p5.MediaElement.prototype.speed = function(val) {
+          if (typeof val === "undefined") {
+            return this.presetPlaybackRate || this.elt.playbackRate;
+          } else {
+            if (this.loadedmetadata) {
+              this.elt.playbackRate = val;
+            } else {
+              this.presetPlaybackRate = val;
+            }
+          }
+        };
+        p5.MediaElement.prototype.time = function(val) {
+          if (typeof val === "undefined") {
+            return this.elt.currentTime;
+          } else {
+            this.elt.currentTime = val;
+            return this;
+          }
+        };
+        p5.MediaElement.prototype.duration = function() {
+          return this.elt.duration;
+        };
+        p5.MediaElement.prototype.pixels = [];
+        p5.MediaElement.prototype._ensureCanvas = function() {
+          if (!this.canvas) {
+            this.canvas = document.createElement("canvas");
+            this.drawingContext = this.canvas.getContext("2d");
+            this.setModified(true);
+          }
+          if (this.loadedmetadata) {
+            if (this.canvas.width !== this.elt.width) {
+              this.canvas.width = this.elt.width;
+              this.canvas.height = this.elt.height;
+              this.width = this.canvas.width;
+              this.height = this.canvas.height;
+              this._pixelsDirty = true;
+            }
+            var currentTime = this.elt.currentTime;
+            if (this._pixelsDirty || this._pixelsTime !== currentTime) {
+              this._pixelsTime = currentTime;
+              this._pixelsDirty = true;
+              this.drawingContext.drawImage(this.elt, 0, 0, this.canvas.width, this.canvas.height);
+              this.setModified(true);
+            }
+          }
+        };
+        p5.MediaElement.prototype.loadPixels = function() {
+          this._ensureCanvas();
+          return p5.Renderer2D.prototype.loadPixels.apply(this, arguments);
+        };
+        p5.MediaElement.prototype.updatePixels = function(x, y, w, h) {
+          if (this.loadedmetadata) {
+            this._ensureCanvas();
+            p5.Renderer2D.prototype.updatePixels.call(this, x, y, w, h);
+          }
+          this.setModified(true);
+          return this;
+        };
+        p5.MediaElement.prototype.get = function() {
+          this._ensureCanvas();
+          return p5.Renderer2D.prototype.get.apply(this, arguments);
+        };
+        p5.MediaElement.prototype._getPixel = function() {
+          this.loadPixels();
+          return p5.Renderer2D.prototype._getPixel.apply(this, arguments);
+        };
+        p5.MediaElement.prototype.set = function(x, y, imgOrCol) {
+          if (this.loadedmetadata) {
+            this._ensureCanvas();
+            p5.Renderer2D.prototype.set.call(this, x, y, imgOrCol);
+            this.setModified(true);
+          }
+        };
+        p5.MediaElement.prototype.copy = function() {
+          this._ensureCanvas();
+          p5.Renderer2D.prototype.copy.apply(this, arguments);
+        };
+        p5.MediaElement.prototype.mask = function() {
+          this.loadPixels();
+          this.setModified(true);
+          p5.Image.prototype.mask.apply(this, arguments);
+        };
+        p5.MediaElement.prototype.isModified = function() {
+          return this._modified;
+        };
+        p5.MediaElement.prototype.setModified = function(value) {
+          this._modified = value;
+        };
+        p5.MediaElement.prototype.onended = function(callback) {
+          this._onended = callback;
+          return this;
+        };
+        p5.MediaElement.prototype.connect = function(obj) {
+          var audioContext, masterOutput;
+          if (typeof p5.prototype.getAudioContext === "function") {
+            audioContext = p5.prototype.getAudioContext();
+            masterOutput = p5.soundOut.input;
+          } else {
+            try {
+              audioContext = obj.context;
+              masterOutput = audioContext.destination;
+            } catch (e) {
+              throw "connect() is meant to be used with Web Audio API or p5.sound.js";
+            }
+          }
+          if (!this.audioSourceNode) {
+            this.audioSourceNode = audioContext.createMediaElementSource(this.elt);
+            this.audioSourceNode.connect(masterOutput);
+          }
+          if (obj) {
+            if (obj.input) {
+              this.audioSourceNode.connect(obj.input);
+            } else {
+              this.audioSourceNode.connect(obj);
+            }
+          } else {
+            this.audioSourceNode.connect(masterOutput);
+          }
+        };
+        p5.MediaElement.prototype.disconnect = function() {
+          if (this.audioSourceNode) {
+            this.audioSourceNode.disconnect();
+          } else {
+            throw "nothing to disconnect";
+          }
+        };
+        p5.MediaElement.prototype.showControls = function() {
+          this.elt.style["text-align"] = "inherit";
+          this.elt.controls = true;
+        };
+        p5.MediaElement.prototype.hideControls = function() {
+          this.elt.controls = false;
+        };
+        var Cue = function(callback, time, id, val) {
+          this.callback = callback;
+          this.time = time;
+          this.id = id;
+          this.val = val;
+        };
+        p5.MediaElement.prototype.addCue = function(time, callback, val) {
+          var id = this._cueIDCounter++;
+          var cue = new Cue(callback, time, id, val);
+          this._cues.push(cue);
+          if (!this.elt.ontimeupdate) {
+            this.elt.ontimeupdate = this._onTimeUpdate.bind(this);
+          }
+          return id;
+        };
+        p5.MediaElement.prototype.removeCue = function(id) {
+          for (var i = 0; i < this._cues.length; i++) {
+            if (this._cues[i].id === id) {
+              console.log(id);
+              this._cues.splice(i, 1);
+            }
+          }
+          if (this._cues.length === 0) {
+            this.elt.ontimeupdate = null;
+          }
+>>>>>>> origin/main
         };
         p5.MediaElement.prototype.clearCues = function() {
           this._cues = [];
@@ -72242,14 +76346,23 @@ geometric ideas.`,
     "public/models/game.js"(exports, module) {
       var MAXMOVES = 5;
       var Game = class {
+<<<<<<< HEAD
         constructor({ p, imgs, matter, lava, worm, terrain, timer: timerController }) {
+=======
+        constructor({ p, imgs, matter, lava, worm, terrain, timer: timerController, weaponModel, bulletModel }) {
+>>>>>>> origin/main
           this.engine = matter.Engine.create();
           this.world = this.engine.world;
           this.bullets = [];
           this.explosions = [];
           this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 180, world: this.world, matter });
+<<<<<<< HEAD
           this.worm = new worm({ x: p.windowWidth / 10 * 1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter, direction: "right" });
           this.worm2 = new worm({ x: p.windowWidth / 10 * 6, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter, direction: "left" });
+=======
+          this.worm = new worm({ x: p.windowWidth / 10 * 1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
+          this.worm2 = new worm({ x: p.windowWidth / 10 * 6, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
+>>>>>>> origin/main
           matter.World.add(this.world, [this.worm.body, this.worm2.body]);
           this.terrain = new terrain().createTerrain(p, this.world, matter);
           this.mode = "start";
@@ -72267,9 +76380,23 @@ geometric ideas.`,
         resetMoveCount = () => {
           this.moveCount = 0;
         };
-        switchToMode(modeChoice) {
-          this.mode = modeChoice;
-        }
+        switchToMode = (modeChoice) => {
+          return this.mode = modeChoice;
+        };
+        getActiveWorm = () => {
+          if (this.player1Turn) {
+            return this.worm;
+          } else {
+            return this.worm2;
+          }
+        };
+        getWormPos = (worm) => {
+          if (worm.direction === "right") {
+            return { x: worm.body.position.x + worm.w / 2 + 10, y: worm.body.position.y - worm.h };
+          } else {
+            return { x: worm.body.position.x - worm.w / 2 - 10, y: worm.body.position.y - worm.h };
+          }
+        };
         uprightWorm = () => {
           if (this.worm.body.angle != 0 && this.player1Turn != true || (this.worm.body.angle > 1.5 || this.worm.body.angle < -1.5) && this.worm.body.velocity.x < 0.1 && this.worm.body.velocity.y < 0.1) {
             this.worm.body.angle = 0;
@@ -72280,6 +76407,15 @@ geometric ideas.`,
         };
         isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
         setGameOver = () => this.mode = "gameOver";
+<<<<<<< HEAD
+=======
+        createWeapons = (weaponModel, bulletModel, imgs) => {
+          const grenade = new weaponModel({ name: "Grenade", velocity: 15, image: imgs[3], damage: 25, bulletModel });
+          const clock = new weaponModel({ name: "Clock", velocity: 20, image: imgs[2], damage: 15, bulletModel });
+          const worm = new weaponModel({ name: "Worm", velocity: 40, image: imgs[1], damage: 5, bulletModel });
+          return [grenade, clock, worm];
+        };
+>>>>>>> origin/main
         setActiveWormDirection = (p) => {
           if (this.player1Turn === true) {
             if (p.mouseX < this.worm.body.position.x) {
@@ -72348,10 +76484,17 @@ geometric ideas.`,
         }
         static changeToVisible(p) {
           p.select("#main-music-div").style("display:flex");
+<<<<<<< HEAD
         }
         static changeToHidden(p) {
           p.select("#main-music-div").style("display:none");
         }
+=======
+        }
+        static changeToHidden(p) {
+          p.select("#main-music-div").style("display:none");
+        }
+>>>>>>> origin/main
       };
       __publicField(MusicController, "startMusic", (music) => {
         music.loop();
@@ -72386,6 +76529,7 @@ geometric ideas.`,
           game.uprightWorm();
           this.displayWhichPlayerTurn(p, game);
           this.displayMovesLeftAndTimer(p, game);
+          this.displayWeaponChoice(p, game);
         }
         static gameOverScreen(p, gameOver) {
           p.background(gameOver);
@@ -72454,6 +76598,13 @@ geometric ideas.`,
           p.text(game.timer.timerForTurn(p, game), p.windowWidth / 2 + 270, p.windowHeight / 2 - 250);
           p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50);
         }
+        static displayWeaponChoice(p) {
+          p.textSize(20);
+          p.fill(20);
+          p.text("1", p.windowWidth / 2 - 250, p.windowHeight / 2 - 300);
+          p.text("2", p.windowWidth / 2 - 200, p.windowHeight / 2 - 300);
+          p.text("3", p.windowWidth / 2 - 150, p.windowHeight / 2 - 300);
+        }
       };
       module.exports = ScreenController;
     }
@@ -72465,6 +76616,10 @@ geometric ideas.`,
       var _MoveController = class {
       };
       var MoveController = _MoveController;
+<<<<<<< HEAD
+=======
+      __publicField(MoveController, "validKeyCodes", () => [37, 38, 39]);
+>>>>>>> origin/main
       __publicField(MoveController, "moveWorm", (activeWorm, input, p, game, sounds) => {
         if (game.moveCount >= game.moveLimit) {
           return;
@@ -72489,6 +76644,10 @@ geometric ideas.`,
       __publicField(MoveController, "resetCount", (game) => {
         game.moveCount = 0;
       });
+      __publicField(MoveController, "isValidInput", (keyCode) => {
+        let validArray = _MoveController.validKeyCodes();
+        return validArray.includes(keyCode);
+      });
       module.exports = MoveController;
     }
   });
@@ -72498,20 +76657,27 @@ geometric ideas.`,
     "public/entities/bullet.js"(exports, module) {
       var Matter = require_matter();
       var Bullet = class {
+<<<<<<< HEAD
         constructor({ x, y, r, game, img, matter }) {
+=======
+        constructor({ x, y, r, game, img, velocity, damage, matter }) {
+>>>>>>> origin/main
           this.body = matter.Bodies.circle(x, y, r, { label: "bullet" });
           matter.World.add(game.world, this.body);
           this.r = r;
-          this.grenade = img;
+          this.image = img;
+          this.velocity = velocity;
+          this.damage = damage;
         }
         show = (p) => {
           const pos = this.body.position;
           const angle = this.body.angle;
           this.body.mass = 5;
+          this.damage;
           p.push();
           p.translate(pos.x, pos.y);
           p.imageMode(p.CENTER);
-          p.image(this.grenade, 0, 0, 15, 20);
+          p.image(this.image, 0, 0, 15, 20);
           p.pop();
         };
       };
@@ -72556,6 +76722,7 @@ geometric ideas.`,
       var Bullet = require_bullet();
       var Explosion = require_explosion();
       var Matter = require_matter();
+      var { gameScreen } = require_screenController();
       var _CollisionController = class {
       };
       var CollisionController = _CollisionController;
@@ -72572,14 +76739,26 @@ geometric ideas.`,
       });
       __publicField(CollisionController, "findAndDamageWorm", (pair, game, sound) => {
         if (_CollisionController.isInCollision(pair, "wormTwo")) {
+<<<<<<< HEAD
           sound.play();
           game.worm2.reduceHP();
+=======
+          let bulletDamageValue = game.bullets[0].damage;
+          sound.play();
+          game.worm2.reduceHP(bulletDamageValue);
+>>>>>>> origin/main
           if (game.isWormDead()) {
             game.setGameOver();
           }
         } else if (_CollisionController.isInCollision(pair, "wormOne")) {
+<<<<<<< HEAD
           sound.play();
           game.worm.reduceHP();
+=======
+          let bulletDamageValue = game.bullets[0].damage;
+          sound.play();
+          game.worm.reduceHP(bulletDamageValue);
+>>>>>>> origin/main
           if (game.isWormDead()) {
             game.setGameOver();
           }
@@ -72627,11 +76806,19 @@ geometric ideas.`,
           }
         }
       });
+<<<<<<< HEAD
       __publicField(CollisionController, "collision", (event, game, sound, img) => {
         for (const pair of event.pairs) {
           if (_CollisionController.isInCollision(pair, "bullet")) {
             _CollisionController.createExplosion(pair, game, img);
             _CollisionController.findAndDamageWorm(pair, game, sound);
+=======
+      __publicField(CollisionController, "collision", (event, game, sound) => {
+        for (const pair of event.pairs) {
+          if (_CollisionController.isInCollision(pair, "bullet")) {
+            _CollisionController.findAndDamageWorm(pair, game, sound);
+            _CollisionController.createExplosion(pair, game);
+>>>>>>> origin/main
           } else if (_CollisionController.isInCollision(pair, "bullet"), _CollisionController.isInCollision(pair, "lava")) {
             _CollisionController.lavaCollision(pair, game);
           }
@@ -72645,11 +76832,15 @@ geometric ideas.`,
   var require_shootingController = __commonJS({
     "public/controllers/shootingController.js"(exports, module) {
       var Matter = require_matter();
+<<<<<<< HEAD
       var Bullet = require_bullet();
+=======
+>>>>>>> origin/main
       var ShootingController = class {
         constructor() {
           this.bullet;
         }
+<<<<<<< HEAD
         static fireBullet(p, game, img, sound) {
           let angleDeg;
           game.bulletExists = true;
@@ -72686,9 +76877,70 @@ geometric ideas.`,
           let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
           this.bullet = new Bullet({ x: wormPos.x - 50, y: wormPos.y - 40, r: 15, game, img, matter: Matter });
           return angleDeg;
+=======
+        static fireBullet(p, game, sound) {
+          game.bulletExists = true;
+          let worm = game.getActiveWorm();
+          let wormPos = game.getWormPos(worm);
+          let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
+          this.bullet = worm.currentWeapon.createBullet(wormPos, game);
+          game.bullets.push(this.bullet);
+          sound.play();
+          Matter.Body.setVelocity(this.bullet.body, { x: -p.cos(angleDeg) * this.bullet.velocity, y: -p.sin(angleDeg) * this.bullet.velocity });
+          game.changePlayerTurn();
+          game.timer.resetTimer();
+>>>>>>> origin/main
         }
       };
       module.exports = ShootingController;
+    }
+  });
+
+  // public/controllers/weaponController.js
+  var require_weaponController = __commonJS({
+    "public/controllers/weaponController.js"(exports, module) {
+      var _WeaponController = class {
+      };
+      var WeaponController = _WeaponController;
+      __publicField(WeaponController, "validKeyCodes", () => [49, 50, 51]);
+      __publicField(WeaponController, "activeWormChangeWeapon", (activeWorm, input) => {
+        activeWorm.changeWeapon(input - 48);
+      });
+      __publicField(WeaponController, "isValidInput", (keyCode) => {
+        return _WeaponController.validKeyCodes().includes(keyCode);
+      });
+      module.exports = WeaponController;
+    }
+  });
+
+  // public/models/weapon.js
+  var require_weapon = __commonJS({
+    "public/models/weapon.js"(exports, module) {
+      var Matter = require_matter();
+      var Weapon = class {
+        constructor({ name: name2, velocity, image, damage, bulletModel: bullet, matter = Matter }) {
+          this.name = name2;
+          this.velocity = velocity;
+          this.image = image;
+          this.damage = damage;
+          this.bulletModel = bullet;
+          this.matter = matter;
+        }
+        createBullet(wormPos, game) {
+          const bullet = new this.bulletModel({
+            x: wormPos.x,
+            y: wormPos.y,
+            r: 15,
+            game,
+            img: this.image,
+            velocity: this.velocity,
+            damage: this.damage,
+            matter: this.matter
+          });
+          return bullet;
+        }
+      };
+      module.exports = Weapon;
     }
   });
 
@@ -72700,7 +76952,6 @@ geometric ideas.`,
           p.translate(mx, my);
           p.scale(scaleFactor);
           p.translate(-mx, -my);
-          p.translate();
         }
         static adjustXYCoords(p) {
           if (p.mouseIsPressed) {
@@ -72760,7 +77011,11 @@ geometric ideas.`,
   var require_worm = __commonJS({
     "public/entities/worm.js"(exports, module) {
       var Worm = class {
+<<<<<<< HEAD
         constructor({ x, y, w = 40, h = 40, options, img, matter, direction }) {
+=======
+        constructor({ x, y, w = 40, h = 40, options, img, matter, direction, weapons }) {
+>>>>>>> origin/main
           this.body = matter.Bodies.rectangle(x, y, w, h, { label: options });
           this.w = w;
           this.h = h;
@@ -72770,6 +77025,11 @@ geometric ideas.`,
           const HP = 100;
           this.hp = HP;
           this.matter = matter;
+<<<<<<< HEAD
+=======
+          this.weapons = weapons;
+          this.currentWeapon = this.weapons[0];
+>>>>>>> origin/main
           this.direction = direction;
         }
         show = (p, img = this.img) => {
@@ -72811,11 +77071,19 @@ geometric ideas.`,
           this.body.mass = mass;
           return this.body.position;
         }
-        reduceHP(amount = 5) {
+        reduceHP(damageValue) {
           if (this.hp > 0) {
-            this.hp -= amount;
+            this.hp -= damageValue;
           }
         }
+<<<<<<< HEAD
+=======
+        changeWeapon(weaponInput) {
+          if (weaponInput <= this.weapons.length && weaponInput > 0) {
+            return this.currentWeapon = this.weapons[weaponInput - 1];
+          }
+        }
+>>>>>>> origin/main
         setDirection(direction) {
           this.direction = direction;
         }
@@ -72918,6 +77186,45 @@ geometric ideas.`,
     }
   });
 
+  // public/controllers/timerController.js
+  var require_timerController = __commonJS({
+    "public/controllers/timerController.js"(exports, module) {
+      var TimerController = class {
+        constructor() {
+          this.interval = 0;
+          this.timer = 0;
+          this.timeLimit = 20;
+        }
+        resetTimer = () => {
+          this.timer = 0;
+        };
+        clearTimer = () => {
+          clearInterval(this.interval);
+        };
+        increaseTimer = () => {
+          this.timer++;
+        };
+        startTimer = () => {
+          this.interval = setInterval(this.increaseTimer, 1e3);
+        };
+        timeLeftOnTurn = () => {
+          return this.timeLimit - this.timer;
+        };
+        timerForTurn = (p, game) => {
+          if (this.timeLeftOnTurn() <= 0) {
+            game.changePlayerTurn();
+            this.resetTimer();
+            game.resetMoveCount();
+          } else if (this.timeLeftOnTurn() <= 5) {
+            p.fill(220, 0, 0);
+          }
+          return this.timeLeftOnTurn();
+        };
+      };
+      module.exports = TimerController;
+    }
+  });
+
   // public/sketch.js
   var require_sketch = __commonJS({
     "public/sketch.js"(exports, module) {
@@ -72930,12 +77237,17 @@ geometric ideas.`,
       var MoveController = require_moveController();
       var CollisionController = require_collisionController();
       var ShootingController = require_shootingController();
+      var WeaponController = require_weaponController();
+      var Bullet = require_bullet();
+      var Weapon = require_weapon();
       var ZoomController = require_zoomController();
       var TimerController = require_timerController();
       var MusicController = require_musicController();
       var Worm = require_worm();
       var Lava = require_ground();
       var Terrain = require_terrain();
+      var TimerController = require_timerController();
+      var MusicController = require_musicController();
       var Sketch2 = class {
         constructor(gameClass = Game) {
           this.gameClass = gameClass;
@@ -72976,8 +77288,13 @@ geometric ideas.`,
             };
             p.setup = () => {
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
+<<<<<<< HEAD
               game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
+=======
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
+>>>>>>> origin/main
               p.textSize(40);
               MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
             };
@@ -72985,8 +77302,13 @@ geometric ideas.`,
               MusicController.changeToHidden(p);
               p.loop();
               p.createCanvas(p.windowWidth, p.windowHeight - 50);
+<<<<<<< HEAD
               game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
+=======
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
+>>>>>>> origin/main
               p.textSize(40);
             };
             p.draw = () => {
@@ -73010,7 +77332,11 @@ geometric ideas.`,
             };
             p.mouseClicked = () => {
               if (game.mode === "game") {
+<<<<<<< HEAD
                 ShootingController.fireBullet(p, game, grenade, explosionSound);
+=======
+                ShootingController.fireBullet(p, game, explosionSound);
+>>>>>>> origin/main
               }
             };
             p.keyPressed = () => {
@@ -73018,17 +77344,25 @@ geometric ideas.`,
                 ScreenController.KeyPressed(p, game);
               } else {
                 let input = p.keyCode;
-                if (input === p.DOWN_ARROW) {
+                let worm = game.getActiveWorm();
+                if (MoveController.isValidInput(input)) {
+                  MoveController.moveWorm(worm, input, p, game, [jumpSound, whooshSound]);
+                } else if (WeaponController.isValidInput(input)) {
+                  WeaponController.activeWormChangeWeapon(worm, input);
+                } else if (input === p.DOWN_ARROW) {
                   ZoomController.sf = 1;
                   setTimeout(function() {
                     ZoomController.sf = 2;
                   }, 1e3);
                 }
+<<<<<<< HEAD
                 if (game.player1Turn === true) {
                   MoveController.moveWorm(game.worm, input, p, game, [jumpSound, whooshSound]);
                 } else {
                   MoveController.moveWorm(game.worm2, input, p, game, [jumpSound, whooshSound]);
                 }
+=======
+>>>>>>> origin/main
               }
             };
           }, "sketch");

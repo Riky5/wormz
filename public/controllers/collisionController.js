@@ -1,9 +1,10 @@
 const Bullet = require('../entities/bullet')
 const Explosion = require('../entities/explosion')
 const Matter = require('matter-js');
+const { gameScreen } = require('./screenController');
 
 class CollisionController{  
-  // Not sure where this should go, maybe in shooting controller?
+  
   static findAndDestroyBullet = (pair, game) => {
     game.bulletExists = false
     if(pair.bodyA.label === "bullet") {
@@ -18,14 +19,17 @@ class CollisionController{
   }
   
   static findAndDamageWorm = (pair, game, sound) => {
+
     if (CollisionController.isInCollision(pair, "wormTwo")) {
+      let bulletDamageValue = game.bullets[0].damage
       sound.play();
-      game.worm2.reduceHP();
+      game.worm2.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {game.setGameOver()}
       
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
+      let bulletDamageValue = game.bullets[0].damage
       sound.play();
-      game.worm.reduceHP();
+      game.worm.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {game.setGameOver()}
     }
   }
@@ -61,7 +65,7 @@ class CollisionController{
     if (CollisionController.isInCollision(pair, "wormTwo")) {
       game.worm2.reduceHP(50);
       if (game.isWormDead()) {game.setGameOver()}
-      
+
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
       game.worm.reduceHP(50);
       if (game.isWormDead()) {game.setGameOver()}
@@ -70,6 +74,7 @@ class CollisionController{
   
   static collision = (event, game, sound, img) => {
     for (const pair of event.pairs) {
+
       if(CollisionController.isInCollision(pair, "bullet")) {
          CollisionController.createExplosion(pair, game, img)
          CollisionController.findAndDamageWorm(pair, game, sound);
