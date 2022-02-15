@@ -4,7 +4,7 @@ const Matter = require('matter-js');
 const { gameScreen } = require('./screenController');
 
 class CollisionController{  
-  // Not sure where this should go, maybe in shooting controller?
+  
   static findAndDestroyBullet = (pair, game) => {
     game.bulletExists = false
     if(pair.bodyA.label === "bullet") {
