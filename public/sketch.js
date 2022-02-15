@@ -28,6 +28,8 @@ class Sketch {
     let backgroundImg;
     let wormImg1;
     let wormImg2;
+    let lavaImg;
+    let rockImg;
     let music;
     let explosionSound;
     let jumpSound;
@@ -58,12 +60,14 @@ class Sketch {
         hitSound = p.loadSound('assets/hit.mp3')
         grenade = p.loadImage("images/grenade.png");
         gameOver = p.loadImage("images/game-over.jpg");
-        clockTimer = p.loadImage("images/clock_timer.png")
+        clockTimer = p.loadImage("images/clock_timer.png");
+        lavaImg = p.loadImage('images/lava.png');
+        rockImg = p.loadImage('images/rock.png');
       }
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -73,7 +77,7 @@ class Sketch {
         MusicController.changeToHidden(p);
         p.loop();
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
       }
