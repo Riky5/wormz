@@ -20,6 +20,7 @@ class ScreenController{
     game.bullets.forEach(element => element.show(p));
     this.displayWhichPlayerTurn(p, game);
     this.displayMovesLeftAndTimer(p, game)
+    this.displayWeaponChoice(p, game)
   }
 
   static gameOverScreen(p, gameOver) {
@@ -87,6 +88,13 @@ class ScreenController{
     p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
     p.text(TimerController.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
     p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
+  }
+  static displayWeaponChoice(p) {
+    p.textSize(20);
+    p.fill(20)
+    p.text('1', p.windowWidth /2 - 250, p.windowHeight / 2 - 300);
+    p.text('2', p.windowWidth /2 - 200, p.windowHeight / 2 - 300);
+    p.text('3', p.windowWidth /2 - 150, p.windowHeight / 2 - 300);
   }
 }
 
