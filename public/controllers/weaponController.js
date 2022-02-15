@@ -2,10 +2,9 @@ class WeaponController {
   constructor() {
     this.validKeyCodes = [49,50,51];
   }
-  // static validKeyCodes = () => [49, 50, 51];
  
   activeWormChangeWeapon = (activeWorm, input) => {
-    activeWorm.changeWeapon(input - 48)
+    activeWorm.changeWeapon(input - 48);
   }
 
   isValidInput = (keyCode) => {

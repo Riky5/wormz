@@ -22,17 +22,8 @@ describe('WeaponController', () => {
     expect(weaponController.isValidInput(28)).to.eq(false);
     done();
   });
-  // it('.resetTimer changes the timer value back to 0', function(done) {
-  //   timerController.increaseTimer();
-  //   timerController.increaseTimer();
-  //   timerController.resetTimer();
-  //   expect(timerController.timer).to.eq(0);
-  //   done();
-  // });
-  // it('.timeLeftOnTurn calculates the correct time reamining', function(done) {
-  //   timerController.increaseTimer();
-  //   timerController.increaseTimer();
-  //   expect(timerController.timeLeftOnTurn()).to.eq(timerController.timeLimit - 2);
-  //   done();
-  // });
+  it('.activeWormChangeWeapon is a recognised method', function(done) {
+   expect(weaponController).to.respondTo('activeWormChangeWeapon');
+    done();
+  });
 });
