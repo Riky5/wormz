@@ -44,7 +44,7 @@ class Game {
       return {x: this.worm.body.position.x + (this.worm.w / 2) , y: this.worm.body.position.y - (this.worm.h / 2)}
     } 
     else {
-      return {x: this.worm2.body.position.x - (this.worm.w / 2), y: this.worm2.body.position.y - (this.worm.h / 2)}
+      return {x: this.worm2.body.position.x - (this.worm2.w / 2), y: this.worm2.body.position.y - (this.worm.h / 2)}
     }
   }
 
@@ -54,7 +54,7 @@ class Game {
 
   createWeapons = (weaponModel, bulletModel, imgs) => {
     const grenade = new weaponModel({name: 'Grenade', velocity: 30, image: imgs[3], damage: 10, bulletModel: bulletModel})
-    const clock = new weaponModel({name: 'Clock', velocity: 10, image: imgs[2], damage: 15, bulletModel: bulletModel})
+    const clock = new weaponModel({name: 'Clock', velocity: 15, image: imgs[2], damage: 15, bulletModel: bulletModel})
     return [grenade,clock]
   }
 }

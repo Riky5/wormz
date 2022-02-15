@@ -10,7 +10,7 @@ class Worm {
     this.hp = HP;
     this.matter = matter;
     this.weapons = weapons;
-    this.currentWeapon = this.weapons[0]
+    this.currentWeapon = this.weapons[1]
   }
 
   show = (p) => {
