@@ -72420,8 +72420,9 @@ geometric ideas.`,
           p.text("Use LEFT \u25C0\uFE0F and RIGHT \u25B6\uFE0F to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
           p.text("Use UP \u{1F53C} to jump.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 110);
           p.text("Aim and CLICK to shoot target \u{1F4A5}.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 40);
+          p.text("Use 1\uFE0F\u20E3 2\uFE0F\u20E3 3\uFE0F\u20E3 to change between weapons", p.windowWidth / 2 - 310, p.windowHeight / 2 + 20);
           p.textSize(29);
-          p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 50);
+          p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 90);
         }
         static musicSoundScreen(p) {
           p.resizeCanvas(0, 0);
