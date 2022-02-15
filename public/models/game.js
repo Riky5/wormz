@@ -53,9 +53,10 @@ class Game {
   setGameOver = () => this.mode = 'gameOver';
 
   createWeapons = (weaponModel, bulletModel, imgs) => {
-    const grenade = new weaponModel({name: 'Grenade', velocity: 30, image: imgs[3], damage: 10, bulletModel: bulletModel})
-    const clock = new weaponModel({name: 'Clock', velocity: 15, image: imgs[2], damage: 15, bulletModel: bulletModel})
-    return [grenade,clock]
+    const grenade = new weaponModel({name: 'Grenade', velocity: 10, image: imgs[3], damage: 25, bulletModel: bulletModel})
+    const clock = new weaponModel({name: 'Clock', velocity: 20, image: imgs[2], damage: 15, bulletModel: bulletModel})
+    const worm = new weaponModel({name: 'Worm', velocity: 40, image: imgs[1], damage: 5, bulletModel: bulletModel})
+    return [grenade,clock, worm]
   }
 }
 
