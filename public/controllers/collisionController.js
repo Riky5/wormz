@@ -19,8 +19,6 @@ class CollisionController{
   }
   
   static findAndDamageWorm = (pair, game, sound) => {
-    console.log('findAndDamageWorm')
-    console.log(game.bullets[0])
 
     if (CollisionController.isInCollision(pair, "wormTwo")) {
       let bulletDamageValue = game.bullets[0].damage
@@ -42,7 +40,6 @@ class CollisionController{
       game.explosions.push(this.explosion)
       CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
-      console.log('bullet destroyed 1')
       Matter.World.remove(game.world, this.explosion.body);
       setTimeout(function(){game.explosions.pop();},500)
     } else if (pair.bodyB.label === "bullet") {
@@ -50,7 +47,6 @@ class CollisionController{
       game.explosions.push(this.explosion)
       CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
-      console.log('bullet destroyed 2')
       Matter.World.remove(game.world, this.explosion.body);
       setTimeout(function(){game.explosions.pop();},500)
     }
@@ -78,8 +74,6 @@ class CollisionController{
   
   static collision = (event, game, sound) => {
     for (const pair of event.pairs) {
-      console.log(pair.bodyA.label)
-      console.log(pair.bodyB.label)
 
       if(CollisionController.isInCollision(pair, "bullet")) {
         CollisionController.findAndDamageWorm(pair, game, sound);

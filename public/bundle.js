@@ -72608,8 +72608,6 @@ geometric ideas.`,
         return pair.bodyA.label === label || pair.bodyB.label === label;
       });
       __publicField(CollisionController, "findAndDamageWorm", (pair, game, sound) => {
-        console.log("findAndDamageWorm");
-        console.log(game.bullets[0]);
         if (_CollisionController.isInCollision(pair, "wormTwo")) {
           let bulletDamageValue = game.bullets[0].damage;
           sound.play();
@@ -72632,7 +72630,6 @@ geometric ideas.`,
           game.explosions.push(_CollisionController.explosion);
           _CollisionController.destroyTerrain(_CollisionController.explosion, game);
           _CollisionController.findAndDestroyBullet(pair, game);
-          console.log("bullet destroyed 1");
           Matter.World.remove(game.world, _CollisionController.explosion.body);
           setTimeout(function() {
             game.explosions.pop();
@@ -72642,7 +72639,6 @@ geometric ideas.`,
           game.explosions.push(_CollisionController.explosion);
           _CollisionController.destroyTerrain(_CollisionController.explosion, game);
           _CollisionController.findAndDestroyBullet(pair, game);
-          console.log("bullet destroyed 2");
           Matter.World.remove(game.world, _CollisionController.explosion.body);
           setTimeout(function() {
             game.explosions.pop();
@@ -72672,8 +72668,6 @@ geometric ideas.`,
       });
       __publicField(CollisionController, "collision", (event, game, sound) => {
         for (const pair of event.pairs) {
-          console.log(pair.bodyA.label);
-          console.log(pair.bodyB.label);
           if (_CollisionController.isInCollision(pair, "bullet")) {
             _CollisionController.findAndDamageWorm(pair, game, sound);
             _CollisionController.createExplosion(pair, game);
@@ -72741,11 +72735,7 @@ geometric ideas.`,
           let wormPos = game.getWormPos(worm);
           let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
           this.bullet = worm.currentWeapon.createBullet(wormPos, game);
-          console.log("before");
-          console.log(game.bullets);
           game.bullets.push(this.bullet);
-          console.log("PUSHED BULLET");
-          console.log(game.bullets);
           sound.play();
           Matter.Body.setVelocity(this.bullet.body, { x: -p.cos(angleDeg) * this.bullet.velocity, y: -p.sin(angleDeg) * this.bullet.velocity });
           game.changePlayerTurn();
@@ -72812,7 +72802,6 @@ geometric ideas.`,
           p.translate(mx, my);
           p.scale(scaleFactor);
           p.translate(-mx, -my);
-          p.translate();
         }
         static adjustXYCoords(p) {
           if (p.mouseIsPressed) {

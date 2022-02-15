@@ -14,15 +14,10 @@ class ShootingController {
     let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
     
     this.bullet = worm.currentWeapon.createBullet(wormPos, game)
-    console.log('before')
-    console.log(game.bullets)
     game.bullets.push(this.bullet);
-    console.log('PUSHED BULLET')
-    console.log(game.bullets)
 
     sound.play(); 
     Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*this.bullet.velocity, y:-(p.sin(angleDeg))*this.bullet.velocity});
-
     game.changePlayerTurn();
     game.timer.resetTimer();
   }
