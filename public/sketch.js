@@ -16,6 +16,7 @@ const Lava = require('./entities/ground');
 const Terrain = require('./entities/terrain')
 const TimerController = require('./controllers/timerController');
 const MusicController = require('./controllers/musicController');
+const Navbar = require('./views/navbar');
 
 class Sketch {
   constructor(gameClass = Game) {
@@ -90,6 +91,7 @@ class Sketch {
       }
 
       p.draw = () => {
+        Navbar.showActivePlayer(game)
         if (game.bulletExists === true)
         { 
           mx = ShootingController.bullet.body.position.x;
