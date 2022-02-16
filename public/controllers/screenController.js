@@ -24,9 +24,7 @@ class ScreenController{
     this.displayWhichPlayerTurn(p, game);
     this.displayMovesLeftAndTimer(p, game)
     this.displayWeaponChoice(p, game)
-    if (game.player1Turn === true)
-    {game.weaponImage.show(p,game.worm.body.position.x,game.worm.body.position.y,game.getActiveWorm().direction);}
-    else {game.weaponImage.show(p,game.worm2.body.position.x,game.worm2.body.position.y,game.getActiveWorm().direction);}
+    game.weaponImage.show(p,game.getActiveWorm().body.position.x,game.getActiveWorm().body.position.y,game.getActiveWorm().direction);
   }
 
   static gameOverScreen(p, gameOver, game) {
