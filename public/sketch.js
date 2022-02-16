@@ -89,7 +89,7 @@ class Sketch {
 
       p.resetMain = () => {
         MusicController.changeToHidden(p);
-        const CANVASWINDOWSIZE = 2000;
+        const CANVASWINDOWSIZE = 1500;
         const CANVASWINDOWHEIGHT =  1000;
         p.loop();
         p.createCanvas(CANVASWINDOWSIZE, CANVASWINDOWSIZE);
@@ -100,7 +100,7 @@ class Sketch {
       }
 
       p.draw = () => {
-        const CANVASWINDOWSIZE = 2000;
+        const CANVASWINDOWSIZE = 1500;
         if (game.bulletExists === true)
         { 
           mx = ShootingController.bullet.body.position.x;
