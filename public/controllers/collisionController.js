@@ -3,6 +3,7 @@ const Explosion = require('../entities/explosion')
 const Matter = require('matter-js');
 const { gameScreen } = require('./screenController');
 const ZoomController = require('./zoomController')
+const TimerController = require('./timerController');
 
 class CollisionController{  
   
@@ -24,12 +25,16 @@ class CollisionController{
     if (CollisionController.isInCollision(pair, "wormTwo")) {
       sound.play();
       game.worm2.reduceHP(bulletDamageValue);
-      if (game.isWormDead()) {game.setGameOver()}
+      if (game.isWormDead()) {
+        setTimeout(function() {game.setGameOver()}, 700);
+      }
       
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
       sound.play();
       game.worm.reduceHP(bulletDamageValue);
-      if (game.isWormDead()) {game.setGameOver()}
+      if (game.isWormDead()) {
+        setTimeout(function() {game.setGameOver()}, 700);
+      }
     }
   }
 
@@ -40,8 +45,8 @@ class CollisionController{
       CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
       Matter.World.remove(game.world, this.explosion.body);
-      setTimeout(function(){game.explosions.pop();},500)
       ZoomController.sf = 1
+      setTimeout(function(){game.explosions.pop();},500)
       setTimeout(() => {ZoomController.sf = 2;},1000)
     } 
   }
@@ -58,11 +63,15 @@ class CollisionController{
   static lavaCollision = (pair,game) => {
     if (CollisionController.isInCollision(pair, "wormTwo")) {
       game.worm2.reduceHP(50);
-      if (game.isWormDead()) {game.setGameOver()}
+      if (game.isWormDead()) {
+        setTimeout(function() {game.setGameOver()}, 700);
+      }
 
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
       game.worm.reduceHP(50);
-      if (game.isWormDead()) {game.setGameOver()}
+      if (game.isWormDead()) {
+        setTimeout(function() {game.setGameOver()}, 700);
+      }
     }
   }
   
@@ -74,9 +83,11 @@ class CollisionController{
           CollisionController.findAndDamageWorm(pair, game, sound, bulletDamageValue); 
         }
         CollisionController.createExplosion(pair, game, img);
+        game.timer.pauseTimer()
       }
       else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava"))
-      {CollisionController.lavaCollision(pair,game)}
+      {CollisionController.lavaCollision(pair,game)
+      }
     }
   }
 }

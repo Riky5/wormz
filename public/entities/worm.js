@@ -3,7 +3,7 @@ const LOWHEALTH = 30;
 const MEDIUMHEALTH = 70;
 
 class Worm {
-  constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter, direction: direction, weapons: weapons}) {
+  constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter, direction: direction, weapons: weapons, graveImg: graveImg}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     matter.Body.setInertia(this.body, Infinity);
     this.w = w;
@@ -16,9 +16,9 @@ class Worm {
     this.weapons = weapons;
     this.currentWeapon = this.weapons[0];
     this.direction = direction;
-  }
 
-  show = (p, img = this.img) => {
+  show = (p, img = this.img, graveImg = this.graveImg) => {
+    this.graveImg = graveImg;
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8;
@@ -30,8 +30,16 @@ class Worm {
     p.rotate(angle);
     p.imageMode(p.CENTER);
     p.image(img, 0, 0, this.w, this.h);
-    p.pop();
-
+    
+    // Render grave if worm is dead
+    if(this.hp > 0) {
+      p.image(img, 0, 0, this.w, this.h);
+    }
+    else {
+      p.image(graveImg, 0, 0, this.w, this.h);
+    }
+    p.pop();  
+  
     // HP bar color above the worm
     const hpBarColor = this.getHPColor();
     p.fill(hpBarColor[0], hpBarColor[1], hpBarColor[2]);
