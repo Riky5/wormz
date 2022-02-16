@@ -12,7 +12,7 @@ class Lava {
   show(p) {
     const pos = this.body.position;
 
-    // render ground
+    // render lava
     p.push();
     p.translate(pos.x, pos.y);
     p.imageMode(p.CENTER);
@@ -21,3 +21,4 @@ class Lava {
   }
 }
 module.exports = Lava;
+
