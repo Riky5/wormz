@@ -4,6 +4,7 @@ const MusicController = require("./musicController");
 class ScreenController{
   static startScreen(p, logo) {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
+    p.select('#navbarContainer').style('display:flex');
     p.background(logo);
     p.textSize(28);
     p.fill("#000000");
@@ -14,6 +15,7 @@ class ScreenController{
 
   static gameScreen(p, game, img) {
     p.background(img);
+    p.select('#navbarContainer').style('display:flex');
     Matter.Engine.update(game.engine);
     game.lava.show(p);
     game.worm.show(p);
@@ -28,6 +30,7 @@ class ScreenController{
 
   static gameOverScreen(p, gameOver, game) {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
+    p.select('#navbarContainer').style('display:none');
     p.background(gameOver);
     p.fill("#000000");
     p.textSize(30);
@@ -39,6 +42,7 @@ class ScreenController{
   static instructionsScreen(p, imgs, game) {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
     p.background('#f9ebf9');
+    p.select('#navbarContainer').style('display:none');
     p.textSize(32);
     p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140);
     p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
