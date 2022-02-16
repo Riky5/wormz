@@ -1,4 +1,3 @@
-const e = require("cors");
 const Matter = require("matter-js")
 const MusicController = require("./musicController");
 
