@@ -2,6 +2,7 @@ const Matter = require('matter-js')
 const p5 = require('p5');
 require('p5/lib/addons/p5.sound');
 require('p5/lib/addons/p5.dom');
+require('p5/lib/addons/p5.play');
 const Game = require('./models/game');
 const ScreenController = require('./controllers/screenController')
 const MoveController = require('./controllers/moveController')
@@ -45,6 +46,7 @@ class Sketch {
     let mx; // mouse coords
     let my; // mouse coords
     let explosionEffect;
+    let lavaGif;
   
 
     const sketch = new p5(function (p) {
@@ -66,14 +68,15 @@ class Sketch {
         clockTimer = p.loadImage("images/clock_timer.png");
         lavaImg = p.loadImage('images/lava.png');
         rockImg = p.loadImage('images/rock.png');
-        tennisBallImg = p.loadImage('images/tennis_ball.png')
-        tomatoImg = p.loadImage('images/tomato.png')
-        explosionEffect = p.loadImage("images/explosion.png")
+        tennisBallImg = p.loadImage('images/tennis_ball.png');
+        tomatoImg = p.loadImage('images/tomato.png');
+        explosionEffect = p.loadImage("images/explosion.png");
+        lavaGif = p.loadAnimation('images/lava004.png', 'images/lava006.png', 'images/lava004.png', 'images/lava005.png', 'images/lava005.png', 'images/lava006.png', 'images/lava004.png','images/lava004.png');
       }
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        p.createCanvas(p.windowWidth, p.windowHeight);
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], gif: lavaGif, matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -82,8 +85,8 @@ class Sketch {
       p.resetMain = () => {
         MusicController.changeToHidden(p);
         p.loop();
-        p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        p.createCanvas(p.windowWidth, p.windowHeight);
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], gif: lavaGif, matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
       }
