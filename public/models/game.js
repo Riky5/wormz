@@ -25,7 +25,6 @@ class Game {
   changePlayerTurn = () => {
     this.resetMoveCount();
     this.player1Turn = !this.player1Turn;
-    console.log("Changed turn")
   }
 
   resetMoveCount = () => {

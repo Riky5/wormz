@@ -4,7 +4,6 @@ const Matter = require('matter-js');
 const { gameScreen } = require('./screenController');
 const ZoomController = require('./zoomController')
 const TimerController = require('./timerController');
-const Game = require('../models/game');
 
 class CollisionController{  
   
