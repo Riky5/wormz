@@ -2,7 +2,7 @@
 
 const Bullet = require('../public/entities/bullet');
 const Worm = require('../public/entities/worm');
-const Ground = require('../public/entities/ground');
+const Ground = require('../public/entities/lava');
 const Game = require('../public/models/game')
 const expect = require('chai').expect
 

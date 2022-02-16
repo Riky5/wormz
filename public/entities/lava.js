@@ -7,13 +7,12 @@ class Lava {
     this.body.isStatic = true;
     this.body.restitution = 1;
     this.img = imgs[4];
-    this.body.friction = 0.25;
   }
 
   show(p) {
     const pos = this.body.position;
 
-    // render ground
+    // render lava
     p.push();
     p.translate(pos.x, pos.y);
     p.imageMode(p.CENTER);
@@ -22,3 +21,4 @@ class Lava {
   }
 }
 module.exports = Lava;
+

@@ -2,9 +2,9 @@ const Obstacle= require('./obstacle');
 
 class Terrain {
   createBorders = (world, matter, screenwidth, screenheight) => {
-    const leftBorder = new Obstacle({x: screenwidth, y: screenheight / 2, w: 100, h: screenheight * 1.5, world: world, matter: matter});
-    const rightBorder = new Obstacle({x: -20, y: screenheight / 2, w: 100, h: screenheight * 1.5, world: world, matter: matter});
-    const topBorder = new Obstacle({x: screenwidth / 2, y: -400, w: screenwidth * 1.5, h: 200, world: world, matter: matter});
+    const leftBorder = new Obstacle({x: screenwidth, y: screenheight / 2, w: 100, h: screenheight * 1.5, world: world, matter: matter, friction: 0});
+    const rightBorder = new Obstacle({x: -20, y: screenheight / 2, w: 100, h: screenheight * 1.5, world: world, matter: matter, friction: 0});
+    const topBorder = new Obstacle({x: screenwidth / 2, y: -400, w: screenwidth * 1.5, h: 200, world: world, matter: matter, friction: 0});
   };
 
   setPlatformLocation = () => {
