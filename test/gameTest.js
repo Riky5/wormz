@@ -7,7 +7,7 @@ const bulletModel = require('../public/entities/bullet')
 const Lava = require('../public/entities/ground');
 const Terrain = require('../public/entities/terrain');
 const TimerController = require('../public/controllers/timerController')
-const ZoomController = require("../controllers/zoomController");
+const ZoomController = require("../public/controllers/zoomController");
 
 describe('Game', () => {
   let game;
