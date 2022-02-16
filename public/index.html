@@ -7,11 +7,23 @@
     <link rel="stylesheet" href="css/index.css">
   </head>
   
-  <nav class="navbar navbar-light bg-light">
-    <div class="d-flex container-fluid justify-content-center">
-      <h1></h1>
+    <div class="navbarContainer navbar navbar-light bg-light">
+      <div class="navbarContent">
+        <p>Player 1's turn</p>
+        <img src="/images/worm0.png" id="activeWorm"></img>
+      </div>
+     <div class="navbarContent">
+        <h2>Active weapon:</h2>
+        <img src="/images/grenade.png" id="activeWeapon"></img>
+      </div>
+      <div class="navbarContent">
+        <img src="/images/clock_timer.png" id="clock"></img>
+        <p id="timeLeft">20</p>
+      </div>
+      <div class="navbarContent">
+        <p>Moves left: <span id="movesLeft">1</span></p>
+      </div>
     </div>
-  </nav>
   
   <body>
     <div>

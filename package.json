@@ -18,6 +18,7 @@
   "dependencies": {
     "build": "^0.1.4",
     "chai": "^4.3.6",
+    "chai-dom": "^1.11.0",
     "cors": "^2.8.5",
     "esbuild": "^0.14.21",
     "express": "^4.17.2",
