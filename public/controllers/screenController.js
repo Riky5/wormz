@@ -57,7 +57,7 @@ class ScreenController{
     p.text(`Damage: ${game.worm.weapons[1].damage} / Speed: Medium`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 140);
     p.text('3️⃣ = ', p.windowWidth / 2 - 310, p.windowHeight / 2 + 180);
     p.image(imgs[5], p.windowWidth / 2 - 240, p.windowHeight / 2 + 150, 40, 40);
-    p.text(`Damage: ${game.worm.weapons[2].damage} / Speed: Medium`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 180);
+    p.text(`Damage: ${game.worm.weapons[2].damage} / Speed: High`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 180);
     p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 250);
   }
 

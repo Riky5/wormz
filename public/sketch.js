@@ -28,6 +28,7 @@ class Sketch {
     // These variables need to stay here due to strange scope of this function
     let wormsLogoImg;
     let backgroundImg;
+    let vulcanoBackgroundImg;
     let wormImg1;
     let wormImg2;
     let graveImg;
@@ -58,6 +59,7 @@ class Sketch {
       p.preload = () => {
         wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
         backgroundImg = p.loadImage("images/background-image.png");
+        vulcanoBackgroundImg = p.loadImage("images/volcanoBackground.png");
         wormImg1 = p.loadImage("images/worm0.png");
         wormImg2 = p.loadImage("images/worm1.png");
         graveImg = p.loadImage("images/grave.png");
@@ -71,9 +73,9 @@ class Sketch {
         clockTimer = p.loadImage("images/clock_timer.png");
         lavaImg = p.loadImage('images/lava.png');
         rockImg = p.loadImage('images/rock.png');
-        tennisBallImg = p.loadImage('images/tennis_ball.png')
-        tomatoImg = p.loadImage('images/tomato.png')
-        explosionEffect = p.loadImage("images/explosion.png")
+        tennisBallImg = p.loadImage('images/tennis_ball.png');
+        tomatoImg = p.loadImage('images/tomato.png');
+        explosionEffect = p.loadImage("images/explosion.png");
       }
 
       p.setup = () => {
@@ -122,7 +124,7 @@ class Sketch {
           my = game.worm2.body.position.y;
         }
         ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
-        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, grenade, tennisBallImg, tomatoImg, music]);
+        ScreenController.setScreen(p, game, [wormsLogoImg, vulcanoBackgroundImg, gameOver, grenade, tennisBallImg, tomatoImg, music]);
         game.setActiveWormDirection(p);
       }
 
