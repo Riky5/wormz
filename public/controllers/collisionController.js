@@ -62,13 +62,13 @@ class CollisionController{
 
   static lavaCollision = (pair,game) => {
     if (CollisionController.isInCollision(pair, "wormTwo")) {
-      game.worm2.reduceHP(50);
+      game.worm2.reduceHP(100);
       if (game.isWormDead()) {
         setTimeout(function() {game.setGameOver()}, 700);
       }
 
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
-      game.worm.reduceHP(50);
+      game.worm.reduceHP(100);
       if (game.isWormDead()) {
         setTimeout(function() {game.setGameOver()}, 700);
       }
