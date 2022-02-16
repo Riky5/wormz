@@ -6,7 +6,6 @@ class Navbar {
     } else {
       text.innerText = "Player 2's turn";
     }
-    console.log(text.innerText);
   }
 
   static showWormImage(game) {
@@ -30,14 +29,14 @@ class Navbar {
   }
 
   static showTimer(game) {
-    let timer = document.getElementById("timeLeft");
-    timer.innerText = game.timer.timeLeftOnTurn();
+    let timeLeft = document.getElementById("timeLeft");
+    timeLeft.innerText = game.timer.timeLeftOnTurn();
     if (game.timer.timeLeftOnTurn() <= 5) { 
-      timer.classList.remove("blackText");
-      timer.classList.add("redText");
+      timeLeft.classList.remove("blackText");
+      timeLeft.classList.add("redText");
      } else {
-       timer.classList.remove("redText");
-      timer.classList.add("blackText");
+      timeLeft.classList.remove("redText");
+      timeLeft.classList.add("blackText");
      }
   }
 
