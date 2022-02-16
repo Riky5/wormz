@@ -6,6 +6,7 @@ class Navbar {
     } else {
       text.innerText = "Player 2's turn";
     }
+    console.log(text.innerText);
   }
 
   static showWormImage(game) {
