@@ -46,3 +46,46 @@ button:hover {
 #enterMsg {
   margin-top: 3rem;
 }
+
+#activeWorm {
+  width: 40px;
+  height: 40px;
+}
+
+#activeWeapon {
+  width: 40px;
+  height: 40px;
+}
+
+#clock {
+  width: 40px;
+  height: 40px;
+}
+
+#timeLeft {
+  font-size: 5rem;
+}
+
+.navbarContent {
+  display: flex;
+  align-items: center;
+  border: 1px solid green;
+}
+
+.navbarContainer {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid red;
+}
+
+.redText {
+  color: red;
+}
+
+.blackText {
+  color: black;
+}
+
+.weapons {
+  flex-direction: column;
+}

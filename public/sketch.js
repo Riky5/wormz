@@ -16,6 +16,7 @@ const Lava = require('./entities/ground');
 const Terrain = require('./entities/terrain')
 const TimerController = require('./controllers/timerController');
 const MusicController = require('./controllers/musicController');
+const Navbar = require('./views/navbar');
 
 class Sketch {
   
@@ -100,8 +101,15 @@ class Sketch {
       }
 
       p.draw = () => {
+        Navbar.show(game);
         const CANVASWINDOWSIZE = 1500;
-        if (game.bulletExists === true)
+        if (game.worm.am_i_alive === false) 
+        { mx = game.worm.body.position.x;
+          my = game.worm.body.position.y;}
+        else if (game.worm2.am_i_alive === false) 
+          {mx = game.worm2.body.position.x;
+          my = game.worm2.body.position.y;}
+        else if (game.bulletExists === true)
         { 
           mx = ShootingController.bullet.body.position.x;
           my = ShootingController.bullet.body.position.y;}

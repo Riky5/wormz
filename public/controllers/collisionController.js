@@ -1,9 +1,7 @@
 const Bullet = require('../entities/bullet')
 const Explosion = require('../entities/explosion')
 const Matter = require('matter-js');
-const { gameScreen } = require('./screenController');
 const ZoomController = require('./zoomController')
-const TimerController = require('./timerController');
 
 class CollisionController{  
   
@@ -16,22 +14,12 @@ class CollisionController{
     }
   }
 
-  static isInCollision = (pair, label) => {
-    return pair.bodyA.label === label || pair.bodyB.label === label
-  }
-  
   static findAndDamageWorm = (pair, game, sound, bulletDamageValue) => {
 
-    if (CollisionController.isInCollision(pair, "wormTwo")) {
+    if (CollisionController.isWormInCollision(pair)) {
       sound.play();
-      game.worm2.reduceHP(bulletDamageValue);
-      if (game.isWormDead()) {
-        setTimeout(function() {game.setGameOver()}, 700);
-      }
-      
-    } else if (CollisionController.isInCollision(pair, "wormOne")) {
-      sound.play();
-      game.worm.reduceHP(bulletDamageValue);
+      let worm = CollisionController.giveWormInCollision(pair, game);
+      worm.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {
         setTimeout(function() {game.setGameOver()}, 700);
       }
@@ -61,34 +49,48 @@ class CollisionController{
   }
 
   static lavaCollision = (pair,game) => {
-    if (CollisionController.isInCollision(pair, "wormTwo")) {
-      game.worm2.reduceHP(50);
+    if (CollisionController.isWormInCollision(pair)) {
+      let worm = CollisionController.giveWormInCollision(pair, game);
+      worm.reduceHP(50);
       if (game.isWormDead()) {
+        worm.am_i_alive = false;
         setTimeout(function() {game.setGameOver()}, 700);
       }
-
-    } else if (CollisionController.isInCollision(pair, "wormOne")) {
-      game.worm.reduceHP(50);
-      if (game.isWormDead()) {
-        setTimeout(function() {game.setGameOver()}, 700);
-      }
-    }
+    } 
   }
   
   static collision = (event, game, sound, img) => {
     for (const pair of event.pairs) {
-      if(CollisionController.isInCollision(pair, "bullet")) {
-        if (CollisionController.isInCollision(pair, "wormOne") || CollisionController.isInCollision(pair, "wormTwo")) {
+      if (CollisionController.isInCollision(pair, "bullet")) {
+        if (CollisionController.isWormInCollision(pair)) {
           let bulletDamageValue = game.bullets[0].damage
           CollisionController.findAndDamageWorm(pair, game, sound, bulletDamageValue); 
         }
         CollisionController.createExplosion(pair, game, img);
-        game.timer.pauseTimer()
+        game.timer.pauseTimer();
       }
-      else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava"))
-      {CollisionController.lavaCollision(pair,game)
+      else if (CollisionController.isInCollision(pair, "lava")) 
+      {
+        CollisionController.lavaCollision(pair,game);
       }
     }
   }
+
+  static isInCollision = (pair, label) => {
+    return pair.bodyA.label === label || pair.bodyB.label === label
+  }
+
+  static isWormInCollision = (pair) => {
+    return CollisionController.isInCollision(pair, "wormOne") || CollisionController.isInCollision(pair, "wormTwo")
+  }
+
+  static giveWormInCollision = (pair, game) => {
+    if(CollisionController.isInCollision(pair, "wormOne")) {
+      return game.worm
+    } else if(CollisionController.isInCollision(pair, "wormTwo")) {
+      return game.worm2
+    }
+  }
 }
+
 module.exports = CollisionController;
