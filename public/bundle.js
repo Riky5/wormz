@@ -73116,10 +73116,12 @@ geometric ideas.`,
             };
             p.resetMain = () => {
               MusicController.changeToHidden(p);
+              const CANVASWINDOWSIZE = 2e3;
+              const CANVASWINDOWHEIGHT = 1e3;
               p.loop();
-              p.createCanvas(2e3, 2e3);
+              p.createCanvas(CANVASWINDOWSIZE, CANVASWINDOWSIZE);
               p.resizeCanvas(p.windowWidth, p.windowHeight);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
               p.textSize(40);
             };
