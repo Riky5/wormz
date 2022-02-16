@@ -7,6 +7,7 @@ const bulletModel = require('../public/entities/bullet')
 const Lava = require('../public/entities/ground');
 const Terrain = require('../public/entities/terrain');
 const TimerController = require('../public/controllers/timerController')
+const ZoomController = require("../controllers/zoomController");
 
 describe('Game', () => {
   let game;
@@ -34,7 +35,7 @@ describe('Game', () => {
 
   beforeEach(() => {
     // struggled to find a way to mock constructor for ground and worm
-    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: weaponModel, bulletModel: bulletModel});
+    game = new Game({p: p5Mock, imgs: wormImgMock, matter: matterMock, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: weaponModel, bulletModel: bulletModel, screenheight: 2000, screenwidth: 1000});
   })
 
   it('initialized with correct parameters', function(done) {
