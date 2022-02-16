@@ -16,9 +16,9 @@ class CollisionController{
 
   static findAndDamageWorm = (pair, game, sound, bulletDamageValue) => {
 
-    if (this.isWormInCollision(pair)) {
+    if (CollisionController.isWormInCollision(pair)) {
       sound.play();
-      let worm = this.giveWormInCollision(pair, game);
+      let worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {
         setTimeout(function() {game.setGameOver()}, 700);
@@ -49,8 +49,8 @@ class CollisionController{
   }
 
   static lavaCollision = (pair,game) => {
-    if (this.isWormInCollision(pair)) {
-      let worm = this.giveWormInCollision(pair, game);
+    if (CollisionController.isWormInCollision(pair)) {
+      let worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(50);
       if (game.isWormDead()) {
         setTimeout(function() {game.setGameOver()}, 700);
@@ -60,17 +60,17 @@ class CollisionController{
   
   static collision = (event, game, sound, img) => {
     for (const pair of event.pairs) {
-      if(CollisionController.isInCollision(pair, "bullet")) {
-        if (this.isWormInCollision(pair)) {
+      if (CollisionController.isInCollision(pair, "bullet")) {
+        if (CollisionController.isWormInCollision(pair)) {
           let bulletDamageValue = game.bullets[0].damage
           CollisionController.findAndDamageWorm(pair, game, sound, bulletDamageValue); 
         }
         CollisionController.createExplosion(pair, game, img);
-        game.timer.pauseTimer()
+        game.timer.pauseTimer();
       }
-      else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava")) 
+      else if (CollisionController.isInCollision(pair, "lava")) 
       {
-        CollisionController.lavaCollision(pair,game)
+        CollisionController.lavaCollision(pair,game);
       }
     }
   }
