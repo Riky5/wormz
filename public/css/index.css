@@ -16,6 +16,7 @@ body {
 }
 
 #title {
+  margin-top: 8rem;
   font-size: 2.8rem;
 }
 
@@ -27,7 +28,7 @@ body {
 }
 p {
   font-size: 2rem;
-  margin: 1rem;
+  margin: 1.2rem;
   color: black;
 }
 
@@ -47,35 +48,80 @@ button:hover {
   margin-top: 3rem;
 }
 
-#activeWorm {
-  width: 40px;
-  height: 40px;
+/* navbar  */
+
+#navbarContainer {
+  border-bottom: 2px solid rgb(0, 0, 0);
+  padding: 0;
+  background-color: #0099ff;
 }
 
-#activeWeapon {
-  width: 40px;
-  height: 40px;
+#activePlayerText, .navbarText, #timeLeft {
+  font-size: 1.3rem;
+}
+#timeLeft {
+  margin-left: 0;
+}
+
+#activeWorm, #activeWeapon, #clock {
+  width: 2rem;
+  height: 2rem;
 }
 
 #clock {
-  width: 40px;
-  height: 40px;
+  margin-left: 0.6rem;
 }
 
-#timeLeft {
-  font-size: 5rem;
+#activeWeapon {
+  margin-left: 0.2rem;
+}
+
+#playerWeapon, #timeMovesLeft, #weaponOptionsDiv {
+  display: flex;
+  border: 2px solid black;
+  border-radius: 30px;
+  background-color: white;
+}
+
+#weaponOptionsDiv {
+  padding-right: 1.2rem;
+  margin: 0;
+}
+
+.divider {
+  padding: 0;
+  margin: 0 0 0 1.2rem;
+}
+
+.divider2 {
+  padding: 0;
+  margin: 0 0.2rem 0 0;
+}
+
+.divider3 {
+  padding: 0;
+  margin: 0 0 0 1.2rem;
+}
+
+#weaponSelection {
+  width: 2rem;
+  height: 2.2rem;
+  margin-left: 0;
+}
+
+#weaponsText {
+  margin-right: 0;
 }
 
 .navbarContent {
   display: flex;
   align-items: center;
-  border: 1px solid green;
 }
 
 .navbarContainer {
   display: flex;
   justify-content: space-between;
-  border: 1px solid red;
+  border: 1px solid rgb(207, 205, 205);
 }
 
 .redText {
@@ -84,8 +130,4 @@ button:hover {
 
 .blackText {
   color: black;
-}
-
-.weapons {
-  flex-direction: column;
 }

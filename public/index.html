@@ -7,29 +7,37 @@
     <link rel="stylesheet" href="css/index.css">
   </head>
   
-    <div class="navbarContainer navbar navbar-light bg-light">
-      <div class="navbarContent">
+  <body>
+    <nav class="navbar" id="navbarContainer">
+      <div class="navbarContent" id="playerWeapon">
         <p id="activePlayerText"></p>
         <img src="" id="activeWorm"></img>
+        <p class="divider">|</p>
+        <p class="navbarText">Active weapon:
+          <img src="/images/grenade.png" id="activeWeapon">
+        </p>
       </div>
-     <div class="navbarContent weapons">
-       <div>
-        <p>Active weapon:
-        <img src="/images/grenade.png" id="activeWeapon"></p>
+
+      <div class="navbarContent" id="weaponOptionsDiv">
+        <p class="navbarText" id="weaponsText"> Weapons: </p>
+        <p class="navbarText"> 1️⃣ </p>
+        <img src="/images/grenade.png" id="weaponSelection">
+        <p class="divider3">|</p>
+        <p class="navbarText"> 2️⃣ </p>
+        <img src="/images/tennis_ball.png" id="weaponSelection">
+        <p class="divider3">|</p>
+        <p class="navbarText"> 3️⃣ </p>
+        <img src="/images/tomato.png" id="weaponSelection">
       </div>
-        <div class="options">1️⃣<img src="/images/grenade.png" id="activeWeapon">2️⃣<img src="/images/tennis_ball.png" id="activeWeapon">3️⃣<img src="/images/tomato.png" id="activeWeapon"></div>
-      </div>
-      <div class="navbarContent">
-        <img src="/images/clock_timer.png" id="clock">
+
+      <div class="navbarContent" id="timeMovesLeft">
+        <p class="navbarText">Time left: 
+          <img src="/images/clock_timer.png" id="clock">
+        </p>
         <p id="timeLeft"></p>
+        <p class="divider2">|</p>
+        <p class="navbarText">Moves left: <span id="movesLeft"></span></p>
       </div>
-      <div class="navbarContent">
-        <p>Moves left: <span id="movesLeft"></span></p>
-      </div>
-    </div>
-  
-  <body>
-    <div>
-    </div>
+    </nav>
   </body>
 </html>
