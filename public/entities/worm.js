@@ -14,6 +14,7 @@ class Worm {
     this.direction = direction;
     matter.Body.setInertia(this.body, Infinity);
     this.graveImg = graveImg;
+    this.am_i_alive = true;
   }
 
   show = (p,img = this.img, graveImg = this.graveImg) => {
