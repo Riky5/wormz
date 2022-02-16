@@ -1,21 +1,19 @@
 
 class ZoomController {
 
-	static sf = 1; // scaleFactor
-	static x = 0; // pan X
-	static y = 0; // pan Y
-
-	static zoom(p, mx, my, scaleFactor) {
-		p.translate(mx, my)
-		p.scale(scaleFactor)
-		p.translate(-mx, -my);
+	constructor() {
+		this.second_screen = false;
 	}
 
-	static adjustXYCoords(p) {
-		if (p.mouseIsPressed) {
-			ZoomController.x -= p.pmouseX - p.mouseX;
-			ZoomController.y -= p.pmouseY - p.mouseY;
-		}
+	static sf = 1; // scaleFactor
+
+	static zoom(p, mx, my, scaleFactor,screenwidth) {
+		p.translate(mx, my)
+		p.scale(scaleFactor)
+		if (mx > 1200 && p.windowWidth < screenwidth && my > p.windowHeight - 100) {p.translate(-mx - 500, -my - 200);this.second_screen = true}
+		else if (my > p.windowHeight - 100) {p.translate(-mx, -my - 200);this.second_screen = false}
+		else if (mx > 1200 && p.windowWidth < screenwidth) {p.translate(-mx - 500, -my);this.second_screen = true}
+		else {p.translate(-mx, -my);this.second_screen = false}
 	}
 
 }

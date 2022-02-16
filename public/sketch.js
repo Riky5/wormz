@@ -18,6 +18,7 @@ const TimerController = require('./controllers/timerController');
 const MusicController = require('./controllers/musicController');
 
 class Sketch {
+  
   constructor(gameClass = Game) {
     this.gameClass = gameClass;
   }
@@ -75,23 +76,31 @@ class Sketch {
       }
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        p.createCanvas(p.windowWidth, p.windowHeight);
+        const CANVASWINDOWSIZE = 2000;
+        const CANVASWINDOWHEIGHT =  1000;
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
+        ZoomController.sf = 1;
+        setTimeout(()=> {ZoomController.sf = 2},2000)
       }
 
       p.resetMain = () => {
         MusicController.changeToHidden(p);
+        const CANVASWINDOWSIZE = 2000;
+        const CANVASWINDOWHEIGHT =  1000;
         p.loop();
-        p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        p.createCanvas(CANVASWINDOWSIZE, CANVASWINDOWSIZE);
+        p.resizeCanvas(p.windowWidth,p.windowHeight)
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
       }
 
       p.draw = () => {
+        const CANVASWINDOWSIZE = 2000;
         if (game.bulletExists === true)
         { 
           mx = ShootingController.bullet.body.position.x;
@@ -104,9 +113,8 @@ class Sketch {
           mx = game.worm2.body.position.x;
           my = game.worm2.body.position.y;
         }
-        ZoomController.zoom(p, mx, my, ZoomController.sf)
+        ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, music]);
-        ZoomController.adjustXYCoords(p)
         game.setActiveWormDirection(p);
       }
 
@@ -131,8 +139,9 @@ class Sketch {
           } else if (weaponController.isValidInput(input)) {
             weaponController.activeWormChangeWeapon(worm, input)
           } else if (input === p.DOWN_ARROW) {
-            ZoomController.sf = 1;
-            setTimeout(function(){ZoomController.sf = 2;},1000)
+            if (ZoomController.sf === 1)
+            {ZoomController.sf = 2;}
+            else {ZoomController.sf = 1;}
           }
         }
       }
