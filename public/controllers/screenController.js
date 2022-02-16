@@ -3,6 +3,7 @@ const MusicController = require("./musicController");
 
 class ScreenController{
   static startScreen(p, logo) {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
     p.background(logo);
     p.textSize(28);
     p.fill("#000000");
@@ -26,6 +27,7 @@ class ScreenController{
   }
 
   static gameOverScreen(p, gameOver, game) {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
     p.background(gameOver);
     p.textSize(30);
     let winner = game.getWinner();
@@ -34,6 +36,7 @@ class ScreenController{
   }
 
   static instructionsScreen(p) {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
     p.background('#f9ebf9');
     p.textSize(32);
     p.text("How to play:", p.windowWidth / 2 - 90, p.windowHeight / 3 - 140);
