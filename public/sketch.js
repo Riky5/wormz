@@ -103,10 +103,10 @@ class Sketch {
       p.draw = () => {
         Navbar.show(game);
         const CANVASWINDOWSIZE = 1500;
-        if (game.worm.am_i_alive === false) 
+        if (game.worm.isAlive === false) 
         { mx = game.worm.body.position.x;
           my = game.worm.body.position.y;}
-        else if (game.worm2.am_i_alive === false) 
+        else if (game.worm2.isAlive === false) 
           {mx = game.worm2.body.position.x;
           my = game.worm2.body.position.y;}
         else if (game.bulletExists === true)
