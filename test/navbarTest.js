@@ -3,7 +3,7 @@ const chai = require('chai');
 const { JSDOM } = require('jsdom');
 chai.use(require('chai-dom'));
 require('jsdom-global')();
-const Navbar = require('../public/views/navbar')
+const Navbar = require('../public/views/navbar');
 
 let gameMock = {
   player1Turn: true,
