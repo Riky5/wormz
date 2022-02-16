@@ -31,7 +31,13 @@ class Navbar {
   static showTimer(game) {
     let timer = document.getElementById("timeLeft");
     timer.innerText = game.timer.timeLeftOnTurn();
-    if (game.timer.timeLeftOnTurn() <= 5) { timer.classList.add("redText") }
+    if (game.timer.timeLeftOnTurn() <= 5) { 
+      timer.classList.remove("blackText");
+      timer.classList.add("redText");
+     } else {
+       timer.classList.remove("redText");
+      timer.classList.add("blackText");
+     }
   }
 }
 
