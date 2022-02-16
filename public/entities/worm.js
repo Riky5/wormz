@@ -1,6 +1,8 @@
 const MAXHEALTH = 100;
-const LOWHEALTH = 30;
 const MEDIUMHEALTH = 70;
+const LOWHEALTH = 30;
+const MINHEALTH = 0;
+
 
 class Worm {
   constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter, direction: direction, weapons: weapons, graveImg: graveImg}) {
@@ -35,7 +37,7 @@ class Worm {
     p.image(img, 0, 0, this.w, this.h);
     
     // Render grave if worm is dead
-    if(this.hp > 0) {
+    if(this.hp > MINHEALTH) {
       p.image(img, 0, 0, this.w, this.h);
     }
     else {
@@ -60,7 +62,12 @@ class Worm {
   };
 
   reduceHP = (damageValue) => {
-    if (this.hp > 0) this.hp -= damageValue;
+    if (this.hp - damageValue > MINHEALTH) {
+      this.hp -= damageValue
+    }
+    else {
+      this.hp = MINHEALTH
+    }
   };
 
   changeWeapon = (weaponInput) => {
