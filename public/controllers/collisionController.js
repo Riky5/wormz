@@ -1,9 +1,7 @@
 const Bullet = require('../entities/bullet')
 const Explosion = require('../entities/explosion')
 const Matter = require('matter-js');
-const { gameScreen } = require('./screenController');
 const ZoomController = require('./zoomController')
-const TimerController = require('./timerController');
 
 class CollisionController{  
   
