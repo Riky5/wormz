@@ -58,7 +58,7 @@ class Sketch {
         backgroundImg = p.loadImage("images/background-image.png");
         wormImg1 = p.loadImage("images/worm0.png");
         wormImg2 = p.loadImage("images/worm1.png");
-        graveImg = p.loadImage("images/grave.png");
+        graveImg = p.loadImage("images/grave.jpg");
         music = p.loadSound("assets/Whimsical-Popsicle.mp3");
         explosionSound = p.loadSound("assets/Explosion.mp3");
         jumpSound = p.loadSound('assets/jump.mp3');

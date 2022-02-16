@@ -71,13 +71,13 @@ class CollisionController{
     if (CollisionController.isInCollision(pair, "wormTwo")) {
       game.worm2.reduceHP(50);
       if (game.isWormDead()) {
-        setTimeout(function() {game.setGameOver()}, 1000);
+        setTimeout(function() {game.setGameOver()}, 700);
       }
 
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
       game.worm.reduceHP(50);
       if (game.isWormDead()) {
-        setTimeout(function() {game.setGameOver()}, 1000);
+        setTimeout(function() {game.setGameOver()}, 700);
       }
     }
   }
