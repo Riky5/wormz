@@ -18,6 +18,7 @@ const TimerController = require('./controllers/timerController');
 const MusicController = require('./controllers/musicController');
 
 class Sketch {
+  
   constructor(gameClass = Game) {
     this.gameClass = gameClass;
   }
@@ -63,7 +64,9 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        const CANVASWINDOWSIZE = 2000;
+        const CANVASWINDOWHEIGHT =  1000;
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -82,6 +85,7 @@ class Sketch {
       }
 
       p.draw = () => {
+        const CANVASWINDOWSIZE = 2000;
         if (game.bulletExists === true)
         { 
           mx = ShootingController.bullet.body.position.x;
@@ -94,7 +98,7 @@ class Sketch {
           mx = game.worm2.body.position.x;
           my = game.worm2.body.position.y;
         }
-        ZoomController.zoom(p, mx, my, ZoomController.sf)
+        ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, music]);
         game.setActiveWormDirection(p);
       }

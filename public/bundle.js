@@ -72240,23 +72240,21 @@ geometric ideas.`,
   // public/controllers/zoomController.js
   var require_zoomController = __commonJS({
     "public/controllers/zoomController.js"(exports, module) {
-      var _ZoomController = class {
-        static zoom(p, mx, my, scaleFactor) {
+      var ZoomController = class {
+        static zoom(p, mx, my, scaleFactor, screenwidth) {
           p.translate(mx, my);
           p.scale(scaleFactor);
-          if (mx > 1200 && p.windowWidth < 2e3 && my > p.windowHeight - 100) {
+          console.log(screenwidth);
+          if (mx > 1200 && p.windowWidth < screenwidth && my > p.windowHeight - 100) {
             p.translate(-mx - 500, -my - 200);
           } else if (my > p.windowHeight - 100) {
             p.translate(-mx, -my - 200);
-          } else if (mx > 1200 && p.windowWidth < 2e3) {
+          } else if (mx > 1200 && p.windowWidth < screenwidth) {
             p.translate(-mx - 500, -my);
-          } else if (mx > 1200 && p.windowWidth < 2e3 && _ZoomController.sf === 1) {
-            p.translate(-mx - 1e3, -my);
           } else
             p.translate(-mx, -my);
         }
       };
-      var ZoomController = _ZoomController;
       __publicField(ZoomController, "sf", 1);
       module.exports = ZoomController;
     }
@@ -72268,16 +72266,16 @@ geometric ideas.`,
       var ZoomController = require_zoomController();
       var MAXMOVES = 5;
       var Game = class {
-        constructor({ p, imgs, matter, lava, worm, terrain, timer: timerController, weaponModel, bulletModel }) {
+        constructor({ p, imgs, matter, lava, worm, terrain, timer: timerController, weaponModel, bulletModel, screenheight, screenwidth }) {
           this.engine = matter.Engine.create();
           this.world = this.engine.world;
           this.bullets = [];
           this.explosions = [];
-          this.lava = new lava({ x: 1e3, y: 950, w: 3e3, h: 180, world: this.world, matter });
+          this.lava = new lava({ x: screenwidth / 2, y: 950, w: screenwidth * 1.5, h: 180, world: this.world, matter });
           this.worm = new worm({ x: 300, y: 200, options: "wormOne", img: imgs[0], matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
-          this.worm2 = new worm({ x: 1700, y: 200, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
+          this.worm2 = new worm({ x: screenwidth - 300, y: 200, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           matter.World.add(this.world, [this.worm.body, this.worm2.body]);
-          this.terrain = new terrain().createTerrain(p, this.world, matter);
+          this.terrain = new terrain().createTerrain(p, this.world, matter, screenwidth, screenheight);
           this.mode = "start";
           this.player1Turn = true;
           this.moveLimit = MAXMOVES;
@@ -72965,12 +72963,12 @@ geometric ideas.`,
     "public/terrain.js"(exports, module) {
       var Obstacle = require_obstacle();
       var Terrain = class {
-        createTerrain(p, world, matter) {
+        createTerrain(p, world, matter, screenwidth, screenheight) {
           let terrain_generated = [];
           let ground_piece;
-          let left_border = new Obstacle({ x: 2300 + 20, y: 1e3, w: 100, h: 3e3, world, matter });
-          let right_border = new Obstacle({ x: -20, y: 1e3, w: 100, h: 3e3, world, matter });
-          let top_border = new Obstacle({ x: 1e3, y: -400, w: 3e3, h: 200, world, matter });
+          let left_border = new Obstacle({ x: screenwidth + 300, y: screenheight, w: 100, h: screenheight * 1.5, world, matter });
+          let right_border = new Obstacle({ x: -20, y: screenheight, w: 100, h: screenheight * 1.5, world, matter });
+          let top_border = new Obstacle({ x: screenwidth / 2, y: -400, w: screenwidth * 1.5, h: 200, world, matter });
           let block_height = 10;
           let platforms = [
             [100, 200],
@@ -73088,7 +73086,9 @@ geometric ideas.`,
             };
             p.setup = () => {
               p.createCanvas(p.windowWidth, p.windowHeight);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              const CANVASWINDOWSIZE = 2e3;
+              const CANVASWINDOWHEIGHT = 1e3;
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound));
               p.textSize(40);
               MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -73107,6 +73107,7 @@ geometric ideas.`,
               p.textSize(40);
             };
             p.draw = () => {
+              const CANVASWINDOWSIZE = 2e3;
               if (game.bulletExists === true) {
                 mx = ShootingController.bullet.body.position.x;
                 my = ShootingController.bullet.body.position.y;
@@ -73117,7 +73118,7 @@ geometric ideas.`,
                 mx = game.worm2.body.position.x;
                 my = game.worm2.body.position.y;
               }
-              ZoomController.zoom(p, mx, my, ZoomController.sf);
+              ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE);
               ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, music]);
               game.setActiveWormDirection(p);
             };
