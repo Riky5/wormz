@@ -39,6 +39,19 @@ class Navbar {
       timer.classList.add("blackText");
      }
   }
+
+  static showMove(game) {
+    let movesLeft = document.getElementById("movesLeft");
+    movesLeft.innerText = game.moveLimit - game.moveCount;
+  }
+
+  static show(game) {
+    Navbar.showActivePlayer(game);
+    Navbar.showWormImage(game);
+    Navbar.showWeaponImage(game);
+    Navbar.showTimer(game);
+    Navbar.showMove(game);
+  }
 }
 
 module.exports = Navbar;

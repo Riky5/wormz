@@ -91,10 +91,7 @@ class Sketch {
       }
 
       p.draw = () => {
-        Navbar.showActivePlayer(game);
-        Navbar.showWormImage(game);
-        Navbar.showWeaponImage(game);
-        Navbar.showTimer(game);
+        Navbar.show(game);
         if (game.bulletExists === true)
         { 
           mx = ShootingController.bullet.body.position.x;

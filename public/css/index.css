@@ -68,7 +68,7 @@ button:hover {
 
 .navbarContainer {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   border: 1px solid red;
 }
 
@@ -78,4 +78,8 @@ button:hover {
 
 .blackText {
   color: black;
+}
+
+.weapons {
+  flex-direction: column;
 }
