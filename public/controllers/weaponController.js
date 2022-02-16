@@ -1,5 +1,6 @@
 class WeaponController {
   constructor() {
+    // These relate to 1, 2, 3 on the keyboard
     this.validKeyCodes = [49,50,51];
   }
  
