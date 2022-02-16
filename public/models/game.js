@@ -25,6 +25,7 @@ class Game {
   changePlayerTurn = () => {
     this.resetMoveCount();
     this.player1Turn = !this.player1Turn;
+    console.log("Changed turn")
   }
 
   resetMoveCount = () => {
@@ -75,7 +76,6 @@ class Game {
         this.worm.setDirection("right");
       }
     } else {
-      console.log(p.mouseX)
       if (ZoomController.second_screen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
       else mouse_position = p.mouseX
       if (mouse_position < this.worm2.body.position.x) {

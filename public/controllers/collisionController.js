@@ -3,6 +3,8 @@ const Explosion = require('../entities/explosion')
 const Matter = require('matter-js');
 const { gameScreen } = require('./screenController');
 const ZoomController = require('./zoomController')
+const TimerController = require('./timerController');
+const Game = require('../models/game');
 
 class CollisionController{  
   
@@ -40,8 +42,8 @@ class CollisionController{
       CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
       Matter.World.remove(game.world, this.explosion.body);
-      setTimeout(function(){game.explosions.pop();},500)
       ZoomController.sf = 1
+      setTimeout(function(){game.explosions.pop();},500)
       setTimeout(() => {ZoomController.sf = 2;},1000)
     } 
   }
@@ -74,9 +76,11 @@ class CollisionController{
           CollisionController.findAndDamageWorm(pair, game, sound, bulletDamageValue); 
         }
         CollisionController.createExplosion(pair, game, img);
+        game.timer.pauseTimer()
       }
       else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava"))
-      {CollisionController.lavaCollision(pair,game)}
+      {CollisionController.lavaCollision(pair,game)
+      }
     }
   }
 }
