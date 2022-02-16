@@ -14,13 +14,9 @@ class CollisionController{
     }
   }
 
-  static isInCollision = (pair, label) => {
-    return pair.bodyA.label === label || pair.bodyB.label === label
-  }
-  
   static findAndDamageWorm = (pair, game, sound, bulletDamageValue) => {
 
-    if (CollisionController.isInCollision(pair, "wormTwo") || CollisionController.isInCollision(pair, "wormOne")) {
+    if (this.isWormInCollision(pair)) {
       sound.play();
       let worm = this.giveWormInCollision(pair, game);
       worm.reduceHP(bulletDamageValue);
@@ -72,20 +68,28 @@ class CollisionController{
         CollisionController.createExplosion(pair, game, img);
         game.timer.pauseTimer()
       }
-      else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava"))
-      {CollisionController.lavaCollision(pair,game)
+      else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava")) 
+      {
+        CollisionController.lavaCollision(pair,game)
       }
     }
   }
-  static giveWormInCollision(pair, game) {
+
+  static isInCollision = (pair, label) => {
+    return pair.bodyA.label === label || pair.bodyB.label === label
+  }
+
+  static isWormInCollision = (pair) => {
+    return CollisionController.isInCollision(pair, "wormOne") || CollisionController.isInCollision(pair, "wormTwo")
+  }
+
+  static giveWormInCollision = (pair, game) => {
     if(CollisionController.isInCollision(pair, "wormOne")) {
       return game.worm
     } else if(CollisionController.isInCollision(pair, "wormTwo")) {
       return game.worm2
     }
   }
-  static isWormInCollision(pair) {
-    return CollisionController.isInCollision(pair, "wormOne") || CollisionController.isInCollision(pair, "wormTwo")
-  }
 }
+
 module.exports = CollisionController;
