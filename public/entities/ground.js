@@ -21,8 +21,8 @@ class Lava {
     // p.rectMode(p.CENTER)
     // p.rect(0,0, this.w, this.h);
 
-    p.imageMode(p.CENTER);
-    p.image(this.img, 0, 0, this.w, this.h);
+    // p.imageMode(p.CENTER);
+    // p.image(this.img, 0, 0, this.w, this.h);
     p.animation(this.gif, 0, 0);
 
     p.pop()
