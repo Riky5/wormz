@@ -25,8 +25,7 @@ class CollisionController{
       sound.play();
       game.worm2.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {
-        // game.worm2.setImageToDead();
-        setTimeout(function() {game.setGameOver()}, 3000);
+        setTimeout(function() {game.setGameOver()}, 700);
       }
       
     } else if (CollisionController.isInCollision(pair, "wormOne")) {
@@ -34,8 +33,7 @@ class CollisionController{
       sound.play();
       game.worm.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {
-        // game.worm.setImageToDead();
-        setTimeout(function() {game.setGameOver()}, 3000);
+        setTimeout(function() {game.setGameOver()}, 700);
       }
     }
   }
