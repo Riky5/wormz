@@ -35,7 +35,7 @@ class ScreenController{
     p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 180);
   }
 
-  static instructionsScreen(p) {
+  static instructionsScreen(p, imgs, game) {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
     p.background('#f9ebf9');
     p.textSize(32);
@@ -43,9 +43,17 @@ class ScreenController{
     p.text("Use LEFT ◀️ and RIGHT ▶️ to move worm.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 180);
     p.text("Use UP 🔼 to jump.", p.windowWidth / 2 - 310, p.windowHeight / 2 - 110);
     p.text("Aim and CLICK to shoot target 💥.",  p.windowWidth / 2 - 310, p.windowHeight / 2 - 40);
-    p.text("Use 1️⃣ 2️⃣ 3️⃣ to change between weapons", p.windowWidth / 2 - 310, p.windowHeight / 2 + 30) 
-    p.textSize(29);
-    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 120);
+    p.text("Use 1️⃣ 2️⃣ 3️⃣ to change between weapons:", p.windowWidth / 2 - 310, p.windowHeight / 2 + 30);
+    p.text('1️⃣ = ', p.windowWidth / 2 - 310, p.windowHeight / 2 + 100);
+    p.image(imgs[3], p.windowWidth / 2 - 240, p.windowHeight / 2 + 67, 40, 40);
+    p.text(`Damage: ${game.worm.weapons[0].damage} / Speed: Low`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 100);
+    p.text('2️⃣ = ', p.windowWidth / 2 - 310, p.windowHeight / 2 + 140);
+    p.image(imgs[4], p.windowWidth / 2 - 240, p.windowHeight / 2 + 110, 40, 40);
+    p.text(`Damage: ${game.worm.weapons[1].damage} / Speed: Medium`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 140);
+    p.text('3️⃣ = ', p.windowWidth / 2 - 310, p.windowHeight / 2 + 180);
+    p.image(imgs[5], p.windowWidth / 2 - 240, p.windowHeight / 2 + 150, 40, 40);
+    p.text(`Damage: ${game.worm.weapons[2].damage} / Speed: Medium`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 180);
+    p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 250);
   }
 
   static musicSoundScreen(p) {
@@ -63,7 +71,7 @@ class ScreenController{
       ScreenController.gameOverScreen(p, imgs[2], game);
     }
     else if (game.mode === 'instructions') {
-      ScreenController.instructionsScreen(p);
+      ScreenController.instructionsScreen(p, imgs, game);
     }
     else if (game.mode === 'musicSoundSettings') {
       MusicController.changeToVisible(p);
