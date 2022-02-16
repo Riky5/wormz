@@ -16,7 +16,7 @@ class ShootingController {
 
     sound.play(); 
     Matter.Body.setVelocity(this.bullet.body,{x:(-p.cos(angleDeg))*this.bullet.velocity, y:-(p.sin(angleDeg))*this.bullet.velocity});
-    game.timer.pauseTimer
+    game.timer.pauseTimer()
     setTimeout(() => {
       game.timer.resetTimer();game.changePlayerTurn();game.timer.resetTimer();
     },1000)
