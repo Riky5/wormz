@@ -22,6 +22,7 @@ class Terrain {
       ground_piece = new Obstacle({x: platform_location[1] + (i * 10),y: platform_location[0] + 20,w: 10,h: block_height,  world: world, matter: matter, imgs: imgs[5]});
       terrain_generated.push(ground_piece)
     }})
+
     return terrain_generated
   }
 }
