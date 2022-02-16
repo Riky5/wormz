@@ -72237,17 +72237,1881 @@ geometric ideas.`,
     }
   });
 
+  // node_modules/p5/lib/addons/p5.play.js
+  var require_p5_play = __commonJS({
+    "node_modules/p5/lib/addons/p5.play.js"(exports) {
+      (function(root, factory) {
+        if (typeof define === "function" && define.amd)
+          define("p5.play", ["p5"], function(p5) {
+            factory(p5);
+          });
+        else if (typeof exports === "object")
+          factory(require_p5());
+        else
+          factory(root.p5);
+      })(exports, function(p5) {
+        p5.prototype.registerMethod("init", function p5PlayInit() {
+          this.camera = new Camera(this, 0, 0, 1);
+          this.camera.init = false;
+        });
+        function defineLazyP5Property(name2, getter) {
+          Object.defineProperty(p5.prototype, name2, {
+            configurable: true,
+            enumerable: true,
+            get: function() {
+              var context = this instanceof p5 && !this._isGlobal ? this : window;
+              if (typeof context._p5PlayProperties === "undefined") {
+                context._p5PlayProperties = {};
+              }
+              if (!(name2 in context._p5PlayProperties)) {
+                context._p5PlayProperties[name2] = getter.call(context);
+              }
+              return context._p5PlayProperties[name2];
+            }
+          });
+        }
+        function boundConstructorFactory(constructor) {
+          if (typeof constructor !== "function")
+            throw new Error("constructor must be a function");
+          return function createBoundConstructor() {
+            var pInst = this;
+            function F() {
+              var args = Array.prototype.slice.call(arguments);
+              return constructor.apply(this, [pInst].concat(args));
+            }
+            F.prototype = constructor.prototype;
+            return F;
+          };
+        }
+        function createPInstBinder(pInst) {
+          return function pInstBind(methodName) {
+            var method = pInst[methodName];
+            if (typeof method !== "function")
+              throw new Error('"' + methodName + '" is not a p5 method');
+            return method.bind(pInst);
+          };
+        }
+        var abs = p5.prototype.abs;
+        var radians = p5.prototype.radians;
+        var dist = p5.prototype.dist;
+        var degrees = p5.prototype.degrees;
+        var pow = p5.prototype.pow;
+        var round = p5.prototype.round;
+        defineLazyP5Property("allSprites", function() {
+          return new p5.prototype.Group();
+        });
+        p5.prototype.spriteUpdate = true;
+        p5.prototype.createSprite = function(x, y, width, height) {
+          var s = new Sprite(this, x, y, width, height);
+          s.depth = this.allSprites.maxDepth() + 1;
+          this.allSprites.add(s);
+          return s;
+        };
+        p5.prototype.removeSprite = function(sprite) {
+          sprite.remove();
+        };
+        p5.prototype.updateSprites = function(upd) {
+          if (upd === false)
+            this.spriteUpdate = false;
+          if (upd === true)
+            this.spriteUpdate = true;
+          if (this.spriteUpdate)
+            for (var i = 0; i < this.allSprites.size(); i++) {
+              this.allSprites.get(i).update();
+            }
+        };
+        p5.prototype.getSprites = function() {
+          if (arguments.length === 0) {
+            return this.allSprites.toArray();
+          } else {
+            var arr = [];
+            for (var j = 0; j < arguments.length; j++) {
+              for (var i = 0; i < this.allSprites.size(); i++) {
+                if (this.allSprites.get(i).isTagged(arguments[j]))
+                  arr.push(this.allSprites.get(i));
+              }
+            }
+            return arr;
+          }
+        };
+        p5.prototype.drawSprites = function(group) {
+          group = group || this.allSprites;
+          if (typeof group.draw !== "function") {
+            throw "Error: with drawSprites you can only draw all sprites or a group";
+          }
+          group.draw();
+        };
+        p5.prototype.drawSprite = function(sprite) {
+          if (sprite)
+            sprite.display();
+        };
+        p5.prototype.loadAnimation = function() {
+          return construct(this.Animation, arguments);
+        };
+        p5.prototype.loadSpriteSheet = function() {
+          return construct(this.SpriteSheet, arguments);
+        };
+        p5.prototype.animation = function(anim, x, y) {
+          anim.draw(x, y);
+        };
+        defineLazyP5Property("_p5play", function() {
+          return {
+            keyStates: {},
+            mouseStates: {}
+          };
+        });
+        var KEY_IS_UP = 0;
+        var KEY_WENT_DOWN = 1;
+        var KEY_IS_DOWN = 2;
+        var KEY_WENT_UP = 3;
+        p5.prototype.keyWentDown = function(key) {
+          return this._isKeyInState(key, KEY_WENT_DOWN);
+        };
+        p5.prototype.keyWentUp = function(key) {
+          return this._isKeyInState(key, KEY_WENT_UP);
+        };
+        p5.prototype.keyDown = function(key) {
+          return this._isKeyInState(key, KEY_IS_DOWN);
+        };
+        p5.prototype._isKeyInState = function(key, state) {
+          var keyCode;
+          var keyStates = this._p5play.keyStates;
+          if (typeof key === "string") {
+            keyCode = this._keyCodeFromAlias(key);
+          } else {
+            keyCode = key;
+          }
+          if (keyStates[keyCode] === void 0) {
+            if (this.keyIsDown(keyCode))
+              keyStates[keyCode] = KEY_IS_DOWN;
+            else
+              keyStates[keyCode] = KEY_IS_UP;
+          }
+          return keyStates[keyCode] === state;
+        };
+        p5.prototype.mouseDown = function(buttonCode) {
+          return this._isMouseButtonInState(buttonCode, KEY_IS_DOWN);
+        };
+        p5.prototype.mouseUp = function(buttonCode) {
+          return this._isMouseButtonInState(buttonCode, KEY_IS_UP);
+        };
+        p5.prototype.mouseWentUp = function(buttonCode) {
+          return this._isMouseButtonInState(buttonCode, KEY_WENT_UP);
+        };
+        p5.prototype.mouseWentDown = function(buttonCode) {
+          return this._isMouseButtonInState(buttonCode, KEY_WENT_DOWN);
+        };
+        p5.prototype._isMouseButtonInState = function(buttonCode, state) {
+          var mouseStates = this._p5play.mouseStates;
+          if (buttonCode === void 0)
+            buttonCode = this.LEFT;
+          if (mouseStates[buttonCode] === void 0) {
+            if (this.mouseIsPressed && this.mouseButton === buttonCode)
+              mouseStates[buttonCode] = KEY_IS_DOWN;
+            else
+              mouseStates[buttonCode] = KEY_IS_UP;
+          }
+          return mouseStates[buttonCode] === state;
+        };
+        p5.prototype.KEY = {
+          "BACKSPACE": 8,
+          "TAB": 9,
+          "ENTER": 13,
+          "SHIFT": 16,
+          "CTRL": 17,
+          "ALT": 18,
+          "PAUSE": 19,
+          "CAPS_LOCK": 20,
+          "ESC": 27,
+          "SPACE": 32,
+          " ": 32,
+          "PAGE_UP": 33,
+          "PAGE_DOWN": 34,
+          "END": 35,
+          "HOME": 36,
+          "LEFT_ARROW": 37,
+          "LEFT": 37,
+          "UP_ARROW": 38,
+          "UP": 38,
+          "RIGHT_ARROW": 39,
+          "RIGHT": 39,
+          "DOWN_ARROW": 40,
+          "DOWN": 40,
+          "INSERT": 45,
+          "DELETE": 46,
+          "0": 48,
+          "1": 49,
+          "2": 50,
+          "3": 51,
+          "4": 52,
+          "5": 53,
+          "6": 54,
+          "7": 55,
+          "8": 56,
+          "9": 57,
+          "A": 65,
+          "B": 66,
+          "C": 67,
+          "D": 68,
+          "E": 69,
+          "F": 70,
+          "G": 71,
+          "H": 72,
+          "I": 73,
+          "J": 74,
+          "K": 75,
+          "L": 76,
+          "M": 77,
+          "N": 78,
+          "O": 79,
+          "P": 80,
+          "Q": 81,
+          "R": 82,
+          "S": 83,
+          "T": 84,
+          "U": 85,
+          "V": 86,
+          "W": 87,
+          "X": 88,
+          "Y": 89,
+          "Z": 90,
+          "0NUMPAD": 96,
+          "1NUMPAD": 97,
+          "2NUMPAD": 98,
+          "3NUMPAD": 99,
+          "4NUMPAD": 100,
+          "5NUMPAD": 101,
+          "6NUMPAD": 102,
+          "7NUMPAD": 103,
+          "8NUMPAD": 104,
+          "9NUMPAD": 105,
+          "MULTIPLY": 106,
+          "PLUS": 107,
+          "MINUS": 109,
+          "DOT": 110,
+          "SLASH1": 111,
+          "F1": 112,
+          "F2": 113,
+          "F3": 114,
+          "F4": 115,
+          "F5": 116,
+          "F6": 117,
+          "F7": 118,
+          "F8": 119,
+          "F9": 120,
+          "F10": 121,
+          "F11": 122,
+          "F12": 123,
+          "EQUAL": 187,
+          "COMMA": 188,
+          "SLASH": 191,
+          "BACKSLASH": 220
+        };
+        p5.prototype.KEY_DEPRECATIONS = {
+          "MINUT": "MINUS",
+          "COMA": "COMMA"
+        };
+        p5.prototype._keyCodeFromAlias = function(alias) {
+          alias = alias.toUpperCase();
+          if (this.KEY_DEPRECATIONS[alias]) {
+            this._warn('Key literal "' + alias + '" is deprecated and may be removed in a future version of p5.play. Please use "' + this.KEY_DEPRECATIONS[alias] + '" instead.');
+            alias = this.KEY_DEPRECATIONS[alias];
+          }
+          return this.KEY[alias];
+        };
+        p5.prototype.readPresses = function() {
+          var keyStates = this._p5play.keyStates;
+          var mouseStates = this._p5play.mouseStates;
+          for (var key in keyStates) {
+            if (this.keyIsDown(key)) {
+              if (keyStates[key] === KEY_IS_UP)
+                keyStates[key] = KEY_WENT_DOWN;
+              else
+                keyStates[key] = KEY_IS_DOWN;
+            } else {
+              if (keyStates[key] === KEY_IS_DOWN)
+                keyStates[key] = KEY_WENT_UP;
+              else
+                keyStates[key] = KEY_IS_UP;
+            }
+          }
+          for (var btn in mouseStates) {
+            if (this.mouseIsPressed && this.mouseButton === btn) {
+              if (mouseStates[btn] === KEY_IS_UP)
+                mouseStates[btn] = KEY_WENT_DOWN;
+              else
+                mouseStates[btn] = KEY_IS_DOWN;
+            } else {
+              if (mouseStates[btn] === KEY_IS_DOWN)
+                mouseStates[btn] = KEY_WENT_UP;
+              else
+                mouseStates[btn] = KEY_IS_UP;
+            }
+          }
+        };
+        p5.prototype.useQuadTree = function(use) {
+          if (this.quadTree !== void 0) {
+            if (use === void 0)
+              return this.quadTree.active;
+            else if (use)
+              this.quadTree.active = true;
+            else
+              this.quadTree.active = false;
+          } else
+            return false;
+        };
+        defineLazyP5Property("quadTree", function() {
+          return new Quadtree({
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+          }, 4);
+        });
+        function Sprite(pInst, _x, _y, _w, _h) {
+          var pInstBind = createPInstBinder(pInst);
+          var createVector = pInstBind("createVector");
+          var color = pInstBind("color");
+          var random = pInstBind("random");
+          var print = pInstBind("print");
+          var push = pInstBind("push");
+          var pop = pInstBind("pop");
+          var colorMode = pInstBind("colorMode");
+          var noStroke = pInstBind("noStroke");
+          var rectMode = pInstBind("rectMode");
+          var ellipseMode = pInstBind("ellipseMode");
+          var imageMode = pInstBind("imageMode");
+          var translate = pInstBind("translate");
+          var scale = pInstBind("scale");
+          var rotate = pInstBind("rotate");
+          var stroke = pInstBind("stroke");
+          var strokeWeight = pInstBind("strokeWeight");
+          var line = pInstBind("line");
+          var noFill = pInstBind("noFill");
+          var fill = pInstBind("fill");
+          var textAlign = pInstBind("textAlign");
+          var textSize = pInstBind("textSize");
+          var text = pInstBind("text");
+          var rect = pInstBind("rect");
+          var cos = pInstBind("cos");
+          var sin = pInstBind("sin");
+          var atan2 = pInstBind("atan2");
+          var quadTree = pInst.quadTree;
+          var camera = pInst.camera;
+          var RGB = p5.prototype.RGB;
+          var CENTER = p5.prototype.CENTER;
+          var LEFT = p5.prototype.LEFT;
+          var BOTTOM = p5.prototype.BOTTOM;
+          this.position = createVector(_x, _y);
+          this.previousPosition = createVector(_x, _y);
+          this.newPosition = createVector(_x, _y);
+          this.deltaX = 0;
+          this.deltaY = 0;
+          this.velocity = createVector(0, 0);
+          this.maxSpeed = -1;
+          this.friction = 0;
+          this.collider = void 0;
+          this.colliderType = "none";
+          this.touching = {};
+          this.touching.left = false;
+          this.touching.right = false;
+          this.touching.top = false;
+          this.touching.bottom = false;
+          this.mass = 1;
+          this.immovable = false;
+          this.restitution = 1;
+          Object.defineProperty(this, "rotation", {
+            enumerable: true,
+            get: function() {
+              return this._rotation;
+            },
+            set: function(value) {
+              this._rotation = value;
+              if (this.rotateToDirection) {
+                this.setSpeed(this.getSpeed(), value);
+              }
+            }
+          });
+          this._rotation = 0;
+          this.rotationSpeed = 0;
+          this.rotateToDirection = false;
+          this.depth = 0;
+          this.scale = 1;
+          var dirX = 1;
+          var dirY = 1;
+          this.visible = true;
+          this.mouseActive = false;
+          this.mouseIsOver = false;
+          this.mouseIsPressed = false;
+          this._internalWidth = _w;
+          this._internalHeight = _h;
+          Object.defineProperty(this, "width", {
+            enumerable: true,
+            configurable: true,
+            get: function() {
+              return this._internalWidth;
+            },
+            set: function(value) {
+              this._internalWidth = value;
+            }
+          });
+          if (_w === void 0)
+            this.width = 100;
+          else
+            this.width = _w;
+          Object.defineProperty(this, "height", {
+            enumerable: true,
+            configurable: true,
+            get: function() {
+              return this._internalHeight;
+            },
+            set: function(value) {
+              this._internalHeight = value;
+            }
+          });
+          if (_h === void 0)
+            this.height = 100;
+          else
+            this.height = _h;
+          this.originalWidth = this._internalWidth;
+          this.originalHeight = this._internalHeight;
+          this.removed = false;
+          this.life = -1;
+          this.debug = false;
+          this.shapeColor = color(random(255), random(255), random(255));
+          this.groups = [];
+          var animations = {};
+          var currentAnimation = "";
+          this.animation = void 0;
+          this._syncAnimationSizes = function() {
+            if (this.colliderType === "default" && animations[currentAnimation].getWidth() !== 1 && animations[currentAnimation].getHeight() !== 1) {
+              this.collider = this.getBoundingBox();
+              this.colliderType = "image";
+              this._internalWidth = animations[currentAnimation].getWidth() * abs(this._getScaleX());
+              this._internalHeight = animations[currentAnimation].getHeight() * abs(this._getScaleY());
+            }
+            if (animations[currentAnimation].frameChanged || this.width === void 0 || this.height === void 0) {
+              this._internalWidth = animations[currentAnimation].getWidth() * abs(this._getScaleX());
+              this._internalHeight = animations[currentAnimation].getHeight() * abs(this._getScaleY());
+            }
+          };
+          this.update = function() {
+            if (!this.removed) {
+              if (this.newPosition !== this.position)
+                this.previousPosition = createVector(this.newPosition.x, this.newPosition.y);
+              else
+                this.previousPosition = createVector(this.position.x, this.position.y);
+              this.velocity.x *= 1 - this.friction;
+              this.velocity.y *= 1 - this.friction;
+              if (this.maxSpeed !== -1)
+                this.limitSpeed(this.maxSpeed);
+              if (this.rotateToDirection && this.velocity.mag() > 0)
+                this._rotation = this.getDirection();
+              this.rotation += this.rotationSpeed;
+              this.position.x += this.velocity.x;
+              this.position.y += this.velocity.y;
+              this.newPosition = createVector(this.position.x, this.position.y);
+              this.deltaX = this.position.x - this.previousPosition.x;
+              this.deltaY = this.position.y - this.previousPosition.y;
+              if (animations[currentAnimation]) {
+                animations[currentAnimation].update();
+                this._syncAnimationSizes();
+              }
+              if (this.collider) {
+                if (this.collider instanceof AABB) {
+                  var t;
+                  if (pInst._angleMode === pInst.RADIANS) {
+                    t = radians(this.rotation);
+                  } else {
+                    t = this.rotation;
+                  }
+                  if (this.colliderType === "custom") {
+                    this.collider.extents.x = this.collider.originalExtents.x * abs(this._getScaleX()) * abs(cos(t)) + this.collider.originalExtents.y * abs(this._getScaleY()) * abs(sin(t));
+                    this.collider.extents.y = this.collider.originalExtents.x * abs(this._getScaleX()) * abs(sin(t)) + this.collider.originalExtents.y * abs(this._getScaleY()) * abs(cos(t));
+                  } else if (this.colliderType === "default") {
+                    this.collider.extents.x = this._internalWidth * abs(this._getScaleX()) * abs(cos(t)) + this._internalHeight * abs(this._getScaleY()) * abs(sin(t));
+                    this.collider.extents.y = this._internalWidth * abs(this._getScaleX()) * abs(sin(t)) + this._internalHeight * abs(this._getScaleY()) * abs(cos(t));
+                  } else if (this.colliderType === "image") {
+                    this.collider.extents.x = this._internalWidth * abs(cos(t)) + this._internalHeight * abs(sin(t));
+                    this.collider.extents.y = this._internalWidth * abs(sin(t)) + this._internalHeight * abs(cos(t));
+                  }
+                }
+                if (this.collider instanceof CircleCollider) {
+                  this.collider.radius = this.collider.originalRadius * abs(this.scale);
+                }
+              }
+              if (this.mouseActive) {
+                if (!this.collider)
+                  this.setDefaultCollider();
+                this.mouseUpdate();
+              } else {
+                if (typeof this.onMouseOver === "function" || typeof this.onMouseOut === "function" || typeof this.onMousePressed === "function" || typeof this.onMouseReleased === "function") {
+                  this.mouseActive = true;
+                  if (!this.collider)
+                    this.setDefaultCollider();
+                  this.mouseUpdate();
+                }
+              }
+              if (this.life > 0)
+                this.life--;
+              if (this.life === 0)
+                this.remove();
+            }
+          };
+          this.setDefaultCollider = function() {
+            if (animations[currentAnimation] && (animations[currentAnimation].getWidth() !== 1 && animations[currentAnimation].getHeight() !== 1)) {
+              this.collider = this.getBoundingBox();
+              this._internalWidth = animations[currentAnimation].getWidth() * abs(this._getScaleX());
+              this._internalHeight = animations[currentAnimation].getHeight() * abs(this._getScaleY());
+              this.colliderType = "image";
+            } else if (animations[currentAnimation] && animations[currentAnimation].getWidth() === 1 && animations[currentAnimation].getHeight() === 1) {
+            } else {
+              this.collider = new AABB(pInst, this.position, createVector(this._internalWidth, this._internalHeight));
+              this.colliderType = "default";
+            }
+            pInst.quadTree.insert(this);
+          };
+          this.mouseUpdate = function() {
+            var mouseWasOver = this.mouseIsOver;
+            var mouseWasPressed = this.mouseIsPressed;
+            this.mouseIsOver = false;
+            this.mouseIsPressed = false;
+            var mousePosition;
+            if (camera.active)
+              mousePosition = createVector(camera.mouseX, camera.mouseY);
+            else
+              mousePosition = createVector(pInst.mouseX, pInst.mouseY);
+            if (this.collider) {
+              if (this.collider instanceof CircleCollider) {
+                if (dist(mousePosition.x, mousePosition.y, this.collider.center.x, this.collider.center.y) < this.collider.radius)
+                  this.mouseIsOver = true;
+              } else if (this.collider instanceof AABB) {
+                if (mousePosition.x > this.collider.left() && mousePosition.y > this.collider.top() && mousePosition.x < this.collider.right() && mousePosition.y < this.collider.bottom()) {
+                  this.mouseIsOver = true;
+                }
+              }
+              if (this.mouseIsOver && pInst.mouseIsPressed)
+                this.mouseIsPressed = true;
+              if (!mouseWasOver && this.mouseIsOver && this.onMouseOver !== void 0)
+                if (typeof this.onMouseOver === "function")
+                  this.onMouseOver.call(this, this);
+                else
+                  print("Warning: onMouseOver should be a function");
+              if (mouseWasOver && !this.mouseIsOver && this.onMouseOut !== void 0)
+                if (typeof this.onMouseOut === "function")
+                  this.onMouseOut.call(this, this);
+                else
+                  print("Warning: onMouseOut should be a function");
+              if (!mouseWasPressed && this.mouseIsPressed && this.onMousePressed !== void 0)
+                if (typeof this.onMousePressed === "function")
+                  this.onMousePressed.call(this, this);
+                else
+                  print("Warning: onMousePressed should be a function");
+              if (mouseWasPressed && !pInst.mouseIsPressed && !this.mouseIsPressed && this.onMouseReleased !== void 0)
+                if (typeof this.onMouseReleased === "function")
+                  this.onMouseReleased.call(this, this);
+                else
+                  print("Warning: onMouseReleased should be a function");
+            }
+          };
+          this.setCollider = function(type, offsetX, offsetY, width, height) {
+            if (!(type === "rectangle" || type === "circle")) {
+              throw new TypeError('setCollider expects the first argument to be either "circle" or "rectangle"');
+            } else if (type === "circle" && !(arguments.length === 1 || arguments.length === 4)) {
+              throw new TypeError('Usage: setCollider("circle") or setCollider("circle", offsetX, offsetY, radius)');
+            } else if (type === "rectangle" && !(arguments.length === 1 || arguments.length === 5)) {
+              throw new TypeError('Usage: setCollider("rectangle") or setCollider("rectangle", offsetX, offsetY, width, height)');
+            }
+            this.colliderType = "custom";
+            var v = createVector(offsetX, offsetY);
+            if (type === "rectangle" && arguments.length === 1) {
+              this.collider = new AABB(pInst, this.position, createVector(this.width, this.height));
+            } else if (type === "rectangle" && arguments.length === 5) {
+              this.collider = new AABB(pInst, this.position, createVector(width, height), v);
+            } else if (type === "circle" && arguments.length === 1) {
+              this.collider = new CircleCollider(pInst, this.position, Math.floor(Math.max(this.width, this.height) / 2));
+            } else if (type === "circle" && arguments.length === 4) {
+              this.collider = new CircleCollider(pInst, this.position, width, v);
+            }
+            quadTree.insert(this);
+          };
+          this.getBoundingBox = function() {
+            var w = animations[currentAnimation].getWidth() * abs(this._getScaleX());
+            var h = animations[currentAnimation].getHeight() * abs(this._getScaleY());
+            if (w === 1 && h === 1) {
+              return new AABB(pInst, this.position, createVector(w, h));
+            } else {
+              return new AABB(pInst, this.position, createVector(w, h));
+            }
+          };
+          this.mirrorX = function(dir) {
+            if (dir === 1 || dir === -1)
+              dirX = dir;
+            else
+              return dirX;
+          };
+          this.mirrorY = function(dir) {
+            if (dir === 1 || dir === -1)
+              dirY = dir;
+            else
+              return dirY;
+          };
+          this._getScaleX = function() {
+            return this.scale;
+          };
+          this._getScaleY = function() {
+            return this.scale;
+          };
+          this.display = function() {
+            if (this.visible && !this.removed) {
+              push();
+              colorMode(RGB);
+              noStroke();
+              rectMode(CENTER);
+              ellipseMode(CENTER);
+              imageMode(CENTER);
+              translate(this.position.x, this.position.y);
+              scale(this._getScaleX() * dirX, this._getScaleY() * dirY);
+              if (pInst._angleMode === pInst.RADIANS) {
+                rotate(radians(this.rotation));
+              } else {
+                rotate(this.rotation);
+              }
+              this.draw();
+              pop();
+              if (this.debug) {
+                push();
+                stroke(0, 255, 0);
+                strokeWeight(1);
+                line(this.position.x - 10, this.position.y, this.position.x + 10, this.position.y);
+                line(this.position.x, this.position.y - 10, this.position.x, this.position.y + 10);
+                noFill();
+                noStroke();
+                fill(0, 255, 0);
+                textAlign(LEFT, BOTTOM);
+                textSize(16);
+                text(this.depth + "", this.position.x + 4, this.position.y - 2);
+                noFill();
+                stroke(0, 255, 0);
+                if (this.collider !== void 0) {
+                  this.collider.draw();
+                }
+                pop();
+              }
+            }
+          };
+          this.draw = function() {
+            if (currentAnimation !== "" && animations) {
+              if (animations[currentAnimation])
+                animations[currentAnimation].draw(0, 0, 0);
+            } else {
+              noStroke();
+              fill(this.shapeColor);
+              rect(0, 0, this._internalWidth, this._internalHeight);
+            }
+          };
+          this.remove = function() {
+            this.removed = true;
+            quadTree.removeObject(this);
+            while (this.groups.length > 0) {
+              this.groups[0].remove(this);
+            }
+          };
+          this.setVelocity = function(x, y) {
+            this.velocity.x = x;
+            this.velocity.y = y;
+          };
+          this.getSpeed = function() {
+            return this.velocity.mag();
+          };
+          this.getDirection = function() {
+            var direction = atan2(this.velocity.y, this.velocity.x);
+            if (isNaN(direction))
+              direction = 0;
+            if (pInst._angleMode === pInst.RADIANS) {
+              direction = degrees(direction);
+            }
+            return direction;
+          };
+          this.addToGroup = function(group) {
+            if (group instanceof Array)
+              group.add(this);
+            else
+              print("addToGroup error: " + group + " is not a group");
+          };
+          this.limitSpeed = function(max) {
+            var speed = this.getSpeed();
+            if (abs(speed) > max) {
+              var k = max / abs(speed);
+              this.velocity.x *= k;
+              this.velocity.y *= k;
+            }
+          };
+          this.setSpeed = function(speed, angle) {
+            var a;
+            if (typeof angle === "undefined") {
+              if (this.velocity.x !== 0 || this.velocity.y !== 0) {
+                a = pInst.atan2(this.velocity.y, this.velocity.x);
+              } else {
+                if (pInst._angleMode === pInst.RADIANS) {
+                  a = radians(this._rotation);
+                } else {
+                  a = this._rotation;
+                }
+              }
+            } else {
+              if (pInst._angleMode === pInst.RADIANS) {
+                a = radians(angle);
+              } else {
+                a = angle;
+              }
+            }
+            this.velocity.x = cos(a) * speed;
+            this.velocity.y = sin(a) * speed;
+          };
+          this.addSpeed = function(speed, angle) {
+            var a;
+            if (pInst._angleMode === pInst.RADIANS) {
+              a = radians(angle);
+            } else {
+              a = angle;
+            }
+            this.velocity.x += cos(a) * speed;
+            this.velocity.y += sin(a) * speed;
+          };
+          this.attractionPoint = function(magnitude, pointX, pointY) {
+            var angle = atan2(pointY - this.position.y, pointX - this.position.x);
+            this.velocity.x += cos(angle) * magnitude;
+            this.velocity.y += sin(angle) * magnitude;
+          };
+          this.addImage = function() {
+            if (typeof arguments[0] === "string" && arguments[1] instanceof p5.Image)
+              this.addAnimation(arguments[0], arguments[1]);
+            else if (arguments[0] instanceof p5.Image)
+              this.addAnimation("normal", arguments[0]);
+            else
+              throw "addImage error: allowed usages are <image> or <label>, <image>";
+          };
+          this.addAnimation = function(label) {
+            var anim;
+            if (typeof label !== "string") {
+              print("Sprite.addAnimation error: the first argument must be a label (String)");
+              return -1;
+            } else if (arguments.length < 2) {
+              print("addAnimation error: you must specify a label and n frame images");
+              return -1;
+            } else if (arguments[1] instanceof Animation) {
+              var sourceAnimation = arguments[1];
+              var newAnimation = sourceAnimation.clone();
+              animations[label] = newAnimation;
+              if (currentAnimation === "") {
+                currentAnimation = label;
+                this.animation = newAnimation;
+              }
+              newAnimation.isSpriteAnimation = true;
+              this._internalWidth = newAnimation.getWidth() * abs(this._getScaleX());
+              this._internalHeight = newAnimation.getHeight() * abs(this._getScaleY());
+              return newAnimation;
+            } else {
+              var animFrames = [];
+              for (var i = 1; i < arguments.length; i++)
+                animFrames.push(arguments[i]);
+              anim = construct(pInst.Animation, animFrames);
+              animations[label] = anim;
+              if (currentAnimation === "") {
+                currentAnimation = label;
+                this.animation = anim;
+              }
+              anim.isSpriteAnimation = true;
+              this._internalWidth = anim.getWidth() * abs(this._getScaleX());
+              this._internalHeight = anim.getHeight() * abs(this._getScaleY());
+              return anim;
+            }
+          };
+          this.changeImage = function(label) {
+            this.changeAnimation(label);
+          };
+          this.getAnimationLabel = function() {
+            return currentAnimation;
+          };
+          this.changeAnimation = function(label) {
+            if (!animations[label])
+              print("changeAnimation error: no animation labeled " + label);
+            else {
+              currentAnimation = label;
+              this.animation = animations[label];
+            }
+          };
+          this.overlapPixel = function(pointX, pointY) {
+            var point = createVector(pointX, pointY);
+            var img = this.animation.getFrameImage();
+            point.x -= this.position.x - img.width / 2;
+            point.y -= this.position.y - img.height / 2;
+            if (point.x < 0 || point.x > img.width || point.y < 0 || point.y > img.height)
+              return false;
+            else if (this.rotation === 0 && this.scale === 1) {
+              var values = img.get(point.x, point.y);
+              return values[3] === 255;
+            } else {
+              print("Error: overlapPixel doesn't work with scaled or rotated sprites yet");
+              return false;
+            }
+          };
+          this.overlapPoint = function(pointX, pointY) {
+            var point = createVector(pointX, pointY);
+            if (!this.collider)
+              this.setDefaultCollider();
+            if (this.collider !== void 0) {
+              if (this.collider instanceof AABB)
+                return point.x > this.collider.left() && point.x < this.collider.right() && point.y > this.collider.top() && point.y < this.collider.bottom();
+              if (this.collider instanceof CircleCollider) {
+                var sqRadius = this.collider.radius * this.collider.radius;
+                var sqDist = pow(this.collider.center.x - point.x, 2) + pow(this.collider.center.y - point.y, 2);
+                return sqDist < sqRadius;
+              } else
+                return false;
+            } else
+              return false;
+          };
+          this.overlap = function(target, callback) {
+            return this.AABBops("overlap", target, callback);
+          };
+          this.collide = function(target, callback) {
+            return this.AABBops("collide", target, callback);
+          };
+          this.displace = function(target, callback) {
+            return this.AABBops("displace", target, callback);
+          };
+          this.bounce = function(target, callback) {
+            return this.AABBops("bounce", target, callback);
+          };
+          this.AABBops = function(type, target, callback) {
+            this.touching.left = false;
+            this.touching.right = false;
+            this.touching.top = false;
+            this.touching.bottom = false;
+            var result = false;
+            var others = [];
+            if (target instanceof Sprite)
+              others.push(target);
+            else if (target instanceof Array) {
+              if (quadTree !== void 0 && quadTree.active)
+                others = quadTree.retrieveFromGroup(this, target);
+              if (others.length === 0)
+                others = target;
+            } else
+              throw "Error: overlap can only be checked between sprites or groups";
+            for (var i = 0; i < others.length; i++)
+              if (this !== others[i] && !this.removed) {
+                var displacement;
+                var other = others[i];
+                if (this.collider === void 0)
+                  this.setDefaultCollider();
+                if (other.collider === void 0)
+                  other.setDefaultCollider();
+                if (this.collider !== void 0 && other.collider !== void 0) {
+                  if (type === "overlap") {
+                    var over;
+                    if (this.collider instanceof CircleCollider)
+                      over = other.collider.overlap(this.collider);
+                    else
+                      over = this.collider.overlap(other.collider);
+                    if (over) {
+                      result = true;
+                      if (callback !== void 0 && typeof callback === "function")
+                        callback.call(this, this, other);
+                    }
+                  } else if (type === "collide" || type === "displace" || type === "bounce") {
+                    displacement = createVector(0, 0);
+                    var tunnelX = abs(this.velocity.x - other.velocity.x) >= other.collider.extents.x / 2 && round(this.deltaX - this.velocity.x) === 0;
+                    var tunnelY = abs(this.velocity.y - other.velocity.y) >= other.collider.size().y / 2 && round(this.deltaY - this.velocity.y) === 0;
+                    if (tunnelX || tunnelY) {
+                      var c = createVector((this.position.x + this.previousPosition.x) / 2, (this.position.y + this.previousPosition.y) / 2);
+                      var e = createVector(abs(this.position.x - this.previousPosition.x) + this.collider.extents.x, abs(this.position.y - this.previousPosition.y) + this.collider.extents.y);
+                      var bbox = new AABB(pInst, c, e, this.collider.offset);
+                      if (bbox.overlap(other.collider)) {
+                        if (tunnelX) {
+                          if (this.velocity.x < 0)
+                            displacement.x = other.collider.right() - this.collider.left() + 1;
+                          else if (this.velocity.x > 0)
+                            displacement.x = other.collider.left() - this.collider.right() - 1;
+                        }
+                        if (tunnelY) {
+                          if (this.velocity.y > 0)
+                            displacement.y = other.collider.top() - this.collider.bottom() - 1;
+                          else if (this.velocity.y < 0)
+                            displacement.y = other.collider.bottom() - this.collider.top() + 1;
+                        }
+                      }
+                    } else {
+                      if (this.collider instanceof CircleCollider) {
+                        displacement = other.collider.collide(this.collider).mult(-1);
+                      } else
+                        displacement = this.collider.collide(other.collider);
+                    }
+                    if (displacement.x !== 0 || displacement.y !== 0) {
+                      var newVelX1, newVelY1, newVelX2, newVelY2;
+                      if (type === "displace" && !other.immovable) {
+                        other.position.sub(displacement);
+                      } else if ((type === "collide" || type === "bounce") && !this.immovable) {
+                        this.position.add(displacement);
+                        this.previousPosition = createVector(this.position.x, this.position.y);
+                        this.newPosition = createVector(this.position.x, this.position.y);
+                      }
+                      if (displacement.x > 0)
+                        this.touching.left = true;
+                      if (displacement.x < 0)
+                        this.touching.right = true;
+                      if (displacement.y < 0)
+                        this.touching.bottom = true;
+                      if (displacement.y > 0)
+                        this.touching.top = true;
+                      if (type === "bounce") {
+                        if (this.collider instanceof CircleCollider && other.collider instanceof CircleCollider) {
+                          var dx1 = p5.Vector.sub(this.position, other.position);
+                          var dx2 = p5.Vector.sub(other.position, this.position);
+                          var magnitude = dx1.magSq();
+                          var totalMass = this.mass + other.mass;
+                          var m1 = 0, m2 = 0;
+                          if (this.immovable) {
+                            m2 = 2;
+                          } else if (other.immovable) {
+                            m1 = 2;
+                          } else {
+                            m1 = 2 * other.mass / totalMass;
+                            m2 = 2 * this.mass / totalMass;
+                          }
+                          var newVel1 = dx1.mult(m1 * p5.Vector.sub(this.velocity, other.velocity).dot(dx1) / magnitude);
+                          var newVel2 = dx2.mult(m2 * p5.Vector.sub(other.velocity, this.velocity).dot(dx2) / magnitude);
+                          this.velocity.sub(newVel1.mult(this.restitution));
+                          other.velocity.sub(newVel2.mult(other.restitution));
+                        } else {
+                          if (other.immovable) {
+                            newVelX1 = -this.velocity.x + other.velocity.x;
+                            newVelY1 = -this.velocity.y + other.velocity.y;
+                          } else {
+                            newVelX1 = (this.velocity.x * (this.mass - other.mass) + 2 * other.mass * other.velocity.x) / (this.mass + other.mass);
+                            newVelY1 = (this.velocity.y * (this.mass - other.mass) + 2 * other.mass * other.velocity.y) / (this.mass + other.mass);
+                            newVelX2 = (other.velocity.x * (other.mass - this.mass) + 2 * this.mass * this.velocity.x) / (this.mass + other.mass);
+                            newVelY2 = (other.velocity.y * (other.mass - this.mass) + 2 * this.mass * this.velocity.y) / (this.mass + other.mass);
+                          }
+                          if (abs(displacement.x) > abs(displacement.y)) {
+                            if (!this.immovable) {
+                              this.velocity.x = newVelX1 * this.restitution;
+                            }
+                            if (!other.immovable)
+                              other.velocity.x = newVelX2 * other.restitution;
+                          }
+                          if (abs(displacement.x) < abs(displacement.y)) {
+                            if (!this.immovable)
+                              this.velocity.y = newVelY1 * this.restitution;
+                            if (!other.immovable)
+                              other.velocity.y = newVelY2 * other.restitution;
+                          }
+                        }
+                      }
+                      if (callback !== void 0 && typeof callback === "function")
+                        callback.call(this, this, other);
+                      result = true;
+                    }
+                  }
+                }
+              }
+            return result;
+          };
+        }
+        defineLazyP5Property("Sprite", boundConstructorFactory(Sprite));
+        function Camera(pInst, x, y, zoom) {
+          this.position = pInst.createVector(x, y);
+          this.zoom = zoom;
+          this.mouseX = pInst.mouseX;
+          this.mouseY = pInst.mouseY;
+          this.active = false;
+          this.on = function() {
+            if (!this.active) {
+              cameraPush.call(pInst);
+              this.active = true;
+            }
+          };
+          this.off = function() {
+            if (this.active) {
+              cameraPop.call(pInst);
+              this.active = false;
+            }
+          };
+        }
+        defineLazyP5Property("Camera", boundConstructorFactory(Camera));
+        function cameraPush() {
+          var pInst = this;
+          var camera = pInst.camera;
+          if (!camera.init && camera.position.x === 0 && camera.position.y === 0) {
+            camera.position.x = pInst.width / 2;
+            camera.position.y = pInst.height / 2;
+            camera.init = true;
+          }
+          camera.mouseX = pInst.mouseX + camera.position.x - pInst.width / 2;
+          camera.mouseY = pInst.mouseY + camera.position.y - pInst.height / 2;
+          if (!camera.active) {
+            camera.active = true;
+            pInst.push();
+            pInst.scale(camera.zoom);
+            pInst.translate(-camera.position.x + pInst.width / 2 / camera.zoom, -camera.position.y + pInst.height / 2 / camera.zoom);
+          }
+        }
+        function cameraPop() {
+          var pInst = this;
+          if (pInst.camera.active) {
+            pInst.pop();
+            pInst.camera.active = false;
+          }
+        }
+        function Group() {
+          var array = [];
+          array.get = function(i) {
+            return array[i];
+          };
+          array.contains = function(sprite) {
+            return this.indexOf(sprite) > -1;
+          };
+          array.indexOf = function(item) {
+            for (var i = 0, len = array.length; i < len; ++i) {
+              if (virtEquals(item, array[i])) {
+                return i;
+              }
+            }
+            return -1;
+          };
+          array.add = function(s) {
+            if (!(s instanceof Sprite)) {
+              throw "Error: you can only add sprites to a group";
+            }
+            if (this.indexOf(s) === -1) {
+              array.push(s);
+              s.groups.push(this);
+            }
+          };
+          array.size = function() {
+            return array.length;
+          };
+          array.removeSprites = function() {
+            while (array.length > 0) {
+              array[0].remove();
+            }
+          };
+          array.clear = function() {
+            array.length = 0;
+          };
+          array.remove = function(item) {
+            if (!(item instanceof Sprite)) {
+              throw "Error: you can only remove sprites from a group";
+            }
+            var i, removed = false;
+            for (i = array.length - 1; i >= 0; i--) {
+              if (array[i] === item) {
+                array.splice(i, 1);
+                removed = true;
+              }
+            }
+            if (removed) {
+              for (i = item.groups.length - 1; i >= 0; i--) {
+                if (item.groups[i] === this) {
+                  item.groups.splice(i, 1);
+                }
+              }
+            }
+            return removed;
+          };
+          array.toArray = function() {
+            return array.slice(0);
+          };
+          array.maxDepth = function() {
+            if (array.length === 0) {
+              return 0;
+            }
+            return array.reduce(function(maxDepth, sprite) {
+              return Math.max(maxDepth, sprite.depth);
+            }, -Infinity);
+          };
+          array.minDepth = function() {
+            if (array.length === 0) {
+              return 99999;
+            }
+            return array.reduce(function(minDepth, sprite) {
+              return Math.min(minDepth, sprite.depth);
+            }, Infinity);
+          };
+          array.draw = function() {
+            this.sort(function(a, b) {
+              return a.depth - b.depth;
+            });
+            for (var i = 0; i < this.size(); i++) {
+              this.get(i).display();
+            }
+          };
+          function virtEquals(obj, other) {
+            if (obj === null || other === null) {
+              return obj === null && other === null;
+            }
+            if (typeof obj === "string") {
+              return obj === other;
+            }
+            if (typeof obj !== "object") {
+              return obj === other;
+            }
+            if (obj.equals instanceof Function) {
+              return obj.equals(other);
+            }
+            return obj === other;
+          }
+          function _groupCollide(type, target, callback) {
+            var didCollide = false;
+            for (var i = 0; i < this.size(); i++)
+              didCollide = this.get(i).AABBops(type, target, callback) || didCollide;
+            return didCollide;
+          }
+          array.overlap = _groupCollide.bind(array, "overlap");
+          array.collide = _groupCollide.bind(array, "collide");
+          array.displace = _groupCollide.bind(array, "displace");
+          array.bounce = _groupCollide.bind(array, "bounce");
+          return array;
+        }
+        p5.prototype.Group = Group;
+        function CircleCollider(pInst, _center, _radius, _offset) {
+          var pInstBind = createPInstBinder(pInst);
+          var createVector = pInstBind("createVector");
+          var CENTER = p5.prototype.CENTER;
+          this.center = _center;
+          this.radius = _radius;
+          this.originalRadius = _radius;
+          if (_offset === void 0)
+            this.offset = createVector(0, 0);
+          else
+            this.offset = _offset;
+          this.extents = createVector(_radius * 2, _radius * 2);
+          this.draw = function() {
+            pInst.noFill();
+            pInst.stroke(0, 255, 0);
+            pInst.rectMode(CENTER);
+            pInst.ellipse(this.center.x + this.offset.x, this.center.y + this.offset.y, this.radius * 2, this.radius * 2);
+          };
+          this.overlap = function(other) {
+            var r = this.radius + other.radius;
+            r *= r;
+            var thisCenterX = this.center.x + this.offset.x;
+            var thisCenterY = this.center.y + this.offset.y;
+            var otherCenterX = other.center.x + other.offset.x;
+            var otherCenterY = other.center.y + other.offset.y;
+            var sqDist = pow(thisCenterX - otherCenterX, 2) + pow(thisCenterY - otherCenterY, 2);
+            return r > sqDist;
+          };
+          this.collide = function(other) {
+            if (this.overlap(other)) {
+              var thisCenterX = this.center.x + this.offset.x;
+              var thisCenterY = this.center.y + this.offset.y;
+              var otherCenterX = other.center.x + other.offset.x;
+              var otherCenterY = other.center.y + other.offset.y;
+              var a = pInst.atan2(thisCenterY - otherCenterY, thisCenterX - otherCenterX);
+              var radii = this.radius + other.radius;
+              var intersection = abs(radii - dist(thisCenterX, thisCenterY, otherCenterX, otherCenterY));
+              var displacement = createVector(pInst.cos(a) * intersection, pInst.sin(a) * intersection);
+              return displacement;
+            } else {
+              return createVector(0, 0);
+            }
+          };
+          this.size = function() {
+            return createVector(this.radius * 2, this.radius * 2);
+          };
+          this.left = function() {
+            return this.center.x + this.offset.x - this.radius;
+          };
+          this.right = function() {
+            return this.center.x + this.offset.x + this.radius;
+          };
+          this.top = function() {
+            return this.center.y + this.offset.y - this.radius;
+          };
+          this.bottom = function() {
+            return this.center.y + this.offset.y + this.radius;
+          };
+        }
+        defineLazyP5Property("CircleCollider", boundConstructorFactory(CircleCollider));
+        function AABB(pInst, _center, _extents, _offset) {
+          var pInstBind = createPInstBinder(pInst);
+          var createVector = pInstBind("createVector");
+          var CENTER = p5.prototype.CENTER;
+          var PI = p5.prototype.PI;
+          this.center = _center;
+          this.extents = _extents;
+          this.originalExtents = _extents.copy();
+          if (_offset === void 0)
+            this.offset = createVector(0, 0);
+          else
+            this.offset = _offset;
+          this.min = function() {
+            return createVector(this.center.x + this.offset.x - this.extents.x, this.center.y + this.offset.y - this.extents.y);
+          };
+          this.max = function() {
+            return createVector(this.center.x + this.offset.x + this.extents.x, this.center.y + this.offset.y + this.extents.y);
+          };
+          this.right = function() {
+            return this.center.x + this.offset.x + this.extents.x / 2;
+          };
+          this.left = function() {
+            return this.center.x + this.offset.x - this.extents.x / 2;
+          };
+          this.top = function() {
+            return this.center.y + this.offset.y - this.extents.y / 2;
+          };
+          this.bottom = function() {
+            return this.center.y + this.offset.y + this.extents.y / 2;
+          };
+          this.size = function() {
+            return createVector(this.extents.x * 2, this.extents.y * 2);
+          };
+          this.rotate = function(r) {
+            var t;
+            if (pInst._angleMode === pInst.RADIANS) {
+              t = radians(r);
+            } else {
+              t = r;
+            }
+            var w2 = this.extents.x * abs(pInst.cos(t)) + this.extents.y * abs(pInst.sin(t));
+            var h2 = this.extents.x * abs(pInst.sin(t)) + this.extents.y * abs(pInst.cos(t));
+            this.extents.x = w2;
+            this.extents.y = h2;
+          };
+          this.draw = function() {
+            pInst.noFill();
+            pInst.stroke(0, 255, 0);
+            pInst.rectMode(CENTER);
+            pInst.rect(this.center.x + this.offset.x, this.center.y + this.offset.y, this.size().x / 2, this.size().y / 2);
+          };
+          this.overlap = function(other) {
+            if (other instanceof AABB) {
+              var md = other.minkowskiDifference(this);
+              if (md.min().x <= 0 && md.max().x >= 0 && md.min().y <= 0 && md.max().y >= 0) {
+                return true;
+              } else
+                return false;
+            } else if (other instanceof CircleCollider) {
+              var pt = createVector(other.center.x, other.center.y);
+              if (other.center.x < this.left())
+                pt.x = this.left();
+              else if (other.center.x > this.right())
+                pt.x = this.right();
+              if (other.center.y < this.top())
+                pt.y = this.top();
+              else if (other.center.y > this.bottom())
+                pt.y = this.bottom();
+              var distance = pt.dist(other.center);
+              return distance < other.radius;
+            }
+          };
+          this.collide = function(other) {
+            if (other instanceof AABB) {
+              var md = other.minkowskiDifference(this);
+              if (md.min().x <= 0 && md.max().x >= 0 && md.min().y <= 0 && md.max().y >= 0) {
+                var boundsPoint = md.closestPointOnBoundsToPoint(createVector(0, 0));
+                return boundsPoint;
+              } else
+                return createVector(0, 0);
+            } else if (other instanceof CircleCollider) {
+              var pt = createVector(other.center.x, other.center.y);
+              if (other.center.x < this.left())
+                pt.x = this.left();
+              else if (other.center.x > this.right())
+                pt.x = this.right();
+              if (other.center.y < this.top())
+                pt.y = this.top();
+              else if (other.center.y > this.bottom())
+                pt.y = this.bottom();
+              var distance = pt.dist(other.center);
+              var a;
+              if (distance < other.radius) {
+                if (pt.x === other.center.x && pt.y === other.center.y) {
+                  var xOverlap = pt.x - this.center.x;
+                  var yOverlap = pt.y - this.center.y;
+                  if (abs(xOverlap) < abs(yOverlap)) {
+                    if (xOverlap > 0)
+                      pt.x = this.right();
+                    else
+                      pt.x = this.left();
+                  } else {
+                    if (yOverlap < 0)
+                      pt.y = this.top();
+                    else
+                      pt.y = this.bottom();
+                  }
+                  a = pInst.atan2(other.center.y - pt.y, other.center.x - pt.x);
+                  if (a === 0) {
+                    if (pt.x === this.right())
+                      a = PI;
+                    if (pt.y === this.top())
+                      a = PI / 2;
+                    if (pt.y === this.bottom())
+                      a = -PI / 2;
+                  }
+                } else {
+                  a = pInst.atan2(pt.y - other.center.y, pt.x - other.center.x);
+                }
+                var d = createVector(pt.x - other.center.x, pt.y - other.center.y);
+                var displacement = createVector(pInst.cos(a) * other.radius - d.x, pInst.sin(a) * other.radius - d.y);
+                return displacement;
+              } else
+                return createVector(0, 0);
+            }
+          };
+          this.minkowskiDifference = function(other) {
+            var topLeft = this.min().sub(other.max());
+            var fullSize = this.size().add(other.size());
+            return new AABB(pInst, topLeft.add(fullSize.div(2)), fullSize.div(2));
+          };
+          this.closestPointOnBoundsToPoint = function(point) {
+            var minDist = abs(point.x - this.min().x);
+            var boundsPoint = createVector(this.min().x, point.y);
+            if (abs(this.max().x - point.x) < minDist) {
+              minDist = abs(this.max().x - point.x);
+              boundsPoint = createVector(this.max().x, point.y);
+            }
+            if (abs(this.max().y - point.y) < minDist) {
+              minDist = abs(this.max().y - point.y);
+              boundsPoint = createVector(point.x, this.max().y);
+            }
+            if (abs(this.min().y - point.y) < minDist) {
+              minDist = abs(this.min.y - point.y);
+              boundsPoint = createVector(point.x, this.min().y);
+            }
+            return boundsPoint;
+          };
+        }
+        defineLazyP5Property("AABB", boundConstructorFactory(AABB));
+        function Animation(pInst) {
+          var frameArguments = Array.prototype.slice.call(arguments, 1);
+          var i;
+          var CENTER = p5.prototype.CENTER;
+          this.images = [];
+          var frame = 0;
+          var cycles = 0;
+          var targetFrame = -1;
+          this.offX = 0;
+          this.offY = 0;
+          this.frameDelay = 4;
+          this.playing = true;
+          this.visible = true;
+          this.looping = true;
+          this.frameChanged = false;
+          this.imageCollider = false;
+          if (frameArguments.length === 2 && typeof frameArguments[0] === "string" && typeof frameArguments[1] === "string") {
+            var from = frameArguments[0];
+            var to = frameArguments[1];
+            var ext1 = from.substring(from.length - 4, from.length);
+            if (ext1 !== ".png") {
+              pInst.print("Animation error: you need to use .png files (filename " + from + ")");
+              from = -1;
+            }
+            var ext2 = to.substring(to.length - 4, to.length);
+            if (ext2 !== ".png") {
+              pInst.print("Animation error: you need to use .png files (filename " + to + ")");
+              to = -1;
+            }
+            if (from !== -1 && to !== -1) {
+              var digits1 = 0;
+              var digits2 = 0;
+              for (i = from.length - 5; i >= 0; i--) {
+                if (from.charAt(i) >= "0" && from.charAt(i) <= "9")
+                  digits1++;
+              }
+              for (i = to.length - 5; i >= 0; i--) {
+                if (to.charAt(i) >= "0" && to.charAt(i) <= "9")
+                  digits2++;
+              }
+              var prefix1 = from.substring(0, from.length - (4 + digits1));
+              var prefix2 = to.substring(0, to.length - (4 + digits2));
+              var number1 = parseInt(from.substring(from.length - (4 + digits1), from.length - 4), 10);
+              var number2 = parseInt(to.substring(to.length - (4 + digits2), to.length - 4), 10);
+              if (number2 < number1) {
+                var t = number2;
+                number2 = number1;
+                number1 = t;
+              }
+              if (prefix1 !== prefix2) {
+                this.images.push(pInst.loadImage(from));
+                this.images.push(pInst.loadImage(to));
+              } else {
+                var fileName;
+                if (digits1 === digits2) {
+                  for (i = number1; i <= number2; i++) {
+                    fileName = prefix1 + pInst.nf(i, digits1) + ".png";
+                    this.images.push(pInst.loadImage(fileName));
+                  }
+                } else {
+                  for (i = number1; i <= number2; i++) {
+                    fileName = prefix1 + i + ".png";
+                    this.images.push(pInst.loadImage(fileName));
+                  }
+                }
+              }
+            }
+          } else if (frameArguments.length === 1 && frameArguments[0] instanceof SpriteSheet) {
+            this.spriteSheet = frameArguments[0];
+            this.images = this.spriteSheet.frames;
+          } else if (frameArguments.length !== 0) {
+            for (i = 0; i < frameArguments.length; i++) {
+              if (frameArguments[i] instanceof p5.Image)
+                this.images.push(frameArguments[i]);
+              else
+                this.images.push(pInst.loadImage(frameArguments[i]));
+            }
+          }
+          this.clone = function() {
+            var myClone = new Animation(pInst);
+            myClone.images = [];
+            if (this.spriteSheet) {
+              myClone.spriteSheet = this.spriteSheet.clone();
+            }
+            myClone.images = this.images.slice();
+            myClone.offX = this.offX;
+            myClone.offY = this.offY;
+            myClone.frameDelay = this.frameDelay;
+            myClone.playing = this.playing;
+            myClone.looping = this.looping;
+            return myClone;
+          };
+          this.draw = function(x, y, r) {
+            this.xpos = x;
+            this.ypos = y;
+            this.rotation = r || 0;
+            if (this.visible) {
+              if (!this.isSpriteAnimation)
+                this.update();
+              pInst.push();
+              pInst.imageMode(CENTER);
+              pInst.translate(this.xpos, this.ypos);
+              if (pInst._angleMode === pInst.RADIANS) {
+                pInst.rotate(radians(this.rotation));
+              } else {
+                pInst.rotate(this.rotation);
+              }
+              if (this.images[frame] !== void 0) {
+                if (this.spriteSheet) {
+                  var frame_info = this.images[frame].frame;
+                  pInst.image(this.spriteSheet.image, frame_info.x, frame_info.y, frame_info.width, frame_info.height, this.offX, this.offY, frame_info.width, frame_info.height);
+                } else {
+                  pInst.image(this.images[frame], this.offX, this.offY);
+                }
+              } else {
+                pInst.print("Warning undefined frame " + frame);
+              }
+              pInst.pop();
+            }
+          };
+          this.update = function() {
+            cycles++;
+            var previousFrame = frame;
+            this.frameChanged = false;
+            if (this.images.length === 1) {
+              this.playing = false;
+              frame = 0;
+            }
+            if (this.playing && cycles % this.frameDelay === 0) {
+              if (targetFrame > frame && targetFrame !== -1) {
+                frame++;
+              } else if (targetFrame < frame && targetFrame !== -1) {
+                frame--;
+              } else if (targetFrame === frame && targetFrame !== -1) {
+                this.playing = false;
+              } else if (this.looping) {
+                if (frame >= this.images.length - 1)
+                  frame = 0;
+                else
+                  frame++;
+              } else {
+                if (frame < this.images.length - 1)
+                  frame++;
+              }
+            }
+            if (previousFrame !== frame)
+              this.frameChanged = true;
+          };
+          this.play = function() {
+            this.playing = true;
+            targetFrame = -1;
+          };
+          this.stop = function() {
+            this.playing = false;
+          };
+          this.rewind = function() {
+            frame = 0;
+          };
+          this.changeFrame = function(f) {
+            if (f < this.images.length)
+              frame = f;
+            else
+              frame = this.images.length - 1;
+            targetFrame = -1;
+          };
+          this.nextFrame = function() {
+            if (frame < this.images.length - 1)
+              frame = frame + 1;
+            else if (this.looping)
+              frame = 0;
+            targetFrame = -1;
+            this.playing = false;
+          };
+          this.previousFrame = function() {
+            if (frame > 0)
+              frame = frame - 1;
+            else if (this.looping)
+              frame = this.images.length - 1;
+            targetFrame = -1;
+            this.playing = false;
+          };
+          this.goToFrame = function(toFrame) {
+            if (toFrame < 0 || toFrame >= this.images.length) {
+              return;
+            }
+            targetFrame = toFrame;
+            if (targetFrame !== frame) {
+              this.playing = true;
+            }
+          };
+          this.getFrame = function() {
+            return frame;
+          };
+          this.getLastFrame = function() {
+            return this.images.length - 1;
+          };
+          this.getFrameImage = function() {
+            return this.images[frame];
+          };
+          this.getImageAt = function(f) {
+            return this.images[f];
+          };
+          this.getWidth = function() {
+            if (this.images[frame] instanceof p5.Image) {
+              return this.images[frame].width;
+            } else if (this.images[frame]) {
+              return this.images[frame].frame.width;
+            } else {
+              return 1;
+            }
+          };
+          this.getHeight = function() {
+            if (this.images[frame] instanceof p5.Image) {
+              return this.images[frame].height;
+            } else if (this.images[frame]) {
+              return this.images[frame].frame.height;
+            } else {
+              return 1;
+            }
+          };
+        }
+        defineLazyP5Property("Animation", boundConstructorFactory(Animation));
+        function SpriteSheet(pInst) {
+          var spriteSheetArgs = Array.prototype.slice.call(arguments, 1);
+          this.image = null;
+          this.frames = [];
+          this.frame_width = 0;
+          this.frame_height = 0;
+          this.num_frames = 0;
+          this._generateSheetFrames = function() {
+            var sX = 0, sY = 0;
+            for (var i = 0; i < this.num_frames; i++) {
+              this.frames.push({
+                "name": i,
+                "frame": {
+                  "x": sX,
+                  "y": sY,
+                  "width": this.frame_width,
+                  "height": this.frame_height
+                }
+              });
+              sX += this.frame_width;
+              if (sX >= this.image.width) {
+                sX = 0;
+                sY += this.frame_height;
+                if (sY >= this.image.height) {
+                  sY = 0;
+                }
+              }
+            }
+          };
+          if (spriteSheetArgs.length === 2 && Array.isArray(spriteSheetArgs[1])) {
+            this.frames = spriteSheetArgs[1];
+            this.num_frames = this.frames.length;
+          } else if (spriteSheetArgs.length === 4 && typeof spriteSheetArgs[1] === "number" && typeof spriteSheetArgs[2] === "number" && typeof spriteSheetArgs[3] === "number") {
+            this.frame_width = spriteSheetArgs[1];
+            this.frame_height = spriteSheetArgs[2];
+            this.num_frames = spriteSheetArgs[3];
+          }
+          if (spriteSheetArgs[0] instanceof p5.Image) {
+            this.image = spriteSheetArgs[0];
+            if (spriteSheetArgs.length === 4) {
+              this._generateSheetFrames();
+            }
+          } else {
+            if (spriteSheetArgs.length === 2) {
+              this.image = pInst.loadImage(spriteSheetArgs[0]);
+            } else if (spriteSheetArgs.length === 4) {
+              this.image = pInst.loadImage(spriteSheetArgs[0], this._generateSheetFrames.bind(this));
+            }
+          }
+          this.drawFrame = function(frame_name, x, y, width, height) {
+            var frameToDraw;
+            if (typeof frame_name === "number") {
+              frameToDraw = this.frames[frame_name].frame;
+            } else {
+              for (var i = 0; i < this.frames.length; i++) {
+                if (this.frames[i].name === frame_name) {
+                  frameToDraw = this.frames[i].frame;
+                  break;
+                }
+              }
+            }
+            var dWidth = width || frameToDraw.width;
+            var dHeight = height || frameToDraw.height;
+            pInst.image(this.image, frameToDraw.x, frameToDraw.y, frameToDraw.width, frameToDraw.height, x, y, dWidth, dHeight);
+          };
+          this.clone = function() {
+            var myClone = new SpriteSheet(pInst);
+            for (var i = 0; i < this.frames.length; i++) {
+              var frame = this.frames[i].frame;
+              var cloneFrame = {
+                "name": frame.name,
+                "frame": {
+                  "x": frame.x,
+                  "y": frame.y,
+                  "width": frame.width,
+                  "height": frame.height
+                }
+              };
+              myClone.frames.push(cloneFrame);
+            }
+            myClone.image = this.image;
+            myClone.frame_width = this.frame_width;
+            myClone.frame_height = this.frame_height;
+            myClone.num_frames = this.num_frames;
+            return myClone;
+          };
+        }
+        defineLazyP5Property("SpriteSheet", boundConstructorFactory(SpriteSheet));
+        function construct(constructor, args) {
+          function F() {
+            return constructor.apply(this, args);
+          }
+          F.prototype = constructor.prototype;
+          return new F();
+        }
+        function Quadtree(bounds, max_objects, max_levels, level) {
+          this.active = true;
+          this.max_objects = max_objects || 10;
+          this.max_levels = max_levels || 4;
+          this.level = level || 0;
+          this.bounds = bounds;
+          this.objects = [];
+          this.object_refs = [];
+          this.nodes = [];
+        }
+        Quadtree.prototype.updateBounds = function() {
+          var objects = this.getAll();
+          var x = 1e4;
+          var y = 1e4;
+          var w = -1e4;
+          var h = -1e4;
+          for (var i = 0; i < objects.length; i++) {
+            if (objects[i].position.x < x)
+              x = objects[i].position.x;
+            if (objects[i].position.y < y)
+              y = objects[i].position.y;
+            if (objects[i].position.x > w)
+              w = objects[i].position.x;
+            if (objects[i].position.y > h)
+              h = objects[i].position.y;
+          }
+          this.bounds = {
+            x,
+            y,
+            width: w,
+            height: h
+          };
+        };
+        Quadtree.prototype.split = function() {
+          var nextLevel = this.level + 1, subWidth = Math.round(this.bounds.width / 2), subHeight = Math.round(this.bounds.height / 2), x = Math.round(this.bounds.x), y = Math.round(this.bounds.y);
+          this.nodes[0] = new Quadtree({
+            x: x + subWidth,
+            y,
+            width: subWidth,
+            height: subHeight
+          }, this.max_objects, this.max_levels, nextLevel);
+          this.nodes[1] = new Quadtree({
+            x,
+            y,
+            width: subWidth,
+            height: subHeight
+          }, this.max_objects, this.max_levels, nextLevel);
+          this.nodes[2] = new Quadtree({
+            x,
+            y: y + subHeight,
+            width: subWidth,
+            height: subHeight
+          }, this.max_objects, this.max_levels, nextLevel);
+          this.nodes[3] = new Quadtree({
+            x: x + subWidth,
+            y: y + subHeight,
+            width: subWidth,
+            height: subHeight
+          }, this.max_objects, this.max_levels, nextLevel);
+        };
+        Quadtree.prototype.getIndex = function(pRect) {
+          if (!pRect.collider)
+            return -1;
+          else {
+            var index = -1, verticalMidpoint = this.bounds.x + this.bounds.width / 2, horizontalMidpoint = this.bounds.y + this.bounds.height / 2, topQuadrant = pRect.collider.top() < horizontalMidpoint && pRect.collider.top() + pRect.collider.size().y < horizontalMidpoint, bottomQuadrant = pRect.collider.top() > horizontalMidpoint;
+            if (pRect.collider.left() < verticalMidpoint && pRect.collider.left() + pRect.collider.size().x < verticalMidpoint) {
+              if (topQuadrant) {
+                index = 1;
+              } else if (bottomQuadrant) {
+                index = 2;
+              }
+            } else if (pRect.collider.left() > verticalMidpoint) {
+              if (topQuadrant) {
+                index = 0;
+              } else if (bottomQuadrant) {
+                index = 3;
+              }
+            }
+            return index;
+          }
+        };
+        Quadtree.prototype.insert = function(obj) {
+          if (this.objects.indexOf(obj) === -1) {
+            var i = 0, index;
+            if (typeof this.nodes[0] !== "undefined") {
+              index = this.getIndex(obj);
+              if (index !== -1) {
+                this.nodes[index].insert(obj);
+                return;
+              }
+            }
+            this.objects.push(obj);
+            if (this.objects.length > this.max_objects && this.level < this.max_levels) {
+              if (typeof this.nodes[0] === "undefined") {
+                this.split();
+              }
+              while (i < this.objects.length) {
+                index = this.getIndex(this.objects[i]);
+                if (index !== -1) {
+                  this.nodes[index].insert(this.objects.splice(i, 1)[0]);
+                } else {
+                  i = i + 1;
+                }
+              }
+            }
+          }
+        };
+        Quadtree.prototype.retrieve = function(pRect) {
+          var index = this.getIndex(pRect), returnObjects = this.objects;
+          if (typeof this.nodes[0] !== "undefined") {
+            if (index !== -1) {
+              returnObjects = returnObjects.concat(this.nodes[index].retrieve(pRect));
+            } else {
+              for (var i = 0; i < this.nodes.length; i = i + 1) {
+                returnObjects = returnObjects.concat(this.nodes[i].retrieve(pRect));
+              }
+            }
+          }
+          return returnObjects;
+        };
+        Quadtree.prototype.retrieveFromGroup = function(pRect, group) {
+          var results = [];
+          var candidates = this.retrieve(pRect);
+          for (var i = 0; i < candidates.length; i++)
+            if (group.contains(candidates[i]))
+              results.push(candidates[i]);
+          return results;
+        };
+        Quadtree.prototype.getAll = function() {
+          var objects = this.objects;
+          for (var i = 0; i < this.nodes.length; i = i + 1) {
+            objects = objects.concat(this.nodes[i].getAll());
+          }
+          return objects;
+        };
+        Quadtree.prototype.getObjectNode = function(obj) {
+          var index;
+          if (!this.nodes.length) {
+            return this;
+          } else {
+            index = this.getIndex(obj);
+            if (index === -1) {
+              return this;
+            } else {
+              var node = this.nodes[index].getObjectNode(obj);
+              if (node)
+                return node;
+            }
+          }
+          return false;
+        };
+        Quadtree.prototype.removeObject = function(obj) {
+          var node = this.getObjectNode(obj), index = node.objects.indexOf(obj);
+          if (index === -1)
+            return false;
+          node.objects.splice(index, 1);
+        };
+        Quadtree.prototype.clear = function() {
+          this.objects = [];
+          if (!this.nodes.length)
+            return;
+          for (var i = 0; i < this.nodes.length; i = i + 1) {
+            this.nodes[i].clear();
+          }
+          this.nodes = [];
+        };
+        Quadtree.prototype.cleanup = function() {
+          var objects = this.getAll();
+          this.clear();
+          for (var i = 0; i < objects.length; i++) {
+            this.insert(objects[i]);
+          }
+        };
+        function updateTree() {
+          if (this.quadTree.active) {
+            this.quadTree.updateBounds();
+            this.quadTree.cleanup();
+          }
+        }
+        p5.prototype.registerMethod("pre", p5.prototype.readPresses);
+        p5.prototype.registerMethod("pre", p5.prototype.updateSprites);
+        p5.prototype.registerMethod("post", updateTree);
+        p5.prototype.registerMethod("pre", cameraPush);
+        p5.prototype.registerMethod("post", cameraPop);
+        p5.prototype._warn = function(message) {
+          var console2 = window.console;
+          if (console2) {
+            if (typeof console2.warn === "function") {
+              console2.warn(message);
+            } else if (typeof console2.log === "function") {
+              console2.log("Warning: " + message);
+            }
+          }
+        };
+      });
+    }
+  });
+
   // public/models/game.js
   var require_game = __commonJS({
     "public/models/game.js"(exports, module) {
       var MAXMOVES = 5;
       var Game = class {
-        constructor({ p, imgs, matter, lava, worm, terrain, timer: timerController, weaponModel, bulletModel }) {
+        constructor({ p, imgs, gif, matter, lava, worm, terrain, timer: timerController, weaponModel, bulletModel }) {
           this.engine = matter.Engine.create();
           this.world = this.engine.world;
           this.bullets = [];
           this.explosions = [];
-          this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 180, world: this.world, matter, img: imgs });
+          this.lava = new lava({ x: p.width / 2, y: p.height - 20, w: p.width, h: 100, world: this.world, matter, img: imgs[4], gif });
           this.worm = new worm({ x: p.windowWidth / 10 * 1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           this.worm2 = new worm({ x: p.windowWidth / 10 * 6.5, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs) });
           matter.World.add(this.world, [this.worm.body, this.worm2.body]);
@@ -72288,9 +74152,9 @@ geometric ideas.`,
         setGameOver = () => this.mode = "gameOver";
         createWeapons = (weaponModel, bulletModel, imgs) => {
           const grenade = new weaponModel({ name: "Grenade", velocity: 15, image: imgs[3], damage: 25, bulletModel });
-          const clock = new weaponModel({ name: "Clock", velocity: 20, image: imgs[2], damage: 15, bulletModel });
-          const worm = new weaponModel({ name: "Worm", velocity: 40, image: imgs[1], damage: 5, bulletModel });
-          return [grenade, clock, worm];
+          const tennisBall = new weaponModel({ name: "TennisBall", velocity: 25, image: imgs[6], damage: 15, bulletModel });
+          const tomato = new weaponModel({ name: "Tomato", velocity: 35, image: imgs[7], damage: 5, bulletModel });
+          return [grenade, tennisBall, tomato];
         };
         setActiveWormDirection = (p) => {
           if (this.player1Turn === true) {
@@ -72305,6 +74169,13 @@ geometric ideas.`,
             } else {
               this.worm2.setDirection("right");
             }
+          }
+        };
+        getWinner = () => {
+          if (this.worm.hp > this.worm2.hp) {
+            return "Player 1";
+          } else {
+            return "Player 2";
           }
         };
       };
@@ -72399,9 +74270,11 @@ geometric ideas.`,
           this.displayMovesLeftAndTimer(p, game);
           this.displayWeaponChoice(p, game);
         }
-        static gameOverScreen(p, gameOver) {
+        static gameOverScreen(p, gameOver, game) {
           p.background(gameOver);
           p.textSize(30);
+          let winner = game.getWinner();
+          p.text(`${winner} won!`, p.windowWidth / 2 - 260, p.windowHeight / 2 + 40);
           p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 90);
         }
         static instructionsScreen(p) {
@@ -72424,7 +74297,7 @@ geometric ideas.`,
           } else if (game.mode === "game") {
             ScreenController.gameScreen(p, game, imgs[1]);
           } else if (game.mode === "gameOver") {
-            ScreenController.gameOverScreen(p, imgs[2]);
+            ScreenController.gameOverScreen(p, imgs[2], game);
           } else if (game.mode === "instructions") {
             ScreenController.instructionsScreen(p);
           } else if (game.mode === "musicSoundSettings") {
@@ -72851,22 +74724,22 @@ geometric ideas.`,
   var require_ground = __commonJS({
     "public/entities/ground.js"(exports, module) {
       var Lava = class {
-        constructor({ x, y, w, h, world, matter, img: imgs }) {
+        constructor({ x, y, w, h, world, matter, img, gif }) {
           this.body = matter.Bodies.rectangle(x, y, w, h, { label: "lava" });
           matter.World.add(world, this.body);
           this.w = w;
           this.h = h;
           this.body.isStatic = true;
           this.body.restitution = 1;
-          this.img = imgs[4];
+          this.img = img;
+          this.gif = gif;
         }
         show(p) {
           const pos = this.body.position;
           const angle = this.body.angle;
           p.push();
           p.translate(pos.x, pos.y);
-          p.imageMode(p.CENTER);
-          p.image(this.img, 0, 0, this.w, this.h);
+          p.animation(this.gif, 0, 0);
           p.pop();
         }
       };
@@ -72988,6 +74861,7 @@ geometric ideas.`,
       var p5 = require_p5();
       require_p5_sound();
       require_p5_dom();
+      require_p5_play();
       var Game = require_game();
       var ScreenController = require_screenController();
       var MoveController = require_moveController();
@@ -73013,6 +74887,8 @@ geometric ideas.`,
           let wormImg2;
           let lavaImg;
           let rockImg;
+          let tennisBallImg;
+          let tomatoImg;
           let music;
           let explosionSound;
           let jumpSound;
@@ -73026,6 +74902,7 @@ geometric ideas.`,
           let mx;
           let my;
           let explosionEffect;
+          let lavaGif;
           const sketch2 = new p5(function(p) {
             p.preload = () => {
               wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
@@ -73042,11 +74919,14 @@ geometric ideas.`,
               clockTimer = p.loadImage("images/clock_timer.png");
               lavaImg = p.loadImage("images/lava.png");
               rockImg = p.loadImage("images/rock.png");
+              tennisBallImg = p.loadImage("images/tennis_ball.png");
+              tomatoImg = p.loadImage("images/tomato.png");
               explosionEffect = p.loadImage("images/explosion.png");
+              lavaGif = p.loadAnimation("images/lava004.png", "images/lava006.png", "images/lava004.png", "images/lava005.png", "images/lava005.png", "images/lava006.png", "images/lava004.png", "images/lava004.png");
             };
             p.setup = () => {
-              p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              p.createCanvas(p.windowWidth, p.windowHeight);
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], gif: lavaGif, matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
               MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -73054,8 +74934,8 @@ geometric ideas.`,
             p.resetMain = () => {
               MusicController.changeToHidden(p);
               p.loop();
-              p.createCanvas(p.windowWidth, p.windowHeight - 50);
-              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
+              p.createCanvas(p.windowWidth, p.windowHeight);
+              game = new gameClass({ p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], gif: lavaGif, matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet });
               Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
               p.textSize(40);
             };
