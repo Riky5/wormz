@@ -1,4 +1,5 @@
 class MoveController {
+  // These relate to LeftArrow, UpArrow, RightArrow on the keyboard
   static validKeyCodes = () => [37, 38, 39];
  
   static moveWorm = (activeWorm, input, p, game, sounds) => {

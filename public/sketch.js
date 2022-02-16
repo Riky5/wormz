@@ -45,6 +45,7 @@ class Sketch {
     let mx; // mouse coords
     let my; // mouse coords
     let explosionEffect;
+    let weaponController = new WeaponController()
   
 
     const sketch = new p5(function (p) {
@@ -125,8 +126,8 @@ class Sketch {
           let worm = game.getActiveWorm()
           if (MoveController.isValidInput(input)) {
             MoveController.moveWorm(worm, input, p, game, [jumpSound, whooshSound]);
-          } else if (WeaponController.isValidInput(input)) {
-            WeaponController.activeWormChangeWeapon(worm, input)
+          } else if (weaponController.isValidInput(input)) {
+            weaponController.activeWormChangeWeapon(worm, input)
           } else if (input === p.DOWN_ARROW) {
             ZoomController.sf = 1;
             setTimeout(function(){ZoomController.sf = 2;},1000)
