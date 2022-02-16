@@ -21,8 +21,9 @@ class ScreenController{
     (game.terrain).forEach (element => element.show(p));
     game.explosions.forEach(element => element.show(p));
     game.bullets.forEach(element => element.show(p));
-    game.weaponImage.show(p,game.getActiveWorm().body.position.x,game.getActiveWorm().body.position.y,game.getActiveWorm().direction);
-
+    if(!game.isWormDead()) {
+      game.weaponImage.show(p,game.getActiveWorm().body.position.x,game.getActiveWorm().body.position.y,game.getActiveWorm().direction);
+    }
   }
 
   static gameOverScreen(p, gameOver, game) {
