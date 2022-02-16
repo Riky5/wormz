@@ -1,17 +1,18 @@
+const ZoomController = require("../controllers/zoomController");
 // Moved to a models folder for now not sure where it should be housed
 const MAXMOVES = 5;
 class Game {
 
-  constructor({p: p, imgs: imgs, matter: matter, lava: lava, worm: worm,terrain: terrain, timer:timerController, weaponModel: weaponModel, bulletModel: bulletModel}) {
+  constructor({p: p, imgs: imgs, matter: matter, lava: lava, worm: worm,terrain: terrain, timer:timerController, weaponModel: weaponModel, bulletModel: bulletModel, screenheight: screenheight, screenwidth:screenwidth}) {
     this.engine = matter.Engine.create();
     this.world = this.engine.world;
     this.bullets = [];
     this.explosions = [];
-    this.lava = new lava({x: p.width/2, y: p.height-20, w: p.width, h: 180, world: this.world, matter: matter, img: imgs})
-    this.worm = new worm({x: (p.windowWidth/10)*1.5, y: p.windowHeight - 300, options: "wormOne", img: imgs[0], matter: matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
-    this.worm2 = new worm({x: (p.windowWidth/10)*5.8, y: p.windowHeight - 300, options: "wormTwo", img: imgs[1], matter: matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
+    this.lava = new lava({x: screenwidth / 2, y: 950, w: screenwidth * 1.5, h: 180, world: this.world, matter: matter, img: imgs})
+    this.worm = new worm({x: 300, y: 200, options: "wormOne", img: imgs[0], matter: matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
+    this.worm2 = new worm({x: screenwidth - 300, y: 200, options: "wormTwo", img: imgs[1], matter: matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
     matter.World.add(this.world, [this.worm.body,this.worm2.body]);
-    this.terrain = (new terrain).createTerrain(p,this.world,matter, imgs);
+    this.terrain = (new terrain).createTerrain(p,this.world,matter, screenwidth,screenheight);
     this.mode = "start";
     this.player1Turn = true;
     this.moveLimit = MAXMOVES;
@@ -54,7 +55,7 @@ class Game {
 
   isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
   
-  setGameOver = () => this.mode = 'gameOver';
+  setGameOver = () => {this.mode = 'gameOver'; ZoomController.sf = 1}
 
   createWeapons = (weaponModel, bulletModel, imgs) => {
     const grenade = new weaponModel({name: 'Grenade', velocity: 15, image: imgs[3], damage: 25, bulletModel: bulletModel})
@@ -64,14 +65,20 @@ class Game {
   }
 
   setActiveWormDirection = (p) => {
+    let mouse_position;
     if(this.player1Turn === true) {
-      if (p.mouseX < this.worm.body.position.x) {
+      if (ZoomController.second_screen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
+      else mouse_position = p.mouseX
+      if (mouse_position < this.worm.body.position.x) {
         this.worm.setDirection("left");
       } else {
         this.worm.setDirection("right");
       }
     } else {
-      if (p.mouseX < this.worm2.body.position.x) {
+      console.log(p.mouseX)
+      if (ZoomController.second_screen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
+      else mouse_position = p.mouseX
+      if (mouse_position < this.worm2.body.position.x) {
         this.worm2.setDirection("left");
       } else {
         this.worm2.setDirection("right");

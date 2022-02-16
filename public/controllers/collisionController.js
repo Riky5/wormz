@@ -2,6 +2,7 @@ const Bullet = require('../entities/bullet')
 const Explosion = require('../entities/explosion')
 const Matter = require('matter-js');
 const { gameScreen } = require('./screenController');
+const ZoomController = require('./zoomController')
 
 class CollisionController{  
   
@@ -33,14 +34,16 @@ class CollisionController{
   }
 
   static createExplosion = (pair,game, img) => {
-   if (pair.bodyB.label === "bullet") {
-      this.explosion = new Explosion({x: pair.bodyB.position.x, y: pair.bodyB.position.y , r: 120, game: game, img: img})
+    if(pair.bodyA.label === "bullet") {
+      this.explosion = new Explosion({x: pair.bodyA.position.x, y: pair.bodyA.position.y , r: 120, game: game, img: img})
       game.explosions.push(this.explosion)
       CollisionController.destroyTerrain(this.explosion,game)
       CollisionController.findAndDestroyBullet(pair, game);
       Matter.World.remove(game.world, this.explosion.body);
       setTimeout(function(){game.explosions.pop();},500)
-    }
+      ZoomController.sf = 1
+      setTimeout(() => {ZoomController.sf = 2;},1000)
+    } 
   }
 
   static destroyTerrain = (explosion,game) => {
