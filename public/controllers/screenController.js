@@ -18,17 +18,17 @@ class ScreenController{
     game.lava.show(p);
     game.worm.show(p);
     game.worm2.show(p);
-    (game.terrain).forEach (element => element.show(p))
+    (game.terrain).forEach (element => element.show(p));
     game.explosions.forEach(element => element.show(p));
     game.bullets.forEach(element => element.show(p));
-    this.displayWhichPlayerTurn(p, game);
-    this.displayMovesLeftAndTimer(p, game)
-    this.displayWeaponChoice(p, game)
+    game.weaponImage.show(p,game.getActiveWorm().body.position.x,game.getActiveWorm().body.position.y,game.getActiveWorm().direction);
+
   }
 
   static gameOverScreen(p, gameOver, game) {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
     p.background(gameOver);
+    p.fill("#000000");
     p.textSize(30);
     let winner = game.getWinner();
     p.text(`${winner} won!`, p.windowWidth / 2 - 100, p.windowHeight / 2 + 110);
@@ -101,29 +101,6 @@ class ScreenController{
         p.resetMain();
       }
     }
-  }
-  static displayWhichPlayerTurn(p, game) {
-    p.textSize(30)
-    if(game.player1Turn === true) {
-      p.text("Player 1", p.windowWidth /2 + 200, p.windowHeight / 2 - 320);
-    }
-    else {
-      p.text("Player 2", p.windowWidth /2 + 200, p.windowHeight / 2 - 320);
-    };
-  }
-
-  static displayMovesLeftAndTimer(p, game) {
-    p.textSize(20);
-    p.text(`Moves Left: ${game.moveLimit - game.moveCount}`, p.windowWidth /2 + 200, p.windowHeight / 2 - 300);
-    p.text(game.timer.timerForTurn(p, game), p.windowWidth /2 + 270, p.windowHeight / 2 - 250);
-    p.image(game.clockTimer, p.windowWidth / 2 + 200, p.windowHeight / 2 - 280, 50, 50)
-  }
-  static displayWeaponChoice(p) {
-    p.textSize(20);
-    p.fill(20)
-    p.text('1', p.windowWidth /2 - 250, p.windowHeight / 2 - 300);
-    p.text('2', p.windowWidth /2 - 200, p.windowHeight / 2 - 300);
-    p.text('3', p.windowWidth /2 - 150, p.windowHeight / 2 - 300);
   }
 }
 
