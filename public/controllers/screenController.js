@@ -1,3 +1,4 @@
+const e = require("cors");
 const Matter = require("matter-js")
 const MusicController = require("./musicController");
 
@@ -17,12 +18,15 @@ class ScreenController{
     game.lava.show(p);
     game.worm.show(p);
     game.worm2.show(p);
-    (game.terrain).forEach (element => element.show(p))
+    (game.terrain).forEach (element => element.show(p));
     game.explosions.forEach(element => element.show(p));
     game.bullets.forEach(element => element.show(p));
     this.displayWhichPlayerTurn(p, game);
     this.displayMovesLeftAndTimer(p, game)
     this.displayWeaponChoice(p, game)
+    if (game.player1Turn === true)
+    {game.weaponImage.show(p,game.worm.body.position.x,game.worm.body.position.y,game.getActiveWorm().direction);}
+    else {game.weaponImage.show(p,game.worm2.body.position.x,game.worm2.body.position.y,game.getActiveWorm().direction);}
   }
 
   static gameOverScreen(p, gameOver, game) {

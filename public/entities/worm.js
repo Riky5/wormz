@@ -69,6 +69,8 @@ class Worm {
     p.fill(0)
     p.textSize(15)
     p.text(this.hp, pos.x + 10, pos.y - 55);
+
+    // weapon
   }
 
   move(force, mass) {
