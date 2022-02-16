@@ -8,8 +8,8 @@ class TimerController {
 
   resetTimer = () => {
     this.timer = 0;
-    
   }
+  
   clearTimer = () => {
     clearInterval(this.interval);
   }
@@ -25,8 +25,8 @@ class TimerController {
   timerForTurn = (p, game) => {
     if (this.timeLeftOnTurn() <= 0) {
       game.changePlayerTurn();
-      this.resetTimer();
       game.resetMoveCount();
+      this.resetTimer();
     } 
     else if(this.timeLeftOnTurn() <= 5) {
       // Sets the number shown on the timer to red
