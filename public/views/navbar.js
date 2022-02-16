@@ -16,6 +16,23 @@ class Navbar {
       image.setAttribute("src", "./images/worm1.png");
     }
   }
+
+  static showWeaponImage(game) {
+    let weapons = {
+      "Tomato": "./images/tomato.png",
+      "TennisBall": "./images/tennis_ball.png",
+      "Grenade": "./images/grenade.png"
+    }
+    let image = document.getElementById("activeWeapon");
+    let weaponType = game.getActiveWorm().currentWeapon.name;
+    image.setAttribute("src", weapons[weaponType]);
+  }
+
+  static showTimer(game) {
+    let timer = document.getElementById("timeLeft");
+    timer.innerText = game.timer.timeLeftOnTurn();
+    if (game.timer.timeLeftOnTurn() <= 5) { timer.classList.add("redText") }
+  }
 }
 
 module.exports = Navbar;

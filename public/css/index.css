@@ -71,3 +71,7 @@ button:hover {
   justify-content: space-evenly;
   border: 1px solid red;
 }
+
+.redText {
+  color: red;
+}
