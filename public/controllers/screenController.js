@@ -31,8 +31,8 @@ class ScreenController{
     p.background(gameOver);
     p.textSize(30);
     let winner = game.getWinner();
-    p.text(`${winner} won!`, p.windowWidth / 2 - 260, p.windowHeight / 2 + 40);
-    p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 90);
+    p.text(`${winner} won!`, p.windowWidth / 2 - 100, p.windowHeight / 2 + 110);
+    p.text("Press ENTER to go back to main page", p.windowWidth / 2 - 260, p.windowHeight / 2 + 180);
   }
 
   static instructionsScreen(p) {
