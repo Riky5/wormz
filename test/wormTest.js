@@ -8,7 +8,7 @@ describe('Worm', () => {
   let worm;
   let weapons = ['gunImage', 'knifeImage']
   beforeEach(() => {
-    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter, direction: "right", weapons: weapons});
+    worm = new Worm({x: 0, y: 0, w: 90, h: 90, options: "wormOne", img: 'testIMG', matter: Matter, direction: "right", weapons: weapons, graveImg: 'graveImg'});
   })
 
   it('initialized with correct parameters', function(done) {
@@ -21,6 +21,7 @@ describe('Worm', () => {
     expect(worm.matter).to.eq(Matter);
     expect(worm.weapons).to.eq(weapons);
     expect(worm.direction).to.eq("right");
+    expect(worm.graveImg).to.eq("graveImg");
     done();
   });
 
