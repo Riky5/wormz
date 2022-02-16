@@ -53,6 +53,7 @@ class CollisionController{
       let worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(50);
       if (game.isWormDead()) {
+        worm.am_i_alive = false;
         setTimeout(function() {game.setGameOver()}, 700);
       }
     } 

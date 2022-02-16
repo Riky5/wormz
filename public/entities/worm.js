@@ -17,6 +17,8 @@ class Worm {
     this.weapons = weapons;
     this.currentWeapon = this.weapons[0];
     this.direction = direction;
+    this.am_i_alive = true;
+
   }
 
   show = (p, img = this.img, graveImg = this.graveImg) => {
@@ -49,7 +51,8 @@ class Worm {
     p.fill(0);
     p.textSize(15);
     p.text(this.hp, pos.x + 10, pos.y - 55);
-  };
+  }
+
 
   move = (force, mass) => {
     this.matter.Body.applyForce(this.body, this.body.position, force);
