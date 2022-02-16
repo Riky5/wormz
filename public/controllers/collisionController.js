@@ -20,16 +20,10 @@ class CollisionController{
   
   static findAndDamageWorm = (pair, game, sound, bulletDamageValue) => {
 
-    if (CollisionController.isInCollision(pair, "wormTwo")) {
+    if (CollisionController.isInCollision(pair, "wormTwo") || CollisionController.isInCollision(pair, "wormOne")) {
       sound.play();
-      game.worm2.reduceHP(bulletDamageValue);
-      if (game.isWormDead()) {
-        setTimeout(function() {game.setGameOver()}, 700);
-      }
-      
-    } else if (CollisionController.isInCollision(pair, "wormOne")) {
-      sound.play();
-      game.worm.reduceHP(bulletDamageValue);
+      let worm = this.giveWormInCollision(pair, game);
+      worm.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {
         setTimeout(function() {game.setGameOver()}, 700);
       }
@@ -59,26 +53,19 @@ class CollisionController{
   }
 
   static lavaCollision = (pair,game) => {
-    if (CollisionController.isInCollision(pair, "wormTwo") || CollisionController.isInCollision(pair, "wormOne")) {
+    if (this.isWormInCollision(pair)) {
       let worm = this.giveWormInCollision(pair, game);
       worm.reduceHP(50);
       if (game.isWormDead()) {
         setTimeout(function() {game.setGameOver()}, 700);
       }
-
     } 
-    // else if (CollisionController.isInCollision(pair, "wormOne")) {
-    //   game.worm.reduceHP(50);
-    //   if (game.isWormDead()) {
-    //     setTimeout(function() {game.setGameOver()}, 700);
-    //   }
-    // }
   }
   
   static collision = (event, game, sound, img) => {
     for (const pair of event.pairs) {
       if(CollisionController.isInCollision(pair, "bullet")) {
-        if (CollisionController.isInCollision(pair, "wormOne") || CollisionController.isInCollision(pair, "wormTwo")) {
+        if (this.isWormInCollision(pair)) {
           let bulletDamageValue = game.bullets[0].damage
           CollisionController.findAndDamageWorm(pair, game, sound, bulletDamageValue); 
         }
@@ -96,6 +83,9 @@ class CollisionController{
     } else if(CollisionController.isInCollision(pair, "wormTwo")) {
       return game.worm2
     }
+  }
+  static isWormInCollision(pair) {
+    return CollisionController.isInCollision(pair, "wormOne") || CollisionController.isInCollision(pair, "wormTwo")
   }
 }
 module.exports = CollisionController;
