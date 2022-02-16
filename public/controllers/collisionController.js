@@ -59,18 +59,20 @@ class CollisionController{
   }
 
   static lavaCollision = (pair,game) => {
-    if (CollisionController.isInCollision(pair, "wormTwo")) {
-      game.worm2.reduceHP(50);
+    if (CollisionController.isInCollision(pair, "wormTwo") || CollisionController.isInCollision(pair, "wormOne")) {
+      let worm = this.giveWormInCollision(pair, game);
+      worm.reduceHP(50);
       if (game.isWormDead()) {
         setTimeout(function() {game.setGameOver()}, 700);
       }
 
-    } else if (CollisionController.isInCollision(pair, "wormOne")) {
-      game.worm.reduceHP(50);
-      if (game.isWormDead()) {
-        setTimeout(function() {game.setGameOver()}, 700);
-      }
-    }
+    } 
+    // else if (CollisionController.isInCollision(pair, "wormOne")) {
+    //   game.worm.reduceHP(50);
+    //   if (game.isWormDead()) {
+    //     setTimeout(function() {game.setGameOver()}, 700);
+    //   }
+    // }
   }
   
   static collision = (event, game, sound, img) => {
@@ -86,6 +88,13 @@ class CollisionController{
       else if (CollisionController.isInCollision(pair, "bullet"), CollisionController.isInCollision(pair, "lava"))
       {CollisionController.lavaCollision(pair,game)
       }
+    }
+  }
+  static giveWormInCollision(pair, game) {
+    if(CollisionController.isInCollision(pair, "wormOne")) {
+      return game.worm
+    } else if(CollisionController.isInCollision(pair, "wormTwo")) {
+      return game.worm2
     }
   }
 }
