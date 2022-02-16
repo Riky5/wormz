@@ -72241,18 +72241,25 @@ geometric ideas.`,
   var require_zoomController = __commonJS({
     "public/controllers/zoomController.js"(exports, module) {
       var ZoomController = class {
+        constructor() {
+          this.second_screen = false;
+        }
         static zoom(p, mx, my, scaleFactor, screenwidth) {
           p.translate(mx, my);
           p.scale(scaleFactor);
-          console.log(screenwidth);
           if (mx > 1200 && p.windowWidth < screenwidth && my > p.windowHeight - 100) {
             p.translate(-mx - 500, -my - 200);
+            this.second_screen = true;
           } else if (my > p.windowHeight - 100) {
             p.translate(-mx, -my - 200);
+            this.second_screen = false;
           } else if (mx > 1200 && p.windowWidth < screenwidth) {
             p.translate(-mx - 500, -my);
-          } else
+            this.second_screen = true;
+          } else {
             p.translate(-mx, -my);
+            this.second_screen = false;
+          }
         }
       };
       __publicField(ZoomController, "sf", 1);
@@ -72328,14 +72335,24 @@ geometric ideas.`,
           return [grenade, clock, worm];
         };
         setActiveWormDirection = (p) => {
+          let mouse_position;
           if (this.player1Turn === true) {
-            if (p.mouseX < this.worm.body.position.x) {
+            if (ZoomController.second_screen === true) {
+              mouse_position = p.mouseX + 500 * ZoomController.sf;
+            } else
+              mouse_position = p.mouseX;
+            if (mouse_position < this.worm.body.position.x) {
               this.worm.setDirection("left");
             } else {
               this.worm.setDirection("right");
             }
           } else {
-            if (p.mouseX < this.worm2.body.position.x) {
+            console.log(p.mouseX);
+            if (ZoomController.second_screen === true) {
+              mouse_position = p.mouseX + 500 * ZoomController.sf;
+            } else
+              mouse_position = p.mouseX;
+            if (mouse_position < this.worm2.body.position.x) {
               this.worm2.setDirection("left");
             } else {
               this.worm2.setDirection("right");

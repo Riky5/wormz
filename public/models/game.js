@@ -73,14 +73,20 @@ class Game {
   }
 
   setActiveWormDirection = (p) => {
+    let mouse_position;
     if(this.player1Turn === true) {
-      if (p.mouseX < this.worm.body.position.x) {
+      if (ZoomController.second_screen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
+      else mouse_position = p.mouseX
+      if (mouse_position < this.worm.body.position.x) {
         this.worm.setDirection("left");
       } else {
         this.worm.setDirection("right");
       }
     } else {
-      if (p.mouseX < this.worm2.body.position.x) {
+      console.log(p.mouseX)
+      if (ZoomController.second_screen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
+      else mouse_position = p.mouseX
+      if (mouse_position < this.worm2.body.position.x) {
         this.worm2.setDirection("left");
       } else {
         this.worm2.setDirection("right");
