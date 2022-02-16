@@ -72240,7 +72240,7 @@ geometric ideas.`,
   // public/controllers/zoomController.js
   var require_zoomController = __commonJS({
     "public/controllers/zoomController.js"(exports, module) {
-      var ZoomController = class {
+      var _ZoomController = class {
         static zoom(p, mx, my, scaleFactor) {
           p.translate(mx, my);
           p.scale(scaleFactor);
@@ -72250,10 +72250,13 @@ geometric ideas.`,
             p.translate(-mx, -my - 200);
           } else if (mx > 1200 && p.windowWidth < 2e3) {
             p.translate(-mx - 500, -my);
+          } else if (mx > 1200 && p.windowWidth < 2e3 && _ZoomController.sf === 1) {
+            p.translate(-mx - 1e3, -my);
           } else
             p.translate(-mx, -my);
         }
       };
+      var ZoomController = _ZoomController;
       __publicField(ZoomController, "sf", 1);
       module.exports = ZoomController;
     }
