@@ -69,6 +69,8 @@ class ScreenController{
       ScreenController.gameScreen(p, game, imgs[1]);
     }
     else if (game.mode === 'gameOver'){
+      game.timer.resetTimer();
+      game.timer.clearTimer();
       ScreenController.gameOverScreen(p, imgs[2], game);
     }
     else if (game.mode === 'instructions') {
