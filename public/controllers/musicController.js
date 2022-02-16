@@ -1,5 +1,6 @@
 class MusicController {
   static createSoundScreen(p, sounds) {
+    let musicPlaying = false;
     let mainDiv = p.createDiv('');
     mainDiv.id('main-music-div');
     mainDiv.style('display:none');
@@ -11,12 +12,16 @@ class MusicController {
     musicText.id('musicText');
     let musicOnBtn = p.createButton('ON').parent(musicDiv);
     musicOnBtn.id('musicOnBtn');
-    musicOnBtn.mouseOver(function() {
-      sounds[0].loop();
+    musicOnBtn.mouseClicked(function() {
+      if (!musicPlaying) {
+        musicPlaying = true;
+        sounds[0].loop();
+      }
     });
     let musicOffBtn = p.createButton('OFF').parent(musicDiv);
     musicOffBtn.id('musicOffBtn');
-    musicOffBtn.mouseOver(function() {
+    musicOffBtn.mouseClicked(function() {
+      musicPlaying = false;
       sounds[0].stop();
     });
     let soundDiv = p.createDiv('').parent(mainDiv);
