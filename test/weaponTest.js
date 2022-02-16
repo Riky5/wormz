@@ -4,7 +4,7 @@ const Weapon = require('../public/models/weapon');
 const expect = require('chai').expect;
 const Bullet = require('../public/entities/bullet')
 const Game = require('../public/models/game');
-const Ground = require('../public/entities/ground');
+const Ground = require('../public/entities/lava');
 const Worm = require('../public/entities/worm');
 const Matter = require('matter-js');
 
