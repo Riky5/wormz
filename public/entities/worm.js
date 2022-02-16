@@ -11,11 +11,13 @@ class Worm {
     this.x = x;
     this.y = y;
     this.img = img;
+    this.graveImg = graveImg;
     this.hp = MAXHEALTH;
     this.matter = matter;
     this.weapons = weapons;
     this.currentWeapon = this.weapons[0];
     this.direction = direction;
+  }
 
   show = (p, img = this.img, graveImg = this.graveImg) => {
     this.graveImg = graveImg;
@@ -77,4 +79,5 @@ class Worm {
     }
   };
 }
+
 module.exports = Worm;
