@@ -51,8 +51,9 @@ button:hover {
 /* navbar  */
 
 #navbarContainer {
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid rgb(0, 0, 0);
   padding: 0;
+  background-color: #0099ff;
 }
 
 #activePlayerText, .navbarText, #timeLeft {
@@ -75,15 +76,16 @@ button:hover {
   margin-left: 0.2rem;
 }
 
-#playerWeapon, #timeMovesLeft {
-  background-color: #0099ff;
+#playerWeapon, #timeMovesLeft, #weaponOptionsDiv {
   display: flex;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 30px;
+  background-color: white;
 }
 
-#weaponSelection {
- background-color: purple;
+#weaponOptionsDiv {
+  padding-right: 1.2rem;
+  margin: 0;
 }
 
 .divider {
@@ -96,15 +98,20 @@ button:hover {
   margin: 0 0.2rem 0 0;
 }
 
-#weaponSelection {
-  width: 1.8rem;
-  height: 1.8rem;
+.divider3 {
+  padding: 0;
+  margin: 0 0 0 1.2rem;
 }
 
-/* #clock {
-  width:  2.2rem;
+#weaponSelection {
+  width: 2rem;
   height: 2.2rem;
-} */
+  margin-left: 0;
+}
+
+#weaponsText {
+  margin-right: 0;
+}
 
 .navbarContent {
   display: flex;

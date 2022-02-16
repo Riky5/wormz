@@ -4,7 +4,7 @@ const MusicController = require("./musicController");
 class ScreenController{
   static startScreen(p, logo) {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
-    p.select('#navbarContainer').style('display:flex');
+    p.select('#navbarContainer').style('display:none');
     p.background(logo);
     p.textSize(28);
     p.fill("#000000");

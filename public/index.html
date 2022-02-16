@@ -8,7 +8,7 @@
   </head>
   
   <body>
-    <nav class="navbar navbar-light bg-light" id="navbarContainer">
+    <nav class="navbar" id="navbarContainer">
       <div class="navbarContent" id="playerWeapon">
         <p id="activePlayerText"></p>
         <img src="" id="activeWorm"></img>
@@ -18,13 +18,15 @@
         </p>
       </div>
 
-      <div class="navbarContent">
-        <p class="navbarText"> Weapons: </p>
-        <p class="navbarText"> 1️⃣ -</p>
+      <div class="navbarContent" id="weaponOptionsDiv">
+        <p class="navbarText" id="weaponsText"> Weapons: </p>
+        <p class="navbarText"> 1️⃣ </p>
         <img src="/images/grenade.png" id="weaponSelection">
-        <p class="navbarText"> 2️⃣ -</p>
+        <p class="divider3">|</p>
+        <p class="navbarText"> 2️⃣ </p>
         <img src="/images/tennis_ball.png" id="weaponSelection">
-        <p class="navbarText"> 3️⃣ -</p>
+        <p class="divider3">|</p>
+        <p class="navbarText"> 3️⃣ </p>
         <img src="/images/tomato.png" id="weaponSelection">
       </div>
 
@@ -36,8 +38,6 @@
         <p class="divider2">|</p>
         <p class="navbarText">Moves left: <span id="movesLeft"></span></p>
       </div>
-
     </nav>
-
   </body>
 </html>
