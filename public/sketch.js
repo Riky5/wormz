@@ -28,6 +28,7 @@ class Sketch {
     let backgroundImg;
     let wormImg1;
     let wormImg2;
+    let graveImg;
     let lavaImg;
     let rockImg;
     let tennisBallImg;
@@ -57,6 +58,7 @@ class Sketch {
         backgroundImg = p.loadImage("images/background-image.png");
         wormImg1 = p.loadImage("images/worm0.png");
         wormImg2 = p.loadImage("images/worm1.png");
+        graveImg = p.loadImage("images/grave.png");
         music = p.loadSound("assets/Whimsical-Popsicle.mp3");
         explosionSound = p.loadSound("assets/Explosion.mp3");
         jumpSound = p.loadSound('assets/jump.mp3');
@@ -74,7 +76,7 @@ class Sketch {
 
       p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -84,7 +86,7 @@ class Sketch {
         MusicController.changeToHidden(p);
         p.loop();
         p.createCanvas(p.windowWidth, p.windowHeight - 50);
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
       }

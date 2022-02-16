@@ -1,5 +1,5 @@
 class Worm {
-  constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter, direction: direction, weapons: weapons}) {
+  constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter, direction: direction, weapons: weapons, graveImg: graveImg}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
     this.w = w;
     this.h = h;
@@ -13,9 +13,10 @@ class Worm {
     this.currentWeapon = this.weapons[0]
     this.direction = direction;
     matter.Body.setInertia(this.body, Infinity);
+    this.graveImg = graveImg;
   }
 
-  show = (p,img = this.img) => {
+  show = (p,img = this.img, graveImg = this.graveImg) => {
     const pos = this.body.position;
     const angle = this.body.angle;
     this.body.mass = 8
@@ -27,7 +28,12 @@ class Worm {
 
       // WORM IMAGE 
       p.imageMode(p.CENTER);
-      p.image(img, 0, 0, this.w, this.h);
+      if(this.hp > 0) {
+        p.image(img, 0, 0, this.w, this.h);
+      }
+      else {
+        p.image(graveImg, 0, 0, this.w, this.h);
+      }
       p.pop();
 
     } else {
@@ -39,7 +45,12 @@ class Worm {
 
       // WORM IMAGE 
       p.imageMode(p.CENTER);
-      p.image(img, 0, 0, this.w, this.h);
+      if(this.hp > 0) {
+        p.image(img, 0, 0, this.w, this.h);
+      }
+      else {
+        p.image(graveImg, 0, 0, this.w, this.h);
+      }
       p.pop();  
     }
     
