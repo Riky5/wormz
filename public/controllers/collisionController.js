@@ -34,7 +34,7 @@ class CollisionController{
   }
 
   static createExplosion = (pair,game, img) => {
-    if(pair.bodyA.label === "bullet") {
+    if(pair.bodyB.label === "bullet") {
       this.explosion = new Explosion({x: pair.bodyA.position.x, y: pair.bodyA.position.y , r: 120, game: game, img: img})
       game.explosions.push(this.explosion)
       CollisionController.destroyTerrain(this.explosion,game)

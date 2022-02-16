@@ -12,7 +12,7 @@ class Game {
     this.worm = new worm({x: 300, y: 200, options: "wormOne", img: imgs[0], matter: matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
     this.worm2 = new worm({x: screenwidth - 300, y: 200, options: "wormTwo", img: imgs[1], matter: matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs)});
     matter.World.add(this.world, [this.worm.body,this.worm2.body]);
-    this.terrain = (new terrain).createTerrain(p,this.world,matter, screenwidth,screenheight);
+    this.terrain = (new terrain).createTerrain(p,this.world,matter, imgs, screenwidth,screenheight);
     this.mode = "start";
     this.player1Turn = true;
     this.moveLimit = MAXMOVES;
