@@ -74,8 +74,8 @@ class Worm {
       return [0, 255, 0];
     } else if (this.hp <= LOWHEALTH) {
       return [255, 0, 0];
-    } else if (this.hp <= 70) {
-      return [255, 191, MEDIUMHEALTH];
+    } else if (this.hp <= MEDIUMHEALTH) {
+      return [255, 191, 0];
     }
   };
 }
