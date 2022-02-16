@@ -60,7 +60,7 @@ class Sketch {
         backgroundImg = p.loadImage("images/background-image.png");
         wormImg1 = p.loadImage("images/worm0.png");
         wormImg2 = p.loadImage("images/worm1.png");
-        graveImg = p.loadImage("images/grave.jpg");
+        graveImg = p.loadImage("images/grave.png");
         music = p.loadSound("assets/Whimsical-Popsicle.mp3");
         explosionSound = p.loadSound("assets/Explosion.mp3");
         jumpSound = p.loadSound('assets/jump.mp3');
@@ -90,11 +90,11 @@ class Sketch {
 
       p.resetMain = () => {
         MusicController.changeToHidden(p);
+        p.loop();
         const CANVASWINDOWSIZE = 1500;
         const CANVASWINDOWHEIGHT =  1000;
-        p.loop();
-        p.createCanvas(CANVASWINDOWSIZE, CANVASWINDOWSIZE);
-        p.resizeCanvas(p.windowWidth,p.windowHeight)
+        // p.createCanvas(CANVASWINDOWSIZE, CANVASWINDOWSIZE);
+        // p.resizeCanvas(p.windowWidth,p.windowHeight)
         game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
@@ -122,7 +122,7 @@ class Sketch {
           my = game.worm2.body.position.y;
         }
         ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
-        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, music]);
+        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, grenade, tennisBallImg, tomatoImg, music]);
         game.setActiveWormDirection(p);
       }
 
