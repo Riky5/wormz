@@ -16,6 +16,7 @@ const Lava = require('./entities/ground');
 const Terrain = require('./entities/terrain')
 const TimerController = require('./controllers/timerController');
 const MusicController = require('./controllers/musicController');
+const Navbar = require('./views/navbar');
 
 class Sketch {
   
@@ -100,6 +101,7 @@ class Sketch {
       }
 
       p.draw = () => {
+        Navbar.show(game);
         const CANVASWINDOWSIZE = 1500;
         if (game.bulletExists === true)
         { 
