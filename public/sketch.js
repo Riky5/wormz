@@ -136,9 +136,11 @@ class Sketch {
           } else if (weaponController.isValidInput(input)) {
             weaponController.activeWormChangeWeapon(worm, input)
           } else if (input === p.DOWN_ARROW) {
-            if (ZoomController.sf === 1)
-            {ZoomController.sf = 2;}
-            else {ZoomController.sf = 1;}
+            if (ZoomController.sf === 1) {
+              ZoomController.zoomIn();
+            } else { 
+              ZoomController.zoomOut();
+            }
           }
         }
       }
