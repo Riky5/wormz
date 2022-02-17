@@ -4,6 +4,7 @@ const WeaponImage = require("../entities/weapon")
 // Moved to a models folder for now not sure where it should be housed
 const MAXMOVES = 5;
 const DEATHTIMEOUT = 1500;
+const INTERVALBETWEENSHOTS = 1500;
 
 class Game {
 
@@ -25,6 +26,7 @@ class Game {
     this.clockTimer = imgs[2];
     this.bulletExists = false;
     this.timer = new timerController();
+    this.intervalBetweenShots = INTERVALBETWEENSHOTS;
   }
 
   changePlayerTurn = () => {
