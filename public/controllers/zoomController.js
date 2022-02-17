@@ -9,10 +9,9 @@ class ZoomController {
 	static sf = 1; // scaleFactor
 
 	static explosionZoom = (game) => {
-		ZoomController.sf = 1
-		// removes explosion from screen
-		setTimeout(() => game.explosions.pop(), 500)
-		setTimeout(() => ZoomController.sf = 2, 1000)
+		setTimeout(() => game.explosions.pop(), 500);
+		setTimeout(() =>  ZoomController.ZoomIn(), game.intervalBetweenShots);
+    ZoomController.ZoomOut()
   }
 
 	static zoom(p, mx, my, scaleFactor,screenwidth) {
@@ -27,6 +26,10 @@ class ZoomController {
 			this.secondScreen = false; 
 			this.bottomScreen = false}
 	}
+
+  static zoomIn = () => ZoomController.sf = 2;
+
+  static ZoomOut = () => ZoomController.sf = 1;
 }
 
 module.exports = ZoomController;
