@@ -70,6 +70,8 @@ Click ***on*** or ***off*** to start or stop background music and sound effects.
 
 This is an overview of how to play the game. 
 
+![instructionPage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/instructionPage.png?raw=true)
+
 ## Playing the Game
 
 ### Nav Bar
