@@ -19,7 +19,6 @@ class Worm {
     this.weapons = weapons;
     this.currentWeapon = this.weapons[0];
     this.direction = direction;
-    this.isAlive = true;
     this.canShoot = true;
   }
 
@@ -88,6 +87,8 @@ class Worm {
       return [255, 191, 0];
     }
   };
+
+  isAlive = () => this.hp > 0;
 }
 
 module.exports = Worm;

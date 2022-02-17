@@ -28,13 +28,9 @@ class Game {
   }
 
   changePlayerTurn = () => {
-    if (this.isWormDead()) {
-      this.showDeadWormGrave()
-    } else {
-      this.getActiveWorm().canShoot = true;
-      this.resetMoveCount();
-      this.player1Turn = !this.player1Turn;
-    }
+    this.getActiveWorm().canShoot = true;
+    this.resetMoveCount();
+    this.player1Turn = !this.player1Turn;
   }
 
   resetMoveCount = () => {
@@ -65,7 +61,7 @@ class Game {
     }
   }
 
-  isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
+  isWormDead = () => !this.worm.isAlive() || !this.worm2.isAlive();
   
   setGameOver = () => {this.mode = 'gameOver'; ZoomController.sf = 1}
 

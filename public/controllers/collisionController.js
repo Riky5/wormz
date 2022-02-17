@@ -20,6 +20,9 @@ class CollisionController{
       sounds[randomIndex].play();
       let worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(bulletDamageValue);
+      if (!worm.isAlive() ) {
+        game.showDeadWormGrave();
+      }
     }
   }
 
