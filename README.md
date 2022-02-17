@@ -56,7 +56,7 @@ http://localhost:3000/
 ````
 ## What you should see
 
-![homePage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/homePage.png?raw=true)
+![homePage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/homePage.jpeg?raw=true)
 
 # Usage
 
