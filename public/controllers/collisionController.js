@@ -1,7 +1,8 @@
-const Bullet = require('../entities/bullet')
-const Explosion = require('../entities/explosion')
+const Bullet = require('../entities/bullet');
+const Explosion = require('../entities/explosion');
 const Matter = require('matter-js');
-const ZoomController = require('./zoomController')
+const ZoomController = require('./zoomController');
+const DEATHTIMEOUT = 1500;
 
 class CollisionController{  
   
@@ -20,9 +21,6 @@ class CollisionController{
       sounds[randomIndex].play();
       let worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(bulletDamageValue);
-      if (game.isWormDead()) {
-        setTimeout(function() {game.setGameOver()}, 700);
-      }
     }
   }
 

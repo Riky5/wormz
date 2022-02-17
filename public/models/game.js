@@ -1,3 +1,4 @@
+const ScreenController = require("../controllers/screenController");
 const ZoomController = require("../controllers/zoomController");
 const WeaponImage = require("../entities/weapon")
 // Moved to a models folder for now not sure where it should be housed
@@ -25,8 +26,12 @@ class Game {
   }
 
   changePlayerTurn = () => {
-    this.resetMoveCount();
-    this.player1Turn = !this.player1Turn;
+    if (this.isWormDead()) {
+      setTimeout( () => this.setGameOver(), 1500);
+    } else {
+      this.resetMoveCount();
+      this.player1Turn = !this.player1Turn;
+    }
   }
 
   resetMoveCount = () => {
