@@ -51,6 +51,7 @@ button:hover {
 /* navbar  */
 
 #navbarContainer {
+  display: none;
   border-bottom: 2px solid rgb(0, 0, 0);
   padding: 0;
   background-color: #0099ff;
