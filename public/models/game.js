@@ -8,7 +8,7 @@ const INTERVALBETWEENSHOTS = 1500;
 
 class Game {
 
-  constructor({p: p, imgs: imgs, matter: matter, lava: lava, worm: worm,terrain: terrain, timer:timerController, weaponModel: weaponModel, bulletModel: bulletModel, screenheight: screenheight, screenwidth:screenwidth}) {
+  constructor({imgs: imgs, matter: matter, lava: lava, worm: worm,terrain: terrain, timer:timerController, weaponModel: weaponModel, bulletModel: bulletModel, screenheight: screenheight, screenwidth:screenwidth}) {
     this.engine = matter.Engine.create();
     this.world = this.engine.world;
     this.bullets = [];
@@ -29,6 +29,24 @@ class Game {
     this.intervalBetweenShots = INTERVALBETWEENSHOTS;
   }
 
+  getActiveWorm = () => {
+    if(this.player1Turn) {
+      return this.worm;
+    } 
+    else {
+      return this.worm2;
+    }
+  }
+
+  getWormPos = (worm) => {
+    if(worm.direction === "right") {
+      return {x: worm.body.position.x + (worm.w / 2) + 10, y: worm.body.position.y - (worm.h)}
+    } 
+    else {
+      return {x: worm.body.position.x - (worm.w / 2) - 10, y: worm.body.position.y - (worm.h)}
+    }
+  }
+
   changePlayerTurn = () => {
     this.getActiveWorm().canShoot = true;
     this.resetMoveCount();
@@ -39,29 +57,7 @@ class Game {
     this.moveCount = 0;
   }
 
-  switchToMode = (modeChoice) => {
-    return this.mode = modeChoice;
-  }
-
-  getActiveWorm = () => {
-    if(this.player1Turn) {
-      return this.worm;
-    } 
-    else {
-      return this.worm2;
-    }
-  }
-
   showDeadWormGrave = () => setTimeout( () => this.setGameOver(), DEATHTIMEOUT);
-
-  getWormPos = (worm) => {
-    if(worm.direction === "right") {
-      return {x: worm.body.position.x + (worm.w / 2) + 10, y: worm.body.position.y - (worm.h)}
-    } 
-    else {
-      return {x: worm.body.position.x - (worm.w / 2) - 10, y: worm.body.position.y - (worm.h)}
-    }
-  }
 
   isWormDead = () => !this.worm.isAlive() || !this.worm2.isAlive();
   
@@ -76,23 +72,19 @@ class Game {
 
   setActiveWormDirection = (p) => {
     let mouse_position;
-    if(this.player1Turn === true) {
-      if (ZoomController.secondScreen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
-      else mouse_position = p.mouseX
-      if (mouse_position < this.worm.body.position.x) {
-        this.worm.setDirection("left");
-      } else {
-        this.worm.setDirection("right");
-      }
+    let worm = this.getActiveWorm()
+
+    if (ZoomController.secondScreen === true) {
+      mouse_position = p.mouseX + 500 * ZoomController.sf
     } else {
-      if (ZoomController.secondScreen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
-      else mouse_position = p.mouseX
-      if (mouse_position < this.worm2.body.position.x) {
-        this.worm2.setDirection("left");
-      } else {
-        this.worm2.setDirection("right");
-      }
+      mouse_position = p.mouseX
     }
+   
+    if (mouse_position < worm.body.position.x) {
+      worm.setDirection("left");
+    } else {
+      worm.setDirection("right");
+    }    
   }
 
   getWinner = () => {
@@ -101,6 +93,10 @@ class Game {
     } else {
       return 'Player 2';
     }
+  }
+
+  switchToMode = (modeChoice) => {
+    return this.mode = modeChoice;
   }
 }
 module.exports = Game;
