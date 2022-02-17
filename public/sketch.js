@@ -83,12 +83,10 @@ class Sketch {
       }
 
       p.setup = () => {
-        const canvas = p.createCanvas(p.windowWidth - 2000, p.windowHeight - 2000);
+        const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
         canvas.parent("canvas-container")
-        
-        const CANVASWINDOWSIZE = 2000;
-        const CANVASWINDOWHEIGHT =  1000;
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenadeImg, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg, bazookaImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
+       
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenadeImg, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg, bazookaImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, [hitSound, ohOhSound], explosionEffect));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound, ohOhSound, gameOverSound]);
@@ -99,16 +97,14 @@ class Sketch {
       p.resetMain = () => {
         MusicController.changeToHidden(p);
         p.loop();
-        const CANVASWINDOWSIZE = 1500;
-        const CANVASWINDOWHEIGHT =  1000;
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenadeImg, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenadeImg, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, [hitSound, ohOhSound], explosionEffect));
         p.textSize(40);
       }
 
       p.draw = () => {
         Navbar.show(game);
-        p.resizeCanvas(1500, 900, [p.noRedraw])
+        p.resizeCanvas(1500, 900)
         const CANVASWINDOWSIZE = 1500;
         if (game.worm.isAlive() === false) 
         { mx = game.worm.body.position.x;
