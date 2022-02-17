@@ -58,7 +58,7 @@ http://localhost:3000/
 
 <!-- Screenshot of homepage -->
 
-![homePage](./readMeGifs/homePage.png)
+![homePage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/homePage.png?raw=true)
 
 # Usage
 
