@@ -18,6 +18,7 @@ class ScreenController {
 
   static gameScreen(p, game, imgs, sound) {
     p.background(imgs[1]);
+    p.select('#body').style('background-color:#330303');
     p.select('#navbarContainer').style('display:flex');
     Matter.Engine.update(game.engine);
     game.lava.show(p);
@@ -68,6 +69,7 @@ class ScreenController {
 
   static musicSoundScreen(p) {
     p.resizeCanvas(0, 0);
+    p.select('#body').style('background-color:#f9ebf9');
   }
 
   static setScreen(p, game, imgs, sound) {
