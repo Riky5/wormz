@@ -128,7 +128,7 @@ class Sketch {
           my = game.worm2.body.position.y;
         }
         ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
-        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, grenadeImg, tennisBallImg, tomatoImg, bazookaImg, music]);
+        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, grenadeImg, tennisBallImg, tomatoImg, bazookaImg], gameOverSound);
         game.setActiveWormDirection(p);
       }
 
