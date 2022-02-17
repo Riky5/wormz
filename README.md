@@ -1,6 +1,6 @@
 # Wormz Game
 
-<!-- IMAGE GOES HERE -->
+![wormsLogo](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/homePage.jpeg?raw=true)
 
 ## About the Project
 
