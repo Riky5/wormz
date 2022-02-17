@@ -97,7 +97,12 @@ A Player dies when their HP goes to 0.
 This can be from getting hit by bullets or falling in the lava.
 
 <!-- Picture of HP going down -->
-![Lava](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/fallInLava.gif?raw=true)
+
+![WormHit](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/worm-hit.gif?raw=true)
+
+![WormInLava](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/fallInLava.gif?raw=true)
+
+
 
 
 Testing
