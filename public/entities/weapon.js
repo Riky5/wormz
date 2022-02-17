@@ -1,6 +1,11 @@
+const ZoomController = require("../controllers/zoomController");
+
 class WeaponImage {
   show = (p, x, y, direction, img) => {
-    let angle = Math.atan2(y - p.mouseY, x - p.mouseX);
+    let angle;
+    if (ZoomController.bottom_screen === true)
+    { angle = Math.atan2(y - p.mouseY - 200, x - p.mouseX);}
+    else {angle = Math.atan2(y - p.mouseY, x - p.mouseX)}
     p.fill(255);
     p.translate(x, y);
     p.rotate(angle);
