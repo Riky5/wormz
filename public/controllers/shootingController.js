@@ -2,9 +2,6 @@ const Matter = require("matter-js")
 const ZoomController = require('./zoomController')
 
 class ShootingController {
-  constructor() {
-    this.bullet;
-  }
 
   static fireBullet(p, game, sound){
     let worm = game.getActiveWorm();
@@ -26,7 +23,7 @@ class ShootingController {
         game.timer.resetTimer();
         game.changePlayerTurn();
         game.timer.resetTimer();
-      },1000)
+      },1500)
     worm.canShoot = false
     }
   }

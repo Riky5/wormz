@@ -1,12 +1,19 @@
 
 class ZoomController {
-
+	// check if this constructor is ever use
 	constructor() {
 		this.secondScreen = false;
 		this.bottomScreen = false
 	}
 
 	static sf = 1; // scaleFactor
+
+	static explosionZoom = (game) => {
+		ZoomController.sf = 1
+		// removes explosion from screen
+		setTimeout(() => game.explosions.pop(), 500)
+		setTimeout(() => ZoomController.sf = 2, 1000)
+  }
 
 	static zoom(p, mx, my, scaleFactor,screenwidth) {
 		p.translate(mx, my)
