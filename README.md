@@ -114,7 +114,7 @@ Aim using the mouse, click to shoot! 💥
 
 Details are in the instructions page.
 
-<!-- gif of worm moving and jumping -->
+![wormMoving](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/wormsMoving.gif?raw=true)
 
 ## Winning or Losing a game
 
