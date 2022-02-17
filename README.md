@@ -15,11 +15,11 @@
 
 This is our 2D game made for our final project at Makers.
 
-Made in 2 weeks using JavaScript, p5 library, matter.js library, express, node, html, css. 
+Made in 2 weeks using [JavaScript](https://www.javascript.com/), [p5](https://p5js.org/), [Matter.js](https://brm.io/matter-js/) , [Express](https://expressjs.com/), [Node](https://nodejs.org/en/about/), [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main), [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS). 
 
 [p5](https://p5js.org/) is a JavaScript library with a focus on creative coding. This allowed us to display our game, have music and render images in a flexible manner. 
 
-[matter.js](https://brm.io/matter-js/) is a JavaScript physics engine library that allowed our worms, bullets and terrain to have physical bodies with mass,velocity, collisions, friction and gravity. This gave our worms life rather than just being images on a screen.
+[Matter.js](https://brm.io/matter-js/) is a JavaScript physics engine library that allowed our worms, bullets and terrain to have physical bodies with mass,velocity, collisions, friction and gravity. This gave our worms life rather than just being images on a screen.
 
 ## Playing the Game
 
