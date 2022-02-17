@@ -62,6 +62,14 @@ class Game {
   }
 
   isWormDead = () => !this.worm.isAlive() || !this.worm2.isAlive();
+
+  getDeadWorm = () => {
+    if (!this.worm.isAlive()) {
+      return this.worm;
+    } else if (!this.worm2.isAlive()) {
+      return this.worm2;
+    }
+  }
   
   setGameOver = () => {this.mode = 'gameOver'; ZoomController.sf = 1}
 

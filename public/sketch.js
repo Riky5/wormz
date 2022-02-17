@@ -109,16 +109,26 @@ class Sketch {
       p.draw = () => {
         Navbar.show(game);
         const CANVASWINDOWSIZE = 1500;
+        if (game.isWormDead()) {
+          let deadWorm = game.getDeadWorm().body.label;
+          mx = game.getWormPos(deadWorm);
+          my = game.getWormPos(deadWorm);
+        }
+        // Zoom in on dead worm
         if (game.worm.isAlive() === false) 
-        { mx = game.worm.body.position.x;
+        { console.log("worm 1 dead")
+          mx = game.worm.body.position.x;
           my = game.worm.body.position.y;}
         else if (game.worm2.isAlive() === false) 
-          {mx = game.worm2.body.position.x;
+          {console.log("worm 2 dead")
+            mx = game.worm2.body.position.x;
           my = game.worm2.body.position.y;}
+          // Zoom in on bullet
         else if (game.bulletExists === true)
         { 
           mx = ShootingController.bullet.body.position.x;
           my = ShootingController.bullet.body.position.y;}
+          // Zoom in on active player
         else if(game.player1Turn === true)
         { 
           mx = game.worm.body.position.x;
