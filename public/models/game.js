@@ -3,6 +3,8 @@ const ZoomController = require("../controllers/zoomController");
 const WeaponImage = require("../entities/weapon")
 // Moved to a models folder for now not sure where it should be housed
 const MAXMOVES = 5;
+const DEATHTIMEOUT = 1500;
+
 class Game {
 
   constructor({p: p, imgs: imgs, matter: matter, lava: lava, worm: worm,terrain: terrain, timer:timerController, weaponModel: weaponModel, bulletModel: bulletModel, screenheight: screenheight, screenwidth:screenwidth}) {
@@ -27,7 +29,7 @@ class Game {
 
   changePlayerTurn = () => {
     if (this.isWormDead()) {
-      setTimeout( () => this.setGameOver(), 1500);
+      this.showDeadWormGrave()
     } else {
       this.resetMoveCount();
       this.player1Turn = !this.player1Turn;
@@ -50,6 +52,8 @@ class Game {
       return this.worm2;
     }
   }
+
+  showDeadWormGrave = () => setTimeout( () => this.setGameOver(), DEATHTIMEOUT);
 
   getWormPos = (worm) => {
     if(worm.direction === "right") {

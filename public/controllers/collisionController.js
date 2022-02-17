@@ -2,7 +2,6 @@ const Bullet = require('../entities/bullet');
 const Explosion = require('../entities/explosion');
 const Matter = require('matter-js');
 const ZoomController = require('./zoomController');
-const DEATHTIMEOUT = 1500;
 
 class CollisionController{  
   
@@ -50,10 +49,7 @@ class CollisionController{
     if (CollisionController.isWormInCollision(pair)) {
       let worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(100);
-      if (game.isWormDead()) {
-        worm.isAlive = false;
-        setTimeout(function() {game.setGameOver()}, 700);
-      }
+      game.showDeadWormGrave();
     } 
   }
   
