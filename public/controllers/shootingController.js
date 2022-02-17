@@ -6,10 +6,10 @@ class ShootingController {
   }
 
   static fireBullet(p, game, sound){
-    game.bulletExists = true;
     let worm = game.getActiveWorm();
 
     if ( worm.canShoot === true ) {
+      game.bulletExists = true;
       let wormPos = game.getWormPos(worm);
       let angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);
       
