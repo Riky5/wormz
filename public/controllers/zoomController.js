@@ -21,6 +21,7 @@ class ZoomController {
 
 	static explosionZoom = (game) => {
 		ZoomController.sf = 1
+		// removes explosion from screen
 		setTimeout(() => game.explosions.pop(), 500)
 		setTimeout(() => ZoomController.sf = 2, 1000)
 	}

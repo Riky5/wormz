@@ -51,6 +51,7 @@ class CollisionController{
     if (CollisionController.isWormInCollision(pair)) {
       let worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(100);
+      worm.canShoot = false;
       game.showDeadWormGrave();
     } 
   }
