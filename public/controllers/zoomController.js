@@ -9,9 +9,9 @@ class ZoomController {
   static sf = 1; // scaleFactor
 
   static explosionZoom = (game) => {
+    ZoomController.zoomOut()
     setTimeout(() => game.explosions.pop(), 500);
-    setTimeout(() => ZoomController.ZoomIn(), game.intervalBetweenShots);
-    ZoomController.ZoomOut();
+    setTimeout(() => ZoomController.zoomIn(), game.intervalBetweenShots);
   };
 
   static zoom(p, mx, my, scaleFactor, screenwidth) {
@@ -30,7 +30,7 @@ class ZoomController {
 
   static zoomIn = () => ZoomController.sf = 2;
 
-  static ZoomOut = () => ZoomController.sf = 1;
+  static zoomOut = () => ZoomController.sf = 1;
 }
 
 module.exports = ZoomController;

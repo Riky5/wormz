@@ -3,7 +3,6 @@ const MEDIUMHEALTH = 70;
 const LOWHEALTH = 30;
 const MINHEALTH = 0;
 
-
 class Worm {
   constructor({x: x, y: y, w: w = 40, h: h= 40, options: options, img: img, matter: matter, direction: direction, weapons: weapons, graveImg: graveImg}) {
     this.body = matter.Bodies.rectangle(x, y, w, h, {label: options});
@@ -54,6 +53,7 @@ class Worm {
     p.text(this.hp, pos.x + 10, pos.y - 55);
   }
 
+  setDirection = (direction) => this.direction = direction;
 
   move = (force, mass) => {
     this.matter.Body.applyForce(this.body, this.body.position, force);
@@ -70,13 +70,13 @@ class Worm {
     }
   };
 
+  isAlive = () => this.hp > 0;
+
   changeWeapon = (weaponInput) => {
     if (weaponInput <= this.weapons.length && weaponInput > 0) {
       return this.currentWeapon = this.weapons[weaponInput - 1];
     }
   };
-
-  setDirection = (direction) => this.direction = direction;
 
   getHPColor = () => {
     if (this.hp > MEDIUMHEALTH) {
@@ -88,7 +88,6 @@ class Worm {
     }
   };
 
-  isAlive = () => this.hp > 0;
 }
 
 module.exports = Worm;
