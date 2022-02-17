@@ -58,6 +58,8 @@ http://localhost:3000/
 
 <!-- Screenshot of homepage -->
 
+![homePage](./readMeGifs/homePage.png)
+
 # Usage
 
 ## Option Page
