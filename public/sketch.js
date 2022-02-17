@@ -41,6 +41,8 @@ class Sketch {
     let jumpSound;
     let whooshSound;
     let hitSound;
+    let ohOhSound;
+    let gameOverSound;
     let grenadeImg;
     let gameOver;
     let clockTimer;
@@ -66,7 +68,9 @@ class Sketch {
         explosionSound = p.loadSound("assets/Explosion.mp3");
         jumpSound = p.loadSound('assets/jump.mp3');
         whooshSound = p.loadSound('assets/whoosh.mp3');
-        hitSound = p.loadSound('assets/hit.mp3')
+        hitSound = p.loadSound('assets/hit.mp3');
+        ohOhSound = p.loadSound('assets/oh-oh.mp3');
+        gameOverSound = p.loadSound('assets/game-over.mp3')
         grenadeImg = p.loadImage("images/grenade.png");
         gameOver = p.loadImage("images/game-over.jpg");
         clockTimer = p.loadImage("images/clock_timer.png");
@@ -83,9 +87,9 @@ class Sketch {
         const CANVASWINDOWSIZE = 2000;
         const CANVASWINDOWHEIGHT =  1000;
         game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenadeImg, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg, bazookaImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
-        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, [hitSound, ohOhSound], explosionEffect));
         p.textSize(40);
-        MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
+        MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound, ohOhSound, gameOverSound]);
         ZoomController.sf = 1;
         setTimeout(()=> {ZoomController.sf = 2},2000)
       }
@@ -98,7 +102,7 @@ class Sketch {
         // p.createCanvas(CANVASWINDOWSIZE, CANVASWINDOWSIZE);
         // p.resizeCanvas(p.windowWidth,p.windowHeight)
         game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenadeImg, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
-        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
+        Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, [hitSound, ohOhSound], explosionEffect));
         p.textSize(40);
       }
 

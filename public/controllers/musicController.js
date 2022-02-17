@@ -30,18 +30,22 @@ class MusicController {
     let soundOnBtn = p.createButton('ON').parent(soundDiv);
     soundOnBtn.id('soundOnBtn');
     soundOnBtn.mouseClicked(function() {
-      sounds[1].connect();
-      sounds[2].connect();
-      sounds[3].connect();
-      sounds[4].connect();
+      sounds[1].connect(); // explosionSound
+      sounds[2].connect(); // jumpSound
+      sounds[3].connect(); // whooshSound
+      sounds[4].connect(); // hitSound
+      sounds[5].connect(); // ohOhSound
+      sounds[6].connect(); // gameOverSound
     });
     let soundOffBtn = p.createButton('OFF').parent(soundDiv);
     soundOffBtn.id('soundOffBtn');
     soundOffBtn.mouseClicked(function() {
-      sounds[1].disconnect();
-      sounds[2].disconnect();
-      sounds[3].disconnect();
-      sounds[4].disconnect();
+      sounds[1].disconnect(); // explosionSound
+      sounds[2].disconnect(); // jumpSound
+      sounds[3].disconnect(); // whooshSound
+      sounds[4].disconnect(); // hitSound
+      sounds[5].disconnect(); // ohOhSound
+      sounds[6].disconnect(); // gameOverSound
     });
     let backToMain = p.createP('Press ENTER to go back to main page').parent(mainDiv);
     backToMain.id('enterMsg');

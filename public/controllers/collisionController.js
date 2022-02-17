@@ -14,10 +14,10 @@ class CollisionController{
     }
   }
 
-  static findAndDamageWorm = (pair, game, sound, bulletDamageValue) => {
-
+  static findAndDamageWorm = (pair, game, sounds, bulletDamageValue) => {
+    let randomIndex = Math.floor(Math.random() * 2);
     if (CollisionController.isWormInCollision(pair)) {
-      sound.play();
+      sounds[randomIndex].play();
       let worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(bulletDamageValue);
       if (game.isWormDead()) {
@@ -59,12 +59,12 @@ class CollisionController{
     } 
   }
   
-  static collision = (event, game, sound, img) => {
+  static collision = (event, game, sounds, img) => {
     for (const pair of event.pairs) {
       if (CollisionController.isInCollision(pair, "bullet")) {
         if (CollisionController.isWormInCollision(pair)) {
           let bulletDamageValue = game.bullets[0].damage
-          CollisionController.findAndDamageWorm(pair, game, sound, bulletDamageValue); 
+          CollisionController.findAndDamageWorm(pair, game, sounds, bulletDamageValue); 
         }
         CollisionController.createExplosion(pair, game, img);
         game.timer.pauseTimer();
