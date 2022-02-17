@@ -20,11 +20,11 @@ Created from start to finish in 2 weeks using [JavaScript](https://www.javascrip
 
 [Matter.js](https://brm.io/matter-js/) is a JavaScript physics engine library that allowed our worms, bullets and terrain to have physical bodies with mass, velocity, collisions, friction and gravity. This gave our worms life rather than just being images on a screen.
 
-## Playing the Game
+## Play Online
 
 https://wormz.herokuapp.com
 
-# Getting Started
+# Getting Started Locally
 
 ## Prerequisites
 
@@ -64,7 +64,7 @@ http://localhost:3000/
 ````
 ## What you should see
 
-![homePage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/homePage.jpeg?raw=true)
+![homePage](https://github.com/Riky5/wormz/blob/readme/public/readMeImages/homePage.jpeg?raw=true)
 
 ## Testing
 
@@ -80,13 +80,13 @@ npm test
 
 Click ***ON*** or ***OFF*** to start or stop background music and sound effects. 🔈 🔇
 
-![optionScreen](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/optionScreen.png?raw=true)
+![optionScreen](https://github.com/Riky5/wormz/blob/readme/public/readMeImages/optionScreen.png?raw=true)
 
 ## Instruction Page
 
 This is an overview of how to play the game. 
 
-![instructionPage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/instructionPage.png?raw=true)
+![instructionPage](https://github.com/Riky5/wormz/blob/readme/public/readMeImages/instructionPage.png?raw=true)
 
 # Playing the Game
 
@@ -104,7 +104,7 @@ This displays the following:
 
 - Moves left on a Player's turn.
 
-![navBar](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/navBar.png?raw=true)
+![navBar](https://github.com/Riky5/wormz/blob/readme/public/readMeImages/navBar.png?raw=true)
 
 ## Gameplay
 
@@ -114,7 +114,7 @@ Aim using the mouse, click to shoot! 💥
 
 Details are in the instructions page.
 
-![wormMoving](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/wormsMoving.gif?raw=true)
+![wormMoving](https://github.com/Riky5/wormz/blob/readme/public/readMeImages/wormsMoving.gif?raw=true)
 
 ## Winning or Losing a game
 
@@ -124,9 +124,9 @@ A Player dies when their HP goes to 0.
 
 This can be from getting hit by enough bullets or falling in the lava. 🔥
 
-![WormHit](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/worm-hit.gif?raw=true)
+![WormHit](https://github.com/Riky5/wormz/blob/readme/public/readMeImages/worm-hit.gif?raw=true)
 
-![WormInLava](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/fallInLava.gif?raw=true)
+![WormInLava](https://github.com/Riky5/wormz/blob/readme/public/readMeImages/fallInLava.gif?raw=true)
 
 # Acknowledgements
 
