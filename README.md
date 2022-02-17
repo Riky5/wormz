@@ -1,3 +1,7 @@
+[![Visits Badge](https://badges.pufler.dev/visits/Riky5/wormz)](https://badges.pufler.dev)
+[![Created Badge](https://badges.pufler.dev/created/Riky5/wormz)](https://badges.pufler.dev)
+![Heroku](https://heroku-badge.herokuapp.com/?app=wormz)
+
 <img src="https://github.com/Riky5/wormz/blob/readme/public/images/WormsLogoText.png?raw=true" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="250" height="60" />
 
 ## Created By
