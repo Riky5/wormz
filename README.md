@@ -4,8 +4,7 @@
 
 [Alfonso Ghislieri](https://github.com/AlfonsoGhislieri) |
 [Chris Clement](https://github.com/chris-clement) |
-[Chris Thomas](https://github.com/Hereloss)
-
+[Chris Thomas](https://github.com/Hereloss) |
 [Giorgi Gutsaevi](https://github.com/giorgigutsaevi) |
 [Kim Morgan](https://github.com/kim-morgan) |
 [Riky Moroni](https://github.com/Riky5)
