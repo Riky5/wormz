@@ -1,5 +1,17 @@
 <img src="https://github.com/Riky5/wormz/blob/readme/public/images/WormsLogoText.png?raw=true" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="250" height="60" />
 
+## Created By
+
+[Alfonso Ghislieri](https://github.com/AlfonsoGhislieri) |
+[Chris Clement](https://github.com/chris-clement) |
+[Chris Thomas](https://github.com/Hereloss)
+
+[Giorgi Gutsaevi](https://github.com/giorgigutsaevi) |
+[Kim Morgan](https://github.com/kim-morgan) |
+[Riky Moroni](https://github.com/Riky5)
+
+
+
 ## About the Project
 
 This is our 2D game made for our final project at Makers.
