@@ -20,7 +20,6 @@ class ZoomController {
 			this.secondScreen = false; 
 			this.bottomScreen = false}
 	}
-
 }
 
 module.exports = ZoomController;
