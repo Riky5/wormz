@@ -1,10 +1,7 @@
 const Matter = require("matter-js")
 
 class ShootingController {
-  constructor() {
-    this.bullet;
-  }
-
+  
   static fireBullet(p, game, sound){
     let worm = game.getActiveWorm();
 

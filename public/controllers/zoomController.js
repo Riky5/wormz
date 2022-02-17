@@ -1,5 +1,6 @@
 
 class ZoomController {
+	// check if this constructor is ever use
   constructor() {
     this.second_screen = false;
   }
@@ -17,6 +18,12 @@ class ZoomController {
       this.second_screen = false;
     }
   }
+
+	static explosionZoom = (game) => {
+		ZoomController.sf = 1
+		setTimeout(() => game.explosions.pop(), 500)
+		setTimeout(() => ZoomController.sf = 2, 1000)
+	}
 }
 
 module.exports = ZoomController;
