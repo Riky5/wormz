@@ -27,7 +27,6 @@ class Sketch {
   sketchWorld() {
     // These variables need to stay here due to strange scope of this function
     let wormsLogoImg;
-    let backgroundImg;
     let vulcanoBackgroundImg;
     let wormImg1;
     let wormImg2;
@@ -36,12 +35,13 @@ class Sketch {
     let rockImg;
     let tennisBallImg;
     let tomatoImg;
+    let bazookaImg;
     let music;
     let explosionSound;
     let jumpSound;
     let whooshSound;
     let hitSound;
-    let grenade;
+    let grenadeImg;
     let gameOver;
     let clockTimer;
     let gameClass = this.gameClass;
@@ -58,7 +58,6 @@ class Sketch {
 
       p.preload = () => {
         wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
-        backgroundImg = p.loadImage("images/background-image.png");
         vulcanoBackgroundImg = p.loadImage("images/volcanoBackground.png");
         wormImg1 = p.loadImage("images/worm0.png");
         wormImg2 = p.loadImage("images/worm1.png");
@@ -68,13 +67,14 @@ class Sketch {
         jumpSound = p.loadSound('assets/jump.mp3');
         whooshSound = p.loadSound('assets/whoosh.mp3');
         hitSound = p.loadSound('assets/hit.mp3')
-        grenade = p.loadImage("images/grenade.png");
+        grenadeImg = p.loadImage("images/grenade.png");
         gameOver = p.loadImage("images/game-over.jpg");
         clockTimer = p.loadImage("images/clock_timer.png");
         lavaImg = p.loadImage('images/lava.png');
         rockImg = p.loadImage('images/rock.png');
         tennisBallImg = p.loadImage('images/tennis_ball.png');
         tomatoImg = p.loadImage('images/tomato.png');
+        bazookaImg = p.loadImage('images/bazooka.png');
         explosionEffect = p.loadImage("images/explosion.png");
       }
 
@@ -82,7 +82,7 @@ class Sketch {
         p.createCanvas(p.windowWidth, p.windowHeight);
         const CANVASWINDOWSIZE = 2000;
         const CANVASWINDOWHEIGHT =  1000;
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenadeImg, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg, bazookaImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
         MusicController.createSoundScreen(p, [music, explosionSound, jumpSound, whooshSound, hitSound]);
@@ -97,7 +97,7 @@ class Sketch {
         const CANVASWINDOWHEIGHT =  1000;
         // p.createCanvas(CANVASWINDOWSIZE, CANVASWINDOWSIZE);
         // p.resizeCanvas(p.windowWidth,p.windowHeight)
-        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenade, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
+        game = new gameClass({ p: p, imgs: [wormImg1, wormImg2, clockTimer, grenadeImg, lavaImg, rockImg, tennisBallImg, tomatoImg, graveImg], matter: Matter, lava: Lava, worm: Worm, terrain: Terrain, timer: TimerController, weaponModel: Weapon, bulletModel: Bullet, screenheight: CANVASWINDOWHEIGHT, screenwidth: CANVASWINDOWSIZE});
         Matter.Events.on(game.engine, "collisionStart", (event) => CollisionController.collision(event, game, hitSound, explosionEffect));
         p.textSize(40);
       }
@@ -124,7 +124,7 @@ class Sketch {
           my = game.worm2.body.position.y;
         }
         ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
-        ScreenController.setScreen(p, game, [wormsLogoImg, vulcanoBackgroundImg, gameOver, grenade, tennisBallImg, tomatoImg, music]);
+        ScreenController.setScreen(p, game, [wormsLogoImg, vulcanoBackgroundImg, gameOver, grenadeImg, tennisBallImg, tomatoImg, bazookaImg, music]);
         game.setActiveWormDirection(p);
       }
 
