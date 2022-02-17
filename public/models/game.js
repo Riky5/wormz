@@ -31,6 +31,7 @@ class Game {
     if (this.isWormDead()) {
       this.showDeadWormGrave()
     } else {
+      this.getActiveWorm().canShoot = true;
       this.resetMoveCount();
       this.player1Turn = !this.player1Turn;
     }
