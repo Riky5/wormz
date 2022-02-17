@@ -20,7 +20,7 @@ class Worm {
     this.currentWeapon = this.weapons[0];
     this.direction = direction;
     this.isAlive = true;
-    this.didShoot = false;
+    this.canShoot = true;
   }
 
   show = (p, img = this.img, graveImg = this.graveImg) => {

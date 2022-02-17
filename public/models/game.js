@@ -25,6 +25,7 @@ class Game {
   }
 
   changePlayerTurn = () => {
+    this.getActiveWorm().canShoot = true;
     this.resetMoveCount();
     this.player1Turn = !this.player1Turn;
   }

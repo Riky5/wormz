@@ -117,6 +117,7 @@ class Sketch {
           my = game.worm2.body.position.y;}
         else if (game.bulletExists === true)
         { 
+          console.log('1')
           mx = ShootingController.bullet.body.position.x;
           my = ShootingController.bullet.body.position.y;}
         else if(game.player1Turn === true)
