@@ -88,7 +88,7 @@ This displays the following:
 
 - Moves left on a Player's turn.
 
-<!-- screenshot of navbar only -->
+![navBar](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/navBar.png?raw=true)
 
 ### Winning/Losing a game
 
