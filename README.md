@@ -97,7 +97,7 @@ A Player dies when their HP goes to 0.
 This can be from getting hit by bullets or falling in the lava.
 
 <!-- Picture of HP going down -->
-![Lava]("readMeGifs/fallInLava.gif")
+![Lava](readMeGifs/fallInLava.gif) / ![](readMeGifs/fallInLava.gif)
 
 
 Testing
