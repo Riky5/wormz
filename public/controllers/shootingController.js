@@ -11,7 +11,7 @@ class ShootingController {
     let worm = game.getActiveWorm();
     let wormPos = game.getWormPos(worm);
     let angleDeg
-    if (ZoomController.bottom_screen === true)
+    if (ZoomController.bottomScreen === true)
     {angleDeg = Math.atan2(wormPos.y - p.mouseY - 200, wormPos.x - p.mouseX);}
     else
     {angleDeg = Math.atan2(wormPos.y - p.mouseY, wormPos.x - p.mouseX);}
