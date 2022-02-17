@@ -10,12 +10,11 @@
 [Riky Moroni](https://github.com/Riky5)
 
 
-
-## About the Project
+# About the Project
 
 This is our 2D game made for our final project at Makers.
 
-Made in 2 weeks using [JavaScript](https://www.javascript.com/), [p5](https://p5js.org/), [Matter.js](https://brm.io/matter-js/) , [Express](https://expressjs.com/), [Node](https://nodejs.org/en/about/), [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main), [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS). 
+Created from start to finish in 2 weeks using [JavaScript](https://www.javascript.com/), [p5](https://p5js.org/), [Matter.js](https://brm.io/matter-js/), [Express](https://expressjs.com/), [Node](https://nodejs.org/en/about/), [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main), [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS). 
 
 [p5](https://p5js.org/) is a JavaScript library with a focus on creative coding. This allowed us to display our game, have music and render images in a flexible manner. 
 
@@ -29,8 +28,8 @@ https://wormz.herokuapp.com
 
 ## Prerequisites
 
-- [node]('https://nodejs.org/en/download/')
-- npm
+- [node](https://nodejs.org/en/download/)
+- [npm](https://www.npmjs.com/)
 
 ```
 npm install -g npm
@@ -67,6 +66,14 @@ http://localhost:3000/
 
 ![homePage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/homePage.jpeg?raw=true)
 
+## Testing
+
+Testing done using [chai](https://www.chaijs.com/) ☕️
+
+```
+npm test
+```
+
 # Usage
 
 ## Option Page
@@ -81,9 +88,9 @@ This is an overview of how to play the game.
 
 ![instructionPage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/instructionPage.png?raw=true)
 
-## Playing the Game
+# Playing the Game
 
-### Nav Bar
+## Nav Bar
 
 This displays the following: 
 
@@ -99,7 +106,7 @@ This displays the following:
 
 ![navBar](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/navBar.png?raw=true)
 
-### Winning/Losing a game
+## Winning/Losing a game
 
 A Player wins when the other Player dies.
 
@@ -114,7 +121,3 @@ This can be from getting hit by bullets or falling in the lava.
 
 
 
-Testing
-```
-npm test
-```
