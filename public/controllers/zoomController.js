@@ -1,4 +1,4 @@
-
+const ShootingController = require("./shootingController")
 class ZoomController {
 	// check if this constructor is ever use
 	constructor() {
@@ -32,22 +32,30 @@ class ZoomController {
 		if (game.isWormDead()) {
 			let deadWorm = game.getDeadWorm().body;
 			return {
-				mx = deadWorm.position.x
-				my = deadWorm.position.y}
+				mx: deadWorm.position.x,
+				my: deadWorm.position.y
+			}
 		}
 			// Zoom in on bullet
 		else if (game.bulletExists === true)
 		{ 
-			mx = ShootingController.bullet.body.position.x;
-			my = ShootingController.bullet.body.position.y;}
+			return {
+			mx: ShootingController.bullet.body.position.x,
+			my: ShootingController.bullet.body.position.y
+			}
+		}
 			// Zoom in on active player
-		else if(game.player1Turn === true)
+		else if (game.player1Turn === true)
 		{ 
-			mx = game.worm.body.position.x;
-			my = game.worm.body.position.y;
+			return {
+				mx: game.worm.body.position.x,
+				my: game.worm.body.position.y
+			}
 		} else { 
-			mx = game.worm2.body.position.x;
-			my = game.worm2.body.position.y;
+			return {
+				mx: game.worm2.body.position.x,
+				my: game.worm2.body.position.y
+			}
 		}
 	}
 }
