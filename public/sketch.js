@@ -109,8 +109,8 @@ class Sketch {
       p.draw = () => {
         Navbar.show(game);
         const CANVASWINDOWSIZE = 1500;
-        mx = ZoomController.setMousePos(game).mx;
-        my = ZoomController.setMousePos(game).my;        
+        mx = ZoomController.setHoning(game).mx;
+        my = ZoomController.setHoning(game).my;        
         ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, grenadeImg, tennisBallImg, tomatoImg, bazookaImg], gameOverSound);
         game.setActiveWormDirection(p);
