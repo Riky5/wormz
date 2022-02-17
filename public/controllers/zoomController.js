@@ -30,7 +30,7 @@ class ZoomController {
 
 	static setMousePos(game) {
 		if (game.isWormDead()) {
-			ZoomController.honeInOnDeadWorm(game);
+			return ZoomController.honeInOnDeadWorm(game);
 		}
 			// Zoom in on bullet
 		else if (game.bulletExists === true)
@@ -58,6 +58,8 @@ class ZoomController {
 				my: deadWorm.position.y
 			}
 	}
+
+	
 }
 
 module.exports = ZoomController;
