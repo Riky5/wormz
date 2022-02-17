@@ -1,4 +1,4 @@
-![wormsLogo](https://github.com/Riky5/wormz/blob/readme/public/images/WormsLogoText.png?raw=true=150x30)
+![wormsLogo](https://github.com/Riky5/wormz/blob/readme/public/images/WormsLogoText.png?raw=true =150x30)
 
 ## About the Project
 
