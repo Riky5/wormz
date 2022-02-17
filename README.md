@@ -10,7 +10,7 @@
 [Riky Moroni](https://github.com/Riky5)
 
 
-# About the Project
+## About the Project
 
 This is our 2D game made for our final project at Makers.
 
@@ -18,7 +18,7 @@ Created from start to finish in 2 weeks using [JavaScript](https://www.javascrip
 
 [p5](https://p5js.org/) is a JavaScript library with a focus on creative coding. This allowed us to display our game, have music and render images in a flexible manner. 
 
-[Matter.js](https://brm.io/matter-js/) is a JavaScript physics engine library that allowed our worms, bullets and terrain to have physical bodies with mass,velocity, collisions, friction and gravity. This gave our worms life rather than just being images on a screen.
+[Matter.js](https://brm.io/matter-js/) is a JavaScript physics engine library that allowed our worms, bullets and terrain to have physical bodies with mass, velocity, collisions, friction and gravity. This gave our worms life rather than just being images on a screen.
 
 ## Playing the Game
 
@@ -68,7 +68,7 @@ http://localhost:3000/
 
 ## Testing
 
-Testing done using [chai](https://www.chaijs.com/) ☕️
+Tests use [chai](https://www.chaijs.com/) 🫖 and [mocha](https://mochajs.org/) ☕️
 
 ```
 npm test
@@ -78,7 +78,7 @@ npm test
 
 ## Option Page
 
-Click ***on*** or ***off*** to start or stop background music and sound effects.
+Click ***ON*** or ***OFF*** to start or stop background music and sound effects. 🔈 🔇
 
 ![optionScreen](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/optionScreen.png?raw=true)
 
@@ -106,18 +106,30 @@ This displays the following:
 
 ![navBar](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/navBar.png?raw=true)
 
-## Winning/Losing a game
+## Gameplay
+
+Move using Left or Right arrow keys, jump using Up. 🕹
+
+Aim using the mouse, click to shoot! 💥
+
+Details are in the instructions page.
+
+<!-- gif of worm moving and jumping -->
+
+## Winning or Losing a game
 
 A Player wins when the other Player dies.
 
 A Player dies when their HP goes to 0. 
 
-This can be from getting hit by bullets or falling in the lava.
+This can be from getting hit by enough bullets or falling in the lava. 🔥
 
 ![WormHit](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/worm-hit.gif?raw=true)
 
 ![WormInLava](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/fallInLava.gif?raw=true)
 
+# Acknowledgements
 
+Sounds thanks to [101 Soundboards](https://www.101soundboards.com/), [ZapSplat](https://www.zapsplat.com/) and [SoundImage](https://soundimage.org/) 🎶🎵
 
-
+Thanks and hope you enjoy the game! 🪱
