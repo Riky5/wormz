@@ -65,8 +65,8 @@ button:hover {
 }
 
 #activeWorm, #activeWeapon, #clock {
-  width: 2rem;
-  height: 2rem;
+  width: 1.7rem;
+  height: 1.7rem;
 }
 
 #clock {
@@ -105,8 +105,8 @@ button:hover {
 }
 
 #weaponSelection {
-  width: 2rem;
-  height: 2.2rem;
+  width: 1.7rem;
+  height: 1.7rem;
   margin-left: 0;
 }
 
@@ -121,7 +121,7 @@ button:hover {
 
 .navbarContainer {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   border: 1px solid rgb(207, 205, 205);
 }
 
