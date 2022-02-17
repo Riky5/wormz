@@ -34,6 +34,8 @@ class MusicController {
       sounds[2].connect();
       sounds[3].connect();
       sounds[4].connect();
+      sounds[5].connect();
+      sounds[6].connect();
     });
     let soundOffBtn = p.createButton('OFF').parent(soundDiv);
     soundOffBtn.id('soundOffBtn');
@@ -42,6 +44,8 @@ class MusicController {
       sounds[2].disconnect();
       sounds[3].disconnect();
       sounds[4].disconnect();
+      sounds[5].disconnect();
+      sounds[6].disconnect();
     });
     let backToMain = p.createP('Press ENTER to go back to main page').parent(mainDiv);
     backToMain.id('enterMsg');

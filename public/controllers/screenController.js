@@ -13,7 +13,7 @@ class ScreenController{
     p.text("Press OPTION for Music/Sound settings", p.windowWidth / 2 - 252, p.windowHeight / 2 + 210);
   }
 
-  static gameScreen(p, game, imgs) {
+  static gameScreen(p, game, imgs, sounds) {
     p.background(imgs[1]);
     p.select('#navbarContainer').style('display:flex');
     Matter.Engine.update(game.engine);
@@ -25,6 +25,8 @@ class ScreenController{
     game.bullets.forEach(element => element.show(p));
     if(!game.isWormDead()) {
       game.weaponImage.show(p,game.getActiveWorm().body.position.x, game.getActiveWorm().body.position.y, game.getActiveWorm().direction, imgs[6]);
+    } else {
+      sounds[1].play();
     }
   }
 
@@ -65,12 +67,12 @@ class ScreenController{
     p.resizeCanvas(0, 0);
   }
 
-  static setScreen(p, game, imgs) {
+  static setScreen(p, game, imgs, sounds) {
     if(game.mode === 'start') {
       ScreenController.startScreen(p, imgs[0]);
     }
     else if(game.mode === 'game') {
-      ScreenController.gameScreen(p, game, imgs);
+      ScreenController.gameScreen(p, game, imgs, sounds);
     }
     else if (game.mode === 'gameOver'){
       game.timer.resetTimer();
