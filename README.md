@@ -56,8 +56,6 @@ http://localhost:3000/
 ````
 ## What you should see
 
-<!-- Screenshot of homepage -->
-
 ![homePage](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/homePage.png?raw=true)
 
 # Usage
@@ -66,7 +64,7 @@ http://localhost:3000/
 
 Click ***on*** or ***off*** to start or stop background music and sound effects.
 
-<!-- Screenshot of options page -->
+![optionScreen](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/optionScreen.png?raw=true)
 
 ## Instruction Page
 
