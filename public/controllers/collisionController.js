@@ -5,12 +5,12 @@ const ZoomController = require('./zoomController');
 
 class CollisionController {
   static findAndDestroyBullet = (pair, game) => {
-    game.bulletExists = false;
     if (pair.bodyA.label === 'bullet') {
       Bullet.destroy(pair.bodyA, game);
     } else {
       Bullet.destroy(pair.bodyB, game);
     }
+    game.bulletExists = false;
   };
 
   static findAndDamageWorm = (pair, game, sounds, bulletDamageValue) => {
@@ -19,6 +19,10 @@ class CollisionController {
       sounds[randomIndex].play();
       const worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(bulletDamageValue);
+
+      if (!worm.isAlive() ) {
+        game.showDeadWormGrave();
+      }
     }
   };
 
@@ -26,17 +30,15 @@ class CollisionController {
     if (pair.bodyB.label === 'bullet') {
       this.explosion = new Explosion({x: pair.bodyA.position.x, y: pair.bodyA.position.y, r: 120, game: game, img: img});
       game.explosions.push(this.explosion);
-      CollisionController.destroyTerrain(this.explosion, game);
-      CollisionController.findAndDestroyBullet(pair, game);
-      Matter.World.remove(game.world, this.explosion.body);
-      ZoomController.sf = 1;
-      setTimeout(function() {
-        game.explosions.pop();
-      }, 500);
-      setTimeout(() => {
-        ZoomController.sf = 2;
-      }, 1000);
+      CollisionController.destroyTerrainAndBullet(pair, game);
+      ZoomController.explosionZoom(game);
     }
+  };
+
+  static destroyTerrainAndBullet = (pair, game) => {
+    CollisionController.destroyTerrain(this.explosion, game);
+    CollisionController.findAndDestroyBullet(pair, game);
+    Matter.World.remove(game.world, this.explosion.body);
   };
 
   static destroyTerrain = (explosion, game) => {
@@ -53,6 +55,7 @@ class CollisionController {
     if (CollisionController.isWormInCollision(pair)) {
       const worm = CollisionController.giveWormInCollision(pair, game);
       worm.reduceHP(100);
+      worm.canShoot = false;
       game.showDeadWormGrave();
     }
   };
