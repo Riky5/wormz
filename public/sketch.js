@@ -27,7 +27,7 @@ class Sketch {
   sketchWorld() {
     // These variables need to stay here due to strange scope of this function
     let wormsLogoImg;
-    let vulcanoBackgroundImg;
+    let backgroundImg;
     let wormImg1;
     let wormImg2;
     let graveImg;
@@ -58,7 +58,7 @@ class Sketch {
 
       p.preload = () => {
         wormsLogoImg = p.loadImage("images/WormsLogo.jpg");
-        vulcanoBackgroundImg = p.loadImage("images/volcanoBackground.png");
+        backgroundImg = p.loadImage("images/volcanoBackground.png");
         wormImg1 = p.loadImage("images/worm0.png");
         wormImg2 = p.loadImage("images/worm1.png");
         graveImg = p.loadImage("images/grave.png");
@@ -124,7 +124,7 @@ class Sketch {
           my = game.worm2.body.position.y;
         }
         ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
-        ScreenController.setScreen(p, game, [wormsLogoImg, vulcanoBackgroundImg, gameOver, grenadeImg, tennisBallImg, tomatoImg, bazookaImg, music]);
+        ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, grenadeImg, tennisBallImg, tomatoImg, bazookaImg, music]);
         game.setActiveWormDirection(p);
       }
 
