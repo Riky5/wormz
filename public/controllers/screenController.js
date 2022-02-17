@@ -13,8 +13,8 @@ class ScreenController{
     p.text("Press OPTION for Music/Sound settings", p.windowWidth / 2 - 252, p.windowHeight / 2 + 210);
   }
 
-  static gameScreen(p, game, img) {
-    p.background(img);
+  static gameScreen(p, game, imgs) {
+    p.background(imgs[1]);
     p.select('#navbarContainer').style('display:flex');
     Matter.Engine.update(game.engine);
     game.lava.show(p);
@@ -24,7 +24,7 @@ class ScreenController{
     game.explosions.forEach(element => element.show(p));
     game.bullets.forEach(element => element.show(p));
     if(!game.isWormDead()) {
-      game.weaponImage.show(p,game.getActiveWorm().body.position.x,game.getActiveWorm().body.position.y,game.getActiveWorm().direction);
+      game.weaponImage.show(p,game.getActiveWorm().body.position.x, game.getActiveWorm().body.position.y, game.getActiveWorm().direction, imgs[6]);
     }
   }
 
@@ -57,7 +57,7 @@ class ScreenController{
     p.text(`Damage: ${game.worm.weapons[1].damage} / Speed: Medium`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 140);
     p.text('3️⃣ = ', p.windowWidth / 2 - 310, p.windowHeight / 2 + 180);
     p.image(imgs[5], p.windowWidth / 2 - 240, p.windowHeight / 2 + 150, 40, 40);
-    p.text(`Damage: ${game.worm.weapons[2].damage} / Speed: Medium`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 180);
+    p.text(`Damage: ${game.worm.weapons[2].damage} / Speed: High`, p.windowWidth / 2 - 170, p.windowHeight / 2 + 180);
     p.text("Ready? Press ENTER to go back to main page", p.windowWidth / 2 - 307, p.windowHeight / 2 + 250);
   }
 
@@ -70,7 +70,7 @@ class ScreenController{
       ScreenController.startScreen(p, imgs[0]);
     }
     else if(game.mode === 'game') {
-      ScreenController.gameScreen(p, game, imgs[1]);
+      ScreenController.gameScreen(p, game, imgs);
     }
     else if (game.mode === 'gameOver'){
       game.timer.resetTimer();
