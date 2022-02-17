@@ -1,16 +1,16 @@
 class MusicController {
   static createSoundScreen(p, sounds) {
     let musicPlaying = false;
-    let mainDiv = p.createDiv('');
+    const mainDiv = p.createDiv('');
     mainDiv.id('main-music-div');
     mainDiv.style('display:none');
-    let title = p.createP('Music / Audio Settings').parent(mainDiv);
+    const title = p.createP('Music / Audio Settings').parent(mainDiv);
     title.id('title');
-    let musicDiv = p.createDiv('').parent(mainDiv);
+    const musicDiv = p.createDiv('').parent(mainDiv);
     musicDiv.id('musicDiv');
-    let musicText = p.createP('Background Music:').parent(musicDiv);
+    const musicText = p.createP('Background Music:').parent(musicDiv);
     musicText.id('musicText');
-    let musicOnBtn = p.createButton('ON').parent(musicDiv);
+    const musicOnBtn = p.createButton('ON').parent(musicDiv);
     musicOnBtn.id('musicOnBtn');
     musicOnBtn.mouseClicked(function() {
       if (!musicPlaying) {
@@ -18,16 +18,16 @@ class MusicController {
         sounds[0].loop();
       }
     });
-    let musicOffBtn = p.createButton('OFF').parent(musicDiv);
+    const musicOffBtn = p.createButton('OFF').parent(musicDiv);
     musicOffBtn.id('musicOffBtn');
     musicOffBtn.mouseClicked(function() {
       musicPlaying = false;
       sounds[0].stop();
     });
-    let soundDiv = p.createDiv('').parent(mainDiv);
+    const soundDiv = p.createDiv('').parent(mainDiv);
     soundDiv.id('soundDiv');
-    let soundText = p.createP('Sound Effects:').parent(soundDiv);
-    let soundOnBtn = p.createButton('ON').parent(soundDiv);
+    const soundText = p.createP('Sound Effects:').parent(soundDiv);
+    const soundOnBtn = p.createButton('ON').parent(soundDiv);
     soundOnBtn.id('soundOnBtn');
     soundOnBtn.mouseClicked(function() {
       sounds[1].connect(); // explosionSound
@@ -37,7 +37,7 @@ class MusicController {
       sounds[5].connect(); // ohOhSound
       sounds[6].connect(); // gameOverSound
     });
-    let soundOffBtn = p.createButton('OFF').parent(soundDiv);
+    const soundOffBtn = p.createButton('OFF').parent(soundDiv);
     soundOffBtn.id('soundOffBtn');
     soundOffBtn.mouseClicked(function() {
       sounds[1].disconnect(); // explosionSound
@@ -47,7 +47,7 @@ class MusicController {
       sounds[5].disconnect(); // ohOhSound
       sounds[6].disconnect(); // gameOverSound
     });
-    let backToMain = p.createP('Press ENTER to go back to main page').parent(mainDiv);
+    const backToMain = p.createP('Press ENTER to go back to main page').parent(mainDiv);
     backToMain.id('enterMsg');
   }
 
@@ -61,7 +61,7 @@ class MusicController {
 
   static startMusic = (music) => {
     music.loop();
-  }
+  };
 }
 
 module.exports = MusicController;

@@ -4,6 +4,7 @@ const WeaponImage = require("../entities/weapon")
 // Moved to a models folder for now not sure where it should be housed
 const MAXMOVES = 5;
 const DEATHTIMEOUT = 1500;
+const INTERVALBETWEENSHOTS = 1500;
 
 class Game {
 
@@ -25,16 +26,13 @@ class Game {
     this.clockTimer = imgs[2];
     this.bulletExists = false;
     this.timer = new timerController();
+    this.intervalBetweenShots = INTERVALBETWEENSHOTS;
   }
 
   changePlayerTurn = () => {
-    if (this.isWormDead()) {
-      this.showDeadWormGrave()
-    } else {
-      this.getActiveWorm().canShoot = true;
-      this.resetMoveCount();
-      this.player1Turn = !this.player1Turn;
-    }
+    this.getActiveWorm().canShoot = true;
+    this.resetMoveCount();
+    this.player1Turn = !this.player1Turn;
   }
 
   resetMoveCount = () => {
@@ -65,7 +63,7 @@ class Game {
     }
   }
 
-  isWormDead = () => this.worm.hp <= 0 || this.worm2.hp <= 0;
+  isWormDead = () => !this.worm.isAlive() || !this.worm2.isAlive();
   
   setGameOver = () => {this.mode = 'gameOver'; ZoomController.sf = 1}
 
