@@ -36,7 +36,7 @@ class ShootingController {
       game.timer.resetTimer();
       game.changePlayerTurn();
       game.timer.resetTimer();
-    }, 1500);
+    }, game.intervalBetweenShots);
   };
 }
 

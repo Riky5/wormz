@@ -1,32 +1,32 @@
 const ShootingController = require("./shootingController")
 class ZoomController {
-	// check if this constructor is ever use
-	constructor() {
-		this.secondScreen = false;
-		this.bottomScreen = false
-	}
-
-	static sf = 1; // scaleFactor
-
-	static explosionZoom = (game) => {
-		ZoomController.sf = 1
-		// removes explosion from screen
-		setTimeout(() => game.explosions.pop(), 500)
-		setTimeout(() => ZoomController.sf = 2, 1000)
+  // check if this constructor is ever use
+  constructor() {
+    this.secondScreen = false;
+    this.bottomScreen = false;
   }
 
-	static zoom(p, mx, my, scaleFactor,screenwidth) {
-		p.translate(mx, my)
-		p.scale(scaleFactor)
-		if (my > p.windowHeight - 100 || (ZoomController.sf === 1 && my > 200)) 
-		{p.translate(-mx, -my - 200);
-			this.secondScreen = false; 
-			this.bottomScreen = true}
-		else 
-		{p.translate(-mx, -my);
-			this.secondScreen = false; 
-			this.bottomScreen = false}
-	}
+  static sf = 1; // scaleFactor
+
+  static explosionZoom = (game) => {
+    ZoomController.zoomOut()
+    setTimeout(() => game.explosions.pop(), 500);
+    setTimeout(() => ZoomController.zoomIn(), game.intervalBetweenShots);
+  };
+
+  static zoom(p, mx, my, scaleFactor, screenwidth) {
+    p.translate(mx, my);
+    p.scale(scaleFactor);
+    if (my > p.windowHeight - 100 || (ZoomController.sf === 1 && my > 200)) {
+      p.translate(-mx, -my - 200);
+      this.secondScreen = false;
+      this.bottomScreen = true;
+    } else {
+      p.translate(-mx, -my);
+      this.secondScreen = false;
+      this.bottomScreen = false;
+    }
+  }
 
 	static setHoning(game) {
 		if (game.isWormDead()) {
@@ -65,7 +65,9 @@ class ZoomController {
 			}
 	}
 
-	
+  static zoomIn = () => ZoomController.sf = 2;
+
+  static zoomOut = () => ZoomController.sf = 1;
 }
 
 module.exports = ZoomController;

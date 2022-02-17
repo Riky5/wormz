@@ -1,22 +1,24 @@
-const ScreenController = require("../controllers/screenController");
 const ZoomController = require("../controllers/zoomController");
 const WeaponImage = require("../entities/weapon")
 // Moved to a models folder for now not sure where it should be housed
 const MAXMOVES = 5;
 const DEATHTIMEOUT = 1500;
+const INTERVALBETWEENSHOTS = 1500;
+const SCREENHEIGHT = 900;
+const SCREENWIDTH = 1500;
 
 class Game {
 
-  constructor({p: p, imgs: imgs, matter: matter, lava: lava, worm: worm,terrain: terrain, timer:timerController, weaponModel: weaponModel, bulletModel: bulletModel, screenheight: screenheight, screenwidth:screenwidth}) {
+  constructor({imgs: imgs, matter: matter, lava: lava, worm: worm,terrain: terrain, timer:timerController, weaponModel: weaponModel, bulletModel: bulletModel}) {
     this.engine = matter.Engine.create();
     this.world = this.engine.world;
     this.bullets = [];
     this.explosions = [];
-    this.lava = new lava({x: screenwidth / 2, y: 1350, w: screenwidth * 2.5, h: 1000, world: this.world, matter: matter, img: imgs})
+    this.lava = new lava({x: SCREENWIDTH / 2, y: 1350, w: SCREENWIDTH * 2.5, h: 1000, world: this.world, matter: matter, img: imgs})
     this.worm = new worm({x: 300, y: 200, options: "wormOne", img: imgs[0], matter: matter, direction: "right", weapons: this.createWeapons(weaponModel, bulletModel, imgs), graveImg: imgs[8]});
-    this.worm2 = new worm({x: 1200, y: 200, options: "wormTwo", img: imgs[1], matter: matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs), graveImg: imgs[8]});
+    this.worm2 = new worm({x: 1250, y: 200, options: "wormTwo", img: imgs[1], matter: matter, direction: "left", weapons: this.createWeapons(weaponModel, bulletModel, imgs), graveImg: imgs[8]});
     matter.World.add(this.world, [this.worm.body,this.worm2.body]);
-    this.terrain = (new terrain).createTerrain(this.world,matter, imgs, screenwidth,screenheight);
+    this.terrain = (new terrain).createTerrain({world: this.world,matter: matter, imgs: imgs, screenWidth: SCREENWIDTH, screenHeight: SCREENHEIGHT});
     this.weaponImage = new WeaponImage();
     this.mode = "start";
     this.player1Turn = true;
@@ -25,6 +27,25 @@ class Game {
     this.clockTimer = imgs[2];
     this.bulletExists = false;
     this.timer = new timerController();
+    this.intervalBetweenShots = INTERVALBETWEENSHOTS;
+  }
+
+  getActiveWorm = () => {
+    if(this.player1Turn) {
+      return this.worm;
+    } 
+    else {
+      return this.worm2;
+    }
+  }
+
+  getWormPos = (worm) => {
+    if(worm.direction === "right") {
+      return {x: worm.body.position.x + (worm.w / 2) + 10, y: worm.body.position.y - (worm.h)}
+    } 
+    else {
+      return {x: worm.body.position.x - (worm.w / 2) - 10, y: worm.body.position.y - (worm.h)}
+    }
   }
 
   changePlayerTurn = () => {
@@ -37,29 +58,7 @@ class Game {
     this.moveCount = 0;
   }
 
-  switchToMode = (modeChoice) => {
-    return this.mode = modeChoice;
-  }
-
-  getActiveWorm = () => {
-    if(this.player1Turn) {
-      return this.worm;
-    } 
-    else {
-      return this.worm2;
-    }
-  }
-
   showDeadWormGrave = () => setTimeout( () => this.setGameOver(), DEATHTIMEOUT);
-
-  getWormPos = (worm) => {
-    if(worm.direction === "right") {
-      return {x: worm.body.position.x + (worm.w / 2) + 10, y: worm.body.position.y - (worm.h)}
-    } 
-    else {
-      return {x: worm.body.position.x - (worm.w / 2) - 10, y: worm.body.position.y - (worm.h)}
-    }
-  }
 
   isWormDead = () => !this.worm.isAlive() || !this.worm2.isAlive();
 
@@ -82,23 +81,19 @@ class Game {
 
   setActiveWormDirection = (p) => {
     let mouse_position;
-    if(this.player1Turn === true) {
-      if (ZoomController.secondScreen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
-      else mouse_position = p.mouseX
-      if (mouse_position < this.worm.body.position.x) {
-        this.worm.setDirection("left");
-      } else {
-        this.worm.setDirection("right");
-      }
+    let worm = this.getActiveWorm()
+
+    if (ZoomController.secondScreen === true) {
+      mouse_position = p.mouseX + 500 * ZoomController.sf
     } else {
-      if (ZoomController.secondScreen === true) {mouse_position = p.mouseX + 500 * ZoomController.sf}
-      else mouse_position = p.mouseX
-      if (mouse_position < this.worm2.body.position.x) {
-        this.worm2.setDirection("left");
-      } else {
-        this.worm2.setDirection("right");
-      }
+      mouse_position = p.mouseX
     }
+   
+    if (mouse_position < worm.body.position.x) {
+      worm.setDirection("left");
+    } else {
+      worm.setDirection("right");
+    }    
   }
 
   getWinner = () => {
@@ -107,6 +102,10 @@ class Game {
     } else {
       return 'Player 2';
     }
+  }
+
+  switchToMode = (modeChoice) => {
+    return this.mode = modeChoice;
   }
 }
 module.exports = Game;
