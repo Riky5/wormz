@@ -1,4 +1,4 @@
-![wormsLogo](https://github.com/Riky5/wormz/blob/readme/public/readMeGifs/WormsLogoText.jpg?raw=true)
+![wormsLogo](/images/WormzLogoText.jpg)
 
 ## About the Project
 
