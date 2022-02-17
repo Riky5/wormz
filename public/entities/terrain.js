@@ -20,7 +20,7 @@ class Terrain {
     return new Obstacle({x: location[1] + (xIncrement * 10), y: location[0] + yIncrement, w: 10, h: 10, world: world, matter: matter, imgs: imgs[5]});
   };
 
-  createTerrain(world, matter, imgs, screenwidth, screenheight) {
+  createTerrain({world: world, matter: matter, imgs: imgs, screenWidth: screenwidth, screenHeight: screenheight}) {
     this.createBorders(world, matter, screenwidth, screenheight);
     const platformLocationsArray = this.setPlatformLocation();
     const generatedTerrainArray = [];
