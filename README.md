@@ -1,4 +1,4 @@
-![wormsLogo](/images/WormzLogoText.jpg)
+![wormsLogo](/images/WormzLogoText.png)
 
 ## About the Project
 
