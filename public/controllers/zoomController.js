@@ -27,6 +27,29 @@ class ZoomController {
 			this.secondScreen = false; 
 			this.bottomScreen = false}
 	}
+
+	static setMousePos(game) {
+		if (game.isWormDead()) {
+			let deadWorm = game.getDeadWorm().body;
+			return {
+				mx = deadWorm.position.x
+				my = deadWorm.position.y}
+		}
+			// Zoom in on bullet
+		else if (game.bulletExists === true)
+		{ 
+			mx = ShootingController.bullet.body.position.x;
+			my = ShootingController.bullet.body.position.y;}
+			// Zoom in on active player
+		else if(game.player1Turn === true)
+		{ 
+			mx = game.worm.body.position.x;
+			my = game.worm.body.position.y;
+		} else { 
+			mx = game.worm2.body.position.x;
+			my = game.worm2.body.position.y;
+		}
+	}
 }
 
 module.exports = ZoomController;
