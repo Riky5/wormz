@@ -30,11 +30,7 @@ class ZoomController {
 
 	static setMousePos(game) {
 		if (game.isWormDead()) {
-			let deadWorm = game.getDeadWorm().body;
-			return {
-				mx: deadWorm.position.x,
-				my: deadWorm.position.y
-			}
+			ZoomController.honeInOnDeadWorm(game);
 		}
 			// Zoom in on bullet
 		else if (game.bulletExists === true)
@@ -45,18 +41,22 @@ class ZoomController {
 			}
 		}
 			// Zoom in on active player
-		else if (game.player1Turn === true)
+		else
 		{ 
+			let activeWorm = game.getActiveWorm()
 			return {
-				mx: game.worm.body.position.x,
-				my: game.worm.body.position.y
-			}
-		} else { 
-			return {
-				mx: game.worm2.body.position.x,
-				my: game.worm2.body.position.y
+				mx: activeWorm.body.position.x,
+				my: activeWorm.body.position.y
 			}
 		}
+	}
+
+	static honeInOnDeadWorm(game) {
+		let deadWorm = game.getDeadWorm().body;
+			return {
+				mx: deadWorm.position.x,
+				my: deadWorm.position.y
+			}
 	}
 }
 
