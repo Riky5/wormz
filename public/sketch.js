@@ -104,6 +104,8 @@ class Sketch {
 
       p.draw = () => {
         Navbar.show(game);
+
+        // HERE IT SETS THE MAX CANVAS SIZE !!!
         p.resizeCanvas(1500, 900)
         const CANVASWINDOWSIZE = 1500;
         if (game.worm.isAlive() === false) 
