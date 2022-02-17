@@ -11,6 +11,9 @@ class ScreenController{
     p.text("Press ENTER to start game", p.windowWidth / 2 - 175, p.windowHeight / 2 + 110);
     p.text("Press I for instructions", p.windowWidth / 2 - 142, p.windowHeight / 2 + 160);
     p.text("Press OPTION for Music/Sound settings", p.windowWidth / 2 - 252, p.windowHeight / 2 + 210);
+    p.textSize(17);
+    p.text("Created by:", p.windowWidth / 2 - 50, p.windowHeight / 2 + 280);
+    p.text("Alfonso Ghislieri, Chris Clement, Chris Thomas, Giorgi Gutsaevi, Kim Morgan, Riky Moroni", p.windowWidth / 2 - 342, p.windowHeight / 2 + 310);
   }
 
   static gameScreen(p, game, imgs, sound) {
