@@ -1,4 +1,4 @@
-
+const ShootingController = require("./shootingController")
 class ZoomController {
   // check if this constructor is ever use
   constructor() {
@@ -27,6 +27,43 @@ class ZoomController {
       this.bottomScreen = false;
     }
   }
+
+	static setHoning(game) {
+		if (game.isWormDead()) {
+			return ZoomController.honeInOnDeadWorm(game);
+		}
+		else if (game.bulletExists === true)
+		{ 
+			return ZoomController.honeInOnBullet();
+		}
+		else
+		{ 
+			return ZoomController.honeInOnActiveWorm(game);
+		}
+	}
+
+	static honeInOnDeadWorm(game) {
+		let deadWorm = game.getDeadWorm().body;
+			return {
+				mx: deadWorm.position.x,
+				my: deadWorm.position.y
+			}
+	}
+
+	static honeInOnBullet() {
+		return {
+			mx: ShootingController.bullet.body.position.x,
+			my: ShootingController.bullet.body.position.y
+			}
+	}
+
+	static honeInOnActiveWorm(game) {
+		let activeWorm = game.getActiveWorm()
+			return {
+				mx: activeWorm.body.position.x,
+				my: activeWorm.body.position.y
+			}
+	}
 
   static zoomIn = () => ZoomController.sf = 2;
 

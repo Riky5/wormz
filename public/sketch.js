@@ -108,24 +108,8 @@ class Sketch {
         // HERE IT SETS THE MAX CANVAS SIZE !!!
         p.resizeCanvas(1500, 900)
         const CANVASWINDOWSIZE = 1500;
-        if (game.worm.isAlive() === false) 
-        { mx = game.worm.body.position.x;
-          my = game.worm.body.position.y;}
-        else if (game.worm2.isAlive() === false) 
-          {mx = game.worm2.body.position.x;
-          my = game.worm2.body.position.y;}
-        else if (game.bulletExists === true)
-        { 
-          mx = ShootingController.bullet.body.position.x;
-          my = ShootingController.bullet.body.position.y;}
-        else if(game.player1Turn === true)
-        { 
-          mx = game.worm.body.position.x;
-          my = game.worm.body.position.y;
-        } else { 
-          mx = game.worm2.body.position.x;
-          my = game.worm2.body.position.y;
-        }
+        mx = ZoomController.setHoning(game).mx;
+        my = ZoomController.setHoning(game).my;        
         ZoomController.zoom(p, mx, my, ZoomController.sf, CANVASWINDOWSIZE)
         ScreenController.setScreen(p, game, [wormsLogoImg, backgroundImg, gameOver, grenadeImg, tennisBallImg, tomatoImg, bazookaImg], gameOverSound);
         game.setActiveWormDirection(p);
@@ -152,9 +136,11 @@ class Sketch {
           } else if (weaponController.isValidInput(input)) {
             weaponController.activeWormChangeWeapon(worm, input)
           } else if (input === p.DOWN_ARROW) {
-            if (ZoomController.sf === 1)
-            {ZoomController.sf = 2;}
-            else {ZoomController.sf = 1;}
+            if (ZoomController.sf === 1) {
+              ZoomController.zoomIn();
+            } else { 
+              ZoomController.zoomOut();
+            }
           }
         }
       }
