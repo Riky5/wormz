@@ -1,5 +1,6 @@
 class MusicController {
   static createSoundScreen(p, sounds) {
+    MusicController.setSoundVolumes(sounds);
     let musicPlaying = false;
     const mainDiv = p.createDiv('');
     mainDiv.id('main-music-div');
@@ -62,6 +63,16 @@ class MusicController {
   static startMusic = (music) => {
     music.loop();
   };
+
+  static setSoundVolumes = (sounds) => {
+    sounds[0].setVolume(0.30)
+    sounds[1].setVolume(0.30)
+    sounds[2].setVolume(0.30)
+    sounds[3].setVolume(0.30)
+    sounds[4].setVolume(0.30)
+    sounds[5].setVolume(0.30)
+    sounds[6].setVolume(0.02)
+  }
 }
 
 module.exports = MusicController;
